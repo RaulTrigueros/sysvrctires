@@ -1,7 +1,9 @@
 <template>
     <div class="container mt-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/" target="_blank">Ir a Portal</a></li>
+            <li class="breadcrumb-item">
+                <a href="/" target="_blank">Ir a Portal</a>
+            </li>
         </ol>
         <div class="row">
             <div class="col-12">
@@ -16,12 +18,15 @@
                                 <strong v-text="carrusel.titulo"></strong>
                             </div>
                             <div class="col-12">
-                                <p v-text="carrusel.descripcion + '(max: 10 imágenes)'"></p>
+                                <p
+                                    v-text="
+                                        carrusel.descripcion +
+                                        '(max: 10 imágenes)'
+                                    "
+                                ></p>
                             </div>
                         </div>
-                        <div
-                            class="col-2 d-flex"
-                        >
+                        <div class="col-2 d-flex">
                             <button
                                 class="btn btn-block btn-success"
                                 @click="guardarOrden"
@@ -58,7 +63,8 @@
                         >
                             <div class="card" style="cursor: grab">
                                 <div class="card-body row">
-                                    <strong  v-if="!imagen.estado"
+                                    <strong
+                                        v-if="!imagen.estado"
                                         class="card-text col-8"
                                         v-text="imagen.titulo"
                                     ></strong>
@@ -70,7 +76,6 @@
                                         v-if="imagen.estado"
                                         type="text"
                                         name=""
-                                        
                                         v-model="imagen.titulo"
                                         class="form-control"
                                     />
@@ -85,7 +90,7 @@
                                     ><img
                                         :src="
                                             '/imagen_carrusel/img/' +
-                                                imagen.imagen
+                                            imagen.imagen
                                         "
                                         alt="Card image"
                                         width="100%"
@@ -124,8 +129,12 @@
                                                 class="btn btn-block btn-info"
                                                 @click="editar(imagen)"
                                             >
-                                            <strong v-if="!imagen.estado"> Editar</strong>
-                                            <strong v-if="imagen.estado"> Guardar</strong>
+                                                <strong v-if="!imagen.estado">
+                                                    Editar</strong
+                                                >
+                                                <strong v-if="imagen.estado">
+                                                    Guardar</strong
+                                                >
                                             </button>
                                         </div>
                                     </div>
@@ -162,7 +171,7 @@
                     </div>
                     <div class="modal-body">
                         <form>
-                            <div class="form-group ">
+                            <div class="form-group">
                                 <label for="" class="form-control-label"
                                     >Titulo</label
                                 >
@@ -176,7 +185,7 @@
                                     />
                                 </div>
                             </div>
-                            <div class="form-group ">
+                            <div class="form-group">
                                 <label for="" class="form-control-label"
                                     >Descripción</label
                                 >
@@ -190,11 +199,11 @@
                                     />
                                 </div>
                             </div>
-                            <div class="form-group ">
+                            <div class="form-group">
                                 <label for="" class="form-control-label"
                                     >Imagen</label
                                 >
-                                <div class="custom-file ">
+                                <div class="custom-file">
                                     <input
                                         type="file"
                                         class="custom-file-input"
@@ -208,7 +217,11 @@
                                         >Elija una Imagen</label
                                     >
                                 </div>
-                                <small class="text-muted">Por favor imagenes con un peso menor a 512Kb y preferentemente con dimensiones mayores a 900X400</small>
+                                <small class="text-muted"
+                                    >Por favor imagenes con un peso menor a
+                                    512Kb y preferentemente con dimensiones
+                                    mayores a 900X400</small
+                                >
                             </div>
                             <div class="form-group mt-3">
                                 <div class="">
@@ -238,28 +251,28 @@ export default {
             carrusel: "",
             tituloImg: " ",
             descripcionImg: " ",
-            imagenImg: ""
+            imagenImg: "",
         };
     },
     components: {
-        draggable
+        draggable,
     },
     methods: {
         getImagenes() {
             const me = this;
             axios
                 .get("/carrusel/1")
-                .then(res => {
+                .then((res) => {
                     me.carrusel = res.data;
                     axios
                         .get(`/carrusel/${me.carrusel.id}/imagenes`)
-                        .then(res => {
+                        .then((res) => {
                             me.imagenes = res.data;
                             console.log(me.imagenes);
                         })
-                        .catch(error => error);
+                        .catch((error) => error);
                 })
-                .catch(error => error);
+                .catch((error) => error);
         },
         guardarOrden(showMsg = true) {
             this.imagenes.forEach((imagen, index) => {
@@ -268,10 +281,10 @@ export default {
                         `/imagen_carrusel/orden/${imagen.id}/${index + 1}`,
                         []
                     )
-                    .then(res => {
+                    .then((res) => {
                         console.log("bien");
                     })
-                    .catch(err => err);
+                    .catch((err) => err);
             });
             if (showMsg) {
                 this.emitSwal("success", "Se ordeno las imagens correctamente");
@@ -285,16 +298,22 @@ export default {
                 type: tipo,
                 title: mensaje,
                 showConfirmButton: btn,
-                timer: 1500
+                timer: 1500,
             });
         },
         getImagen(event) {
             this.imagenImg = event.target.files[0];
-            $(event.target).next().text(this.imagenImg.name).css('color', 'green');
-            if(this.imagenImg.size > 600000){
-                console.log('imagen muy pesada');
-                this.imagenImg = '';
-                $(event.target).next().text('Elija una imagen con peso menor a 512 kb').css("color", 'red');
+            $(event.target)
+                .next()
+                .text(this.imagenImg.name)
+                .css("color", "green");
+            if (this.imagenImg.size > 600000) {
+                console.log("imagen muy pesada");
+                this.imagenImg = "";
+                $(event.target)
+                    .next()
+                    .text("Elija una imagen con peso menor a 512 kb")
+                    .css("color", "red");
             }
         },
 
@@ -309,27 +328,29 @@ export default {
 
             axios
                 .post("/imagen_carrusel/" + this.carrusel.id, data)
-                .then(res => {
+                .then((res) => {
                     Swal.fire({
                         position: "center",
                         type: "success",
                         title: "Se ha subido la imagen correctamente",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                     this.tituloImg = "";
                     this.descripcionImg = "";
                     this.imagenImg = "";
-                    $('.custom-file-label').text('Elija una imagen').css('color', 'black');
+                    $(".custom-file-label")
+                        .text("Elija una imagen")
+                        .css("color", "black");
                     this.cerrarModal();
                     this.getImagenes();
                 })
-                .catch(error => {
+                .catch((error) => {
                     Swal.fire({
                         position: "center",
                         type: "error",
                         title: "No se ha podido subir la imagen",
-                        showConfirmButton: true
+                        showConfirmButton: true,
                     });
                 });
         },
@@ -361,18 +382,18 @@ export default {
                 }
                 textError += "</ul>";
                 Swal.fire({
-                        position: "center",
-                        type: "error",
-                        title: "Hay campos vacios.",
-                        showConfirmButton: true,
-                    });
+                    position: "center",
+                    type: "error",
+                    title: "Hay campos vacios.",
+                    showConfirmButton: true,
+                });
             }
         },
         eliminar(id) {
             const me = this;
             axios
                 .delete("/imagen_carrusel/" + id)
-                .then(res => {
+                .then((res) => {
                     console.log(res);
                     me.getImagenes();
                     me.guardarOrden(false);
@@ -381,34 +402,36 @@ export default {
                         type: "success",
                         title: "La imagen fue eliminada",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err);
                 });
         },
         editar(imagen) {
             imagen.estado = !imagen.estado;
-            if(imagen.estado === false){//guardar
-                console.log('guardar imagen');
+            if (imagen.estado === false) {
+                //guardar
+                console.log("guardar imagen");
                 // console.log(imagen);
-                axios.put('/imagen_carrusel/'+imagen.id, {
-                    'titulo': imagen.titulo,
-                    'descripcion': imagen.descripcion
-                }).then(res => {
-                    console.log(res);
-                    this.emitSwal('success', 'Se guardo exitosamente');
-                })
-                .catch(err => {
-                    console.log(err)
-                });
+                axios
+                    .put("/imagen_carrusel/" + imagen.id, {
+                        titulo: imagen.titulo,
+                        descripcion: imagen.descripcion,
+                    })
+                    .then((res) => {
+                        console.log(res);
+                        this.emitSwal("success", "Se guardo exitosamente");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             }
-            
-        }
+        },
     },
     mounted() {
         this.getImagenes();
-    }
+    },
 };
 </script>

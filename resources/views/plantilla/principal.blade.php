@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title>Alcaldia SPT</title>
+  <title>VRC Tires</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <link href="css/general.css" rel="stylesheet">
@@ -88,8 +88,8 @@
 
   <footer class="app-footer mt-5">
     <div>
-      <a href="#">AlcaldiaSPT</a>
-      <span>&copy; 2022</span>
+      <a href="#">VRCtires</a>
+      <span>&copy; 2024</span>
     </div>
     
   </footer>

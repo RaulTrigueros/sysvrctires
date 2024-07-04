@@ -6,11 +6,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Sistema Informático de Alcaldía Municipal de San Pablo Tacachico">
-  <meta name="author" content="tacachico.gob.sv">
-  <meta name="keyword" content="Alcaldía Tacachico, Municipio">
+  <meta name="description" content="Sistema Informático de gestión de pedidos">
+  <meta name="author" content="Rulodev">
 
-  <title>Alcaldia SPT</title>
+  <title>VRC Tires</title>
 
   <!-- Icons -->
   <link href="css/general.css" rel="stylesheet">

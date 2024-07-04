@@ -7,7 +7,7 @@
     <carrusel-portal></carrusel-portal>
 
     <!-- Masthead Heading -->
-    <h1 class="masthead-heading text-uppercase mb-0 mt-5">Alcaldía Municipal de San Pablo Tacachico</h1>
+    <h1 class="masthead-heading text-uppercase mb-0 mt-5">VRC Tires</h1>
 
     <!-- Icon Divider -->
     <div class="divider-custom divider-light">
@@ -16,8 +16,6 @@
       <div class="divider-custom-line"></div>
     </div>
 
-    <!-- Masthead Subheading -->
-    <p class="masthead-subheading font-weight-light mb-0">Alcalde: Francisco Portillo</p>
   </div>
   <input class="form-control" type="hidden" name="" id="variable" value="{{$log}}">
 </header>
