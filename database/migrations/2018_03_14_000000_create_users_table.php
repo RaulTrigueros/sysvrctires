@@ -28,7 +28,11 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             //$table->timestamps();
         });
-        DB::table('users')->insert(array('id'=>1,'usuario'=>'admin', 'password' => bcrypt('devspt2021'), 'condicion'=> 1, 'idrol'=>1));
+
+        $usuario = decrypt(env('ENCRYPTED_USUARIO'));
+        $password = env('ENCRYPTED_PASSWORD');
+
+        DB::table('users')->insert(array('id'=>1,'usuario'=>$usuario, 'password' => $password, 'condicion'=> 1, 'idrol'=>1));
     }
 
     /**
