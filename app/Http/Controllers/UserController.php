@@ -13,6 +13,13 @@ use App\Services\BitacoraService;
 
 class UserController extends Controller
 {
+    protected $bitacoraService;
+
+    public function __construct(BitacoraService $bitacoraService)
+    {
+        $this->bitacoraService = $bitacoraService;
+    }
+
     public function index(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -23,13 +30,13 @@ class UserController extends Controller
         if ($buscar==''){
             $personas = User::join('personas','users.id','=','personas.id')
             ->join('roles','users.idrol','=','roles.id')
-            ->select('personas.id','personas.nombre','personas.tipo_documento','personas.num_documento','personas.direccion','personas.telefono','personas.email','users.usuario','users.password','users.condicion','users.idrol','roles.nombre as rol')
+            ->select('personas.id','personas.nombre','personas.cargo','personas.telefono','personas.email','users.usuario','users.password','users.condicion','users.idrol','roles.nombre as rol')
             ->orderBy('personas.id', 'desc')->paginate(3);
         }
         else{
             $personas = User::join('personas','users.id','=','personas.id')
             ->join('roles','users.idrol','=','roles.id')
-            ->select('personas.id','personas.nombre','personas.tipo_documento','personas.num_documento','personas.direccion','personas.telefono','personas.email','users.usuario','users.password','users.condicion','users.idrol','roles.nombre as rol')
+            ->select('personas.id','personas.nombre','personas.cargo','personas.telefono','personas.email','users.usuario','users.password','users.condicion','users.idrol','roles.nombre as rol')
             ->where('personas.'.$criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->paginate(3);
         }
         
@@ -55,15 +62,13 @@ class UserController extends Controller
 
             $persona = new Persona();
             $persona->nombre = $request->nombre;
-            $persona->tipo_documento = $request->tipo_documento;
-            $persona->num_documento = $request->num_documento;
-            $persona->direccion = $request->direccion;
             $persona->telefono = $request->telefono;
             $persona->email = $request->email;
             $persona->save();
 
             $user = new User();
             $user->id = $persona->id;
+            $user->cargo = $request->cargo;
             $user->idrol = $request->idrol;
             $user->usuario = $request->usuario;
             $user->password = bcrypt( $request->password);
@@ -74,6 +79,9 @@ class UserController extends Controller
         } catch (Exception $e){
             DB::rollBack();
         }
+
+        $this->bitacoraService->store('Creación de registro', 'User');
+        return "Éxito";
     }
 
     public function update(Request $request)
@@ -86,14 +94,10 @@ class UserController extends Controller
             $user = User::findOrFail($request->id);
             $persona = Persona::findOrFail($user->id);
             $persona->nombre = $request->nombre;
-            $persona->tipo_documento = $request->tipo_documento;
-            $persona->num_documento = $request->num_documento;
-            $persona->direccion = $request->direccion;
             $persona->telefono = $request->telefono;
             $persona->email = $request->email;
             $persona->save();
-
-            
+            $user->cargo = $request->cargo;
             $user->usuario = $request->usuario;
             $user->password = bcrypt( $request->password);
             $user->condicion = '1';
@@ -104,6 +108,9 @@ class UserController extends Controller
         } catch (Exception $e){
             DB::rollBack();
         }
+
+        $this->bitacoraService->store('Actualizacion de registro', 'User');
+        return "Éxito";
     }
 
     public function desactivar(Request $request)
@@ -112,6 +119,9 @@ class UserController extends Controller
         $user = User::findOrFail($request->id);
         $user->condicion = '0';
         $user->save();
+
+        $this->bitacoraService->store('Desactivacion de registro', 'User');
+        return "Éxito";
     }
 
     public function activar(Request $request)
@@ -120,6 +130,9 @@ class UserController extends Controller
         $user = User::findOrFail($request->id);
         $user->condicion = '1';
         $user->save();
+
+        $this->bitacoraService->store('Activacion de registro', 'User');
+        return "Éxito";
     }
 
       //Modificar contraseña
