@@ -31,7 +31,7 @@
           <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
             <div class="card-body text-center">
               <div>
-               <img width=100 height=120 src="img/logo.png" alt="logo">
+               <img width=100 height=120 src="img/logo-sinfondo.png" alt="logo">
                <h2>VRC Tires</h2>
                <p>Sistema Informático para la Gestión de Pedidos de llantas.</p>
                

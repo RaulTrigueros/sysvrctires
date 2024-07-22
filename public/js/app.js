@@ -2209,7 +2209,7 @@ __webpack_require__.r(__webpack_exports__);
           }).then((result) => {
           if (result.value) {
               let me = this;
-               axios.put('/combustible/desactivar',{
+                axios.put('/combustible/desactivar',{
                   'id': id
               }).then(function(response){
                   me.listarCombustible(1,'','nombre_tipocombustible');
@@ -2818,11 +2818,11 @@ __webpack_require__.r(__webpack_exports__);
              if(!this.numpuesto) this.errorMostrarMsjEnergia.push("Debe ingresar un número de puesto");
              if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
          }
-          if(this.errorEnergia===0){
+           if(this.errorEnergia===0){
              if(!this.numcontador) this.errorMostrarMsjEnergia.push("Debe ingresar un número de contador");
              if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
          }
-          if(this.errorEnergia===0){
+           if(this.errorEnergia===0){
              if(!this.area) this.errorMostrarMsjEnergia.push("Debe seleccionar el área de venta");
              if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
          }*/
@@ -2852,7 +2852,7 @@ __webpack_require__.r(__webpack_exports__);
             if(this.numcontador<= 0) this.errorMostrarMsjEnergia.push("El número de contador debe ser un número positivo");
             if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
         }
-          if(this.errorEnergia===0){
+           if(this.errorEnergia===0){
             if(this.numpuesto<= 0) this.errorMostrarMsjEnergia.push("El número de puesto debe ser un número positivo");
             if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
         }*/
@@ -57310,7 +57310,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\ProyectosLaravel\sysvrctires\resources\assets\js\app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\TACACHICO\Documents\sysvrctires\resources\assets\js\app.js */"./resources/assets/js/app.js");
 
 
 /***/ })

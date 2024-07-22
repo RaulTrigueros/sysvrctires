@@ -25,7 +25,7 @@
       </button>
       <a class="navbar-brand" href="/main">
         <img class="navbar-brand-full" src="img/logo.png" width="30" height="35" alt="LogoSPT">
-        <img class="navbar-brand-minimized" src="img/logo.png" width="30" height="30" alt="LogoSPT">
+        <img class="navbar-brand-minimized" src="img/logo-sinfondo.png" width="30" height="30" alt="LogoSPT">
       </a>
       <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>
@@ -42,7 +42,7 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true" style="cursor:pointer">
-            <img class="navbar-brand-full" src="img/logo.png" width="30" height="35" alt="sam">
+            <img class="navbar-brand-full" src="img/logo-sinfondo.png" width="30" height="35" alt="sam">
             <span class="d-md-down-none">{{Auth::user()->usuario}} </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right">
