@@ -23,11 +23,6 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::post('/login1', 'Auth\LoginController@login')->name('login');
 
-//mision y vision
-Route::get('/mision', function () {
-    return view('mision/misionvision');
-});
-
 //Cambiar contraseña
 Route::get('user/password', 'UserController@password');
 Route::post('user/updatepassword', 'UserController@updatePassword');
