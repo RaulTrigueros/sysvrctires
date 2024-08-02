@@ -1,9 +1,6 @@
 @extends('plantilla/principal')
 @section('contenido')
 
-  
-
-
 <div class="container">
   <template v-if="menu==0">
 

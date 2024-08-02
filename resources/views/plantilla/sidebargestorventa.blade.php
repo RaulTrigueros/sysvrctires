@@ -10,16 +10,23 @@
       <!-- <li class="nav-title">Mantenimiento</li>-->
       <li class="nav-item nav-dropdown" >
         <a class="nav-link nav-dropdown-toggle" href="#">
-          <i class="nav-icon fa fa-handshake-o"></i>Gestion de Combustible</a>
+          <i class="nav-icon fa fa-handshake-o"></i>Gesti&oacuten de tienda</a>
         <ul class="nav-dropdown-items">
           <li class="nav-item">
-            <a class="nav-link" @click="menu=1" href="#">
-              <i class="nav-icon fa fa-handshake-o"></i>Combustible</a>
+            <a class="nav-link" @click="menu=70" href="#">
+              <i class="nav-icon fa fa-handshake-o"></i>Pedidos</a>
           </li>
-       
+          <li class="nav-item">
+            <a class="nav-link" @click="menu=71" href="#">
+              <i class="nav-icon fa fa-handshake-o"></i>Clientes </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click="menu=72" href="#">
+              <i class="nav-icon fa fa-handshake-o"></i>Llantas</a>
+          </li>
         </ul>
       </li>
-  
+
   </nav>
   <button class="sidebar-minimizer brand-minimizer" type="button"> </button>
 </div>

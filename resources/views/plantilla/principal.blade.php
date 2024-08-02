@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="utf-8">
@@ -61,16 +61,14 @@
 
     </header>
 
-
-
     <div class="app-body">
           @if (Auth::check())
               @if(Auth::user()->idrol==1)
                   @include('plantilla.sidebar')
               @elseif(Auth::user()->idrol==2)
-                  @include('plantilla.sidebarenergia')
+                  @include('plantilla.sidebaradmintienda')
               @elseif(Auth::user()->idrol==3)
-                  @include('plantilla.sidebarcombustible')
+                  @include('plantilla.sidebargestorventa')
               @else
               @endif
           @endif

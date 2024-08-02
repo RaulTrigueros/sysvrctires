@@ -17,7 +17,6 @@ class LoginController extends Controller
         $this->bitacoraService = $bitacoraService;
     }
 
-
     public function showLoginForm()
     {
         return view('auth.login'); //Muestra la vista del login

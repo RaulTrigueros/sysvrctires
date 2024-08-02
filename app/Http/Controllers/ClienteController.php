@@ -21,14 +21,13 @@ class ClienteController extends Controller
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
-        
-        if ($buscar==''){
+
+        if ($buscar == '') {
             $personas = Persona::orderBy('id', 'desc')->paginate(10);
+        } else {
+            $personas = Persona::where($criterio, 'like', '%' . $buscar . '%')->orderBy('id', 'desc')->paginate(10);
         }
-        else{
-            $personas = Persona::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->paginate(10);
-        }
-        
+
 
         return [
             'pagination' => [
@@ -43,15 +42,16 @@ class ClienteController extends Controller
         ];
     }
 
-    public function selectCliente(Request $request){
+    public function selectCliente(Request $request)
+    {
         if (!$request->ajax()) return redirect('/');
- 
+
         $filtro = $request->filtro;
-        $clientes = Persona::where('nombre', 'like', '%'. $filtro . '%')
-        ->orWhere('num_documento', 'like', '%'. $filtro . '%')
-        ->select('id','nombre','num_documento')
-        ->orderBy('nombre', 'asc')->get();
- 
+        $clientes = Persona::where('codigo', 'like', '%' . $filtro . '%')
+            ->orWhere('nombre', 'like', '%' . $filtro . '%')
+            ->select('id', 'codigo', 'nombre')
+            ->orderBy('nombre', 'asc')->get();
+
         return ['personas' => $clientes];
     }
 
@@ -59,13 +59,20 @@ class ClienteController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $persona = new Persona();
+        //$persona->codigo = $request->codigo;
         $persona->nombre = $request->nombre;
-        $persona->tipo_documento = $request->tipo_documento;
-        $persona->num_documento = $request->num_documento;
+        $persona->dui = $request->dui;
+        $persona->nit = $request->nit;
+        $persona->nrc = $request->nrc;
+        $persona->giro = $request->giro;
         $persona->direccion = $request->direccion;
         $persona->telefono = $request->telefono;
         $persona->email = $request->email;
 
+        $persona->save();
+
+        // Generar el código correlativo usando el ID
+        $persona->codigo = 'CLI-' . str_pad($persona->id, 5, '0', STR_PAD_LEFT);
         $persona->save();
     }
 
@@ -73,9 +80,12 @@ class ClienteController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $persona = Persona::findOrFail($request->id);
+        $persona->codigo = $request->codigo;
         $persona->nombre = $request->nombre;
-        $persona->tipo_documento = $request->tipo_documento;
-        $persona->num_documento = $request->num_documento;
+        $persona->dui = $request->dui;
+        $persona->nit = $request->nit;
+        $persona->nrc = $request->nrc;
+        $persona->giro = $request->giro;
         $persona->direccion = $request->direccion;
         $persona->telefono = $request->telefono;
         $persona->email = $request->email;
@@ -87,8 +97,7 @@ class ClienteController extends Controller
         $persona = Persona::findOrFail($request->id);
         $persona->delete();
 
-        $this->bitacoraService->store('Eliminación de registro', 'Persona');
+        $this->bitacoraService->store('Eliminación de registro', 'Cliente');
         return "Éxito";
-        
     }
 }

@@ -109,7 +109,7 @@ class UserController extends Controller
             DB::rollBack();
         }
 
-        $this->bitacoraService->store('Actualizacion de registro', 'User');
+        $this->bitacoraService->store('Actualizacion de registro', 'Usuario');
         return "Éxito";
     }
 
@@ -120,7 +120,7 @@ class UserController extends Controller
         $user->condicion = '0';
         $user->save();
 
-        $this->bitacoraService->store('Desactivacion de registro', 'User');
+        $this->bitacoraService->store('Desactivacion de registro', 'Usuario');
         return "Éxito";
     }
 
@@ -131,7 +131,7 @@ class UserController extends Controller
         $user->condicion = '1';
         $user->save();
 
-        $this->bitacoraService->store('Activacion de registro', 'User');
+        $this->bitacoraService->store('Activacion de registro', 'Usuario');
         return "Éxito";
     }
 

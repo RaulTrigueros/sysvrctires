@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Persona extends Model
 {
-    protected $fillable = ['nombre','tipo_documento','num_documento','direccion','telefono','email'];
+    protected $fillable = ['codigo', 'nombre', 'dui', 'nit', 'nrc', 'giro', 'direccion', 'telefono', 'email'];
 
     public function provedor()
     {
@@ -18,8 +18,8 @@ class Persona extends Model
         return $this->hasOne('App\User');
     }
 
-    public function energias(){
-        return $this->hasMany('App\Energia');
+    public function pedidos()
+    {
+        return $this->hasMany('App\Pedido');
     }
-
 }
