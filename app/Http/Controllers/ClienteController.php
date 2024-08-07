@@ -72,7 +72,7 @@ class ClienteController extends Controller
         $persona->save();
 
         // Generar el código correlativo usando el ID
-        $persona->codigo = 'CLI-' . str_pad($persona->id, 5, '0', STR_PAD_LEFT);
+        $persona->codigo = 'CLI' . str_pad($persona->id, 4, '0', STR_PAD_LEFT);
         $persona->save();
     }
 

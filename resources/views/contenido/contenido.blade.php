@@ -46,18 +46,12 @@
           </template>
           
           @elseif(Auth::user()->idrol==3)
-          <template v-if="menu==3">
-            <usuario></usuario>
-          </template>
-          <template v-if="menu==4">
-            <rol></rol>
-          </template>
-          <template v-if="menu==6">
-            <logout></logout>
-          </template>
-          <template v-if="menu==50">
-            <bitacora></bitacora>
-          </template>
+          <template v-if="menu==70">
+            <energia></energia>
+            </template>
+            <template v-if="menu==71">
+            <cliente></cliente>
+            </template>
           @else
           @endif
   @endif

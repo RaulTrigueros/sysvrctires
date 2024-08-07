@@ -22,7 +22,7 @@ Vue.use(VueFormWizard)
 
 Vue.component('energia', require('./components/Energia.vue').default);
 Vue.component('cliente', require('./components/Cliente.vue').default);
-Vue.component('puesto', require('./components/Puesto.vue').default);
+Vue.component('llanta', require('./components/Llanta.vue').default);
 
 Vue.component('rol', require('./components/Rol.vue').default);
 Vue.component('usuario', require('./components/User.vue').default);

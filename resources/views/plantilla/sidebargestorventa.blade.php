@@ -10,7 +10,7 @@
       <!-- <li class="nav-title">Mantenimiento</li>-->
       <li class="nav-item nav-dropdown" >
         <a class="nav-link nav-dropdown-toggle" href="#">
-          <i class="nav-icon fa fa-handshake-o"></i>Gesti&oacuten de tienda</a>
+          <i class="nav-icon fa fa-handshake-o"></i>Gesti&oacuten de ventas</a>
         <ul class="nav-dropdown-items">
           <li class="nav-item">
             <a class="nav-link" @click="menu=70" href="#">
@@ -19,10 +19,6 @@
           <li class="nav-item">
             <a class="nav-link" @click="menu=71" href="#">
               <i class="nav-icon fa fa-handshake-o"></i>Clientes </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" @click="menu=72" href="#">
-              <i class="nav-icon fa fa-handshake-o"></i>Llantas</a>
           </li>
         </ul>
       </li>

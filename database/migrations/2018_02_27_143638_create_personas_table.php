@@ -18,8 +18,8 @@ class CreatePersonasTable extends Migration
             $table->string('codigo', 20)->unique()->nullable();
             $table->string('nombre', 120);
             $table->string('dui', 10)->nullable();
-            $table->string('nit', 30)->nullable();
-            $table->string('nrc', 50)->nullable();
+            $table->string('nit', 17)->nullable();
+            $table->string('nrc', 17)->nullable();
             $table->string('giro', 120)->nullable();
             $table->string('direccion', 250)->nullable();
             $table->string('telefono', 20)->nullable();

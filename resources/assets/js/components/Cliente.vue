@@ -483,6 +483,7 @@ export default {
 
             axios
                 .put("/cliente/actualizar", {
+                    codigo: this.codigo,
                     nombre: this.nombre,
                     dui: this.dui,
                     nit: this.nit,
@@ -544,11 +545,24 @@ export default {
             this.errorPersona = 0;
             this.errorMostrarMsjPersona = [];
 
-            if (!this.nombre)
-                this.errorMostrarMsjPersona.push(
-                    "El nombre de la persona no puede estar vacío."
-                );
+            if (!this.nombre) {
+                this.errorMostrarMsjPersona.push("El nombre de la persona no puede estar vacío.");
+            }
+            if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
 
+            if (this.dui && this.dui.length > 10) {
+                this.errorMostrarMsjPersona.push("El numero de DUI no puede tener mas de 10 digitos.");
+            }
+            if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
+
+            if (this.nit && this.nit.length > 17) {
+                this.errorMostrarMsjPersona.push("El numero de NIT no puede tener mas de 17 digitos.");
+            }
+            if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
+
+            if (this.nrc && this.nrc.length > 17) {
+                this.errorMostrarMsjPersona.push("El numero de NRC no puede tener mas de 17 digitos.");
+            }
             if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
 
             return this.errorPersona;
@@ -556,6 +570,7 @@ export default {
         cerrarModal() {
             this.modal = 0;
             this.tituloModal = "";
+            this.codigo = "";
             this.nombre = "";
             this.dui = "";
             this.nit = "";
@@ -590,6 +605,7 @@ export default {
                             this.tituloModal = "Actualizar Cliente";
                             this.tipoAccion = 2;
                             this.persona_id = data["id"];
+                            this.codigo = data["codigo"];
                             this.nombre = data["nombre"];
                             this.dui = data["dui"];
                             this.nit = data["nit"];

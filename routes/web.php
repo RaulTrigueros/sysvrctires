@@ -61,20 +61,7 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::put('/user/actualizar', 'UserController@update');
     Route::put('/user/desactivar', 'UserController@desactivar');
     Route::put('/user/activar', 'UserController@activar');
-    //MÓDULO DE CONSUMO DE COMBUSTIBLE
-    Route::get('/tipocombustible/selectTipocombustible', 'TipocombustibleController@selectTipocombustible');
-    Route::get('/combustible', 'CombustibleController@index');
-    Route::post('/combustible/registrar', 'CombustibleController@store');
-    Route::put('/combustible/actualizar', 'CombustibleController@update');
-    Route::put('/combustible/desactivar', 'CombustibleController@desactivar');
-    Route::put('/combustible/activar', 'CombustibleController@activar');
-    Route::put('/combustible/eliminar', 'CombustibleController@destroy');
-    Route::get('/combustible/generarReporteCombustible', 'CombustibleController@generarReporteCombustible')->name('combustibles_pdf');
-    Route::get('/combustible/generarReportePrograms2', 'CombustibleController@generarReportePrograms2')->name('combustibles_pdf');
-    Route::get('/combustible/pdf/{id}', 'CombustibleController@inscripcionPDF')->name('inscripciones_pdf');
-    Route::get('/combustible/pdf/fecha/{inicio}/{fin}/{equipo}', 'CombustibleController@filtrofecha')->name('combustibles_pdf');
-    Route::get('/combustible/pdf/fecha/{inicio}/{fin}', 'CombustibleController@filtrofechamensual')->name('combustibles_pdfmensual');
-    Route::get('/combustible/pdf/equipo/{equipo}', 'CombustibleController@filtroequipo')->name('combustibles_pdf');
+    
     //MODULO DE CONSUMO DE ENERGÍA ELÉCTRICA
     Route::get('/cliente', 'ClienteController@index');
     Route::post('/cliente/registrar', 'ClienteController@store');

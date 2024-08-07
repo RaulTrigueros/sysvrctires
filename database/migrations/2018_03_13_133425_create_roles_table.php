@@ -20,8 +20,8 @@ class CreateRolesTable extends Migration
             $table->boolean('condicion')->default(1);          
         });
         DB::table('roles')->insert(array('id'=>'1','nombre'=>'Administrador', 'descripcion'=>'Control total de acceso'));
-        DB::table('roles')->insert(array('id'=>'2','nombre'=>'Gestor de ventas', 'descripcion'=>'Encargado de gestionar las ventas'));
-        DB::table('roles')->insert(array('id'=>'3','nombre'=>'Administrador de tienda', 'descripcion'=>'Encargado de gestion de pedidos y despacho'));
+        DB::table('roles')->insert(array('id'=>'2','nombre'=>'Administrador de tienda', 'descripcion'=>'Encargado de gestionar pedidos y despacho'));
+        DB::table('roles')->insert(array('id'=>'3','nombre'=>'Gestor de ventas', 'descripcion'=>'Encargado de gestionar las ventas'));
 
     }
 
