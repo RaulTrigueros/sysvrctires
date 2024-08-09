@@ -13,13 +13,16 @@
   @if (Auth::check())
           @if(Auth::user()->idrol==1)
           <template v-if="menu==70">
-          <energia></energia>
+            <energia></energia>
           </template>
           <template v-if="menu==71">
-          <cliente></cliente>
+            <cliente></cliente>
           </template>
           <template v-if="menu==72">
-          <puesto></puesto>
+            <llanta></llanta>
+          </template>
+          <template v-if="menu==73">
+            <repuesto></repuesto>
           </template>
           <template v-if="menu==3">
             <usuario></usuario>
@@ -36,13 +39,16 @@
 
           @elseif(Auth::user()->idrol==2)
           <template v-if="menu==70">
-          <energia></energia>
+            <energia></energia>
           </template>
           <template v-if="menu==71">
-          <cliente></cliente>
+            <cliente></cliente>
           </template>
           <template v-if="menu==72">
-          <puesto></puesto>
+            <llanta></llanta>
+          </template>
+          <template v-if="menu==73">
+            <repuesto></repuesto>
           </template>
           
           @elseif(Auth::user()->idrol==3)

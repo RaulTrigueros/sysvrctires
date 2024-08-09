@@ -86,8 +86,8 @@
 
   <footer class="app-footer mt-5">
     <div>
-      <a href="#">VRCtires</a>
-      <span>&copy; 2024</span>
+      <a href="#">VRC Tires.</a> Todos los derechos reservados.
+      <span>&copy; {{ date('Y') }}</span>
     </div>
     
   </footer>

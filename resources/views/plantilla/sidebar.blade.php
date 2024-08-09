@@ -21,7 +21,11 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" @click="menu=72" href="#">
-              <i class="nav-icon fa fa-handshake-o"></i>Llantas</a>
+              <i class="nav-icon fa fa-handshake-o"></i>Llantas y Tubos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click="menu=73" href="#">
+              <i class="nav-icon fa fa-handshake-o"></i>Repuestos</a>
           </li>
         </ul>
       </li>

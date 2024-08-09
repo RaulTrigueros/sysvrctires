@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePuestosTable extends Migration
+class CreateLlantasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreatePuestosTable extends Migration
      */
     public function up()
     {
-        Schema::create('puestos', function (Blueprint $table) {
+        Schema::create('llantas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('idpersona')->unsigned();
-            $table->foreign('idpersona')->references('id')->on('personas');
-            $table->integer('numpuesto')->unique();
-            $table->bigInteger('numcontador');
-            $table->string('area',50);
+            $table->string('codigo')->unique();
+            $table->string('tipoproducto');
+            $table->string('medida', 12);
+            $table->decimal('precio', 8, 2);
+            $table->text('descripcion')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreatePuestosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('puestos');
+        Schema::dropIfExists('llantas');
     }
 }

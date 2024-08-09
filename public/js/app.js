@@ -2311,11 +2311,11 @@ __webpack_require__.r(__webpack_exports__);
              if(!this.numpuesto) this.errorMostrarMsjEnergia.push("Debe ingresar un número de puesto");
              if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
          }
-          if(this.errorEnergia===0){
+           if(this.errorEnergia===0){
              if(!this.numcontador) this.errorMostrarMsjEnergia.push("Debe ingresar un número de contador");
              if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
          }
-          if(this.errorEnergia===0){
+           if(this.errorEnergia===0){
              if(!this.area) this.errorMostrarMsjEnergia.push("Debe seleccionar el área de venta");
              if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
          }*/
@@ -2345,7 +2345,7 @@ __webpack_require__.r(__webpack_exports__);
             if(this.numcontador<= 0) this.errorMostrarMsjEnergia.push("El número de contador debe ser un número positivo");
             if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
         }
-          if(this.errorEnergia===0){
+           if(this.errorEnergia===0){
             if(this.numpuesto<= 0) this.errorMostrarMsjEnergia.push("El número de puesto debe ser un número positivo");
             if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
         }*/
@@ -2545,32 +2545,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      puesto_id: 0,
-      idpersona: 0,
-      nombre_persona: '',
-      numpuesto: 0,
-      numcontador: 0,
-      area: '',
-      arrayPuesto: [],
+      llanta_id: 0,
+      codigo: '',
+      tipoproducto: '',
+      medida: '',
+      precio: '',
+      descripcion: '',
+      arrayLlanta: [],
       modal: 0,
       modal2: 0,
       tituloModal: '',
       tipoAccion: 0,
-      errorPuesto: 0,
-      errorMostrarMsjPuesto: [],
+      errorLlanta: 0,
+      errorMostrarMsjLlanta: [],
       //    bandImagenValida: false,
       pagination: {
-        'total': 0,
-        'current_page': 0,
-        'per_page': 0,
-        'last_page': 0,
-        'from': 0,
-        'to': 0
+        total: 0,
+        current_page: 0,
+        per_page: 0,
+        last_page: 0,
+        from: 0,
+        to: 0
       },
       offset: 3,
-      criterio: 'numpuesto',
-      buscar: '',
-      arrayPersona: []
+      criterio: 'codigo',
+      buscar: ''
     };
   },
   computed: {
@@ -2598,23 +2597,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    listarPuesto: function listarPuesto(page, buscar, criterio) {
+    listarLlanta: function listarLlanta(page, buscar, criterio) {
       var me = this;
-      var url = '/puesto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+      var url = '/llanta?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayPuesto = respuesta.puestos.data;
+        me.arrayLlanta = respuesta.llantas.data;
         me.pagination = respuesta.pagination;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    selectPersona: function selectPersona() {
-      var me = this;
-      var url = '/persona/selectPersona';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayPersona = respuesta.personas;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2622,51 +2611,53 @@ __webpack_require__.r(__webpack_exports__);
     cambiarPagina: function cambiarPagina(page, buscar, criterio) {
       var me = this;
       me.pagination.current_page = page;
-      me.listarPuesto(page, buscar, criterio);
+      me.listarLlanta(page, buscar, criterio);
     },
-    registrarPuesto: function registrarPuesto() {
-      if (this.validarPuesto()) {
+    registrarLlanta: function registrarLlanta() {
+      if (this.validarLlanta()) {
         return;
       }
       var me = this;
-      axios.post('/puesto/registrar', {
-        'idpersona': this.idpersona,
-        'numpuesto': this.numpuesto,
-        'numcontador': this.numcontador,
-        'area': this.area
+      axios.post('/llanta/registrar', {
+        codigo: this.codigo,
+        tipoproducto: this.tipoproducto,
+        medida: this.medida,
+        precio: this.precio,
+        descripcion: this.descripcion
       }).then(function (response) {
         me.cerrarModal();
-        me.listarPuesto(1, '', 'numpuesto');
+        me.listarLlanta(1, '', 'codigo');
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    actualizarPuesto: function actualizarPuesto() {
-      if (this.validarPuesto()) {
+    actualizarLlanta: function actualizarLlanta() {
+      if (this.validarLlanta()) {
         return;
       }
       var me = this;
-      axios.put('/puesto/actualizar', {
-        'idpersona': this.idpersona,
-        'numpuesto': this.numpuesto,
-        'numcontador': this.numcontador,
-        'area': this.area,
-        'id': this.puesto_id
+      axios.put('/llanta/actualizar', {
+        codigo: this.codigo,
+        tipoproducto: this.tipoproducto,
+        medida: this.medida,
+        precio: this.precio,
+        descripcion: this.descripcion,
+        id: this.llanta_id
       }).then(function (response) {
         me.cerrarModal();
-        me.listarPuesto(1, '', 'numpuesto');
+        me.listarLlanta(1, '', 'codigo');
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    eliminarPuesto: function eliminarPuesto(id) {
+    eliminarLlanta: function eliminarLlanta(id) {
       var _this = this;
       swal.fire({
-        title: 'Esta seguro de eliminar este Puesto?',
+        title: 'Esta seguro de eliminar este producto?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
-        cancelButtonColor: "#d33",
+        cancelButtonColor: '#d33',
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
         confirmButtonClass: 'btn btn-success',
@@ -2676,11 +2667,11 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put('/puesto/eliminar', {
-            'id': id
+          axios.put('/llanta/eliminar', {
+            id: id
           }).then(function (response) {
-            me.listarPuesto(1, '', 'nombre_persona');
-            swal.fire('Eliminado!', 'Registro de Puesto Eliminado con éxito!', 'success');
+            me.listarLlanta(1, '', 'codigo');
+            swal.fire('Eliminado!', 'Registro de Producto Eliminado con éxito!', 'success');
           })["catch"](function (error) {
             console.log(error);
           });
@@ -2689,75 +2680,72 @@ __webpack_require__.r(__webpack_exports__);
         result.dismiss === swal.DismissReason.cancel) {}
       });
     },
-    validarPuesto: function validarPuesto() {
-      this.errorPuesto = 0;
-      this.errorMostrarMsjPuesto = [];
-      if (this.idpersona === 0) this.errorMostrarMsjPuesto.push("Seleccione un Arrendatario");
-      if (this.errorMostrarMsjPuesto.length) this.errorPuesto = 1;
-      if (this.errorPuesto === 0) {
-        if (!this.numpuesto) this.errorMostrarMsjPuesto.push("Debe ingresar un número de puesto");
-        if (this.errorMostrarMsjPuesto.length) this.errorPuesto = 1;
+    validarLlanta: function validarLlanta() {
+      this.errorLlanta = 0;
+      this.errorMostrarMsjLlanta = [];
+      if (this.errorLlanta === 0) {
+        if (!this.codigo) this.errorMostrarMsjLlanta.push('Debe ingresar un codigo de producto');
+        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
       }
-      if (this.errorPuesto === 0) {
-        if (!this.numcontador) this.errorMostrarMsjPuesto.push("Debe ingresar un número de contador");
-        if (this.errorMostrarMsjPuesto.length) this.errorPuesto = 1;
+      if (this.errorLlanta === 0) {
+        if (!this.medida) this.errorMostrarMsjLlanta.push('Debe ingresar un número de medida');
+        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
       }
-      if (this.errorPuesto === 0) {
-        if (!this.area) this.errorMostrarMsjPuesto.push("Debe seleccionar el área de venta");
-        if (this.errorMostrarMsjPuesto.length) this.errorPuesto = 1;
+      if (this.errorLlanta === 0) {
+        if (!this.precio) this.errorMostrarMsjLlanta.push('Debe ingresar precio de producto');
+        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
       }
-      return this.errorPuesto;
+      return this.errorLlanta;
     },
     cerrarModal: function cerrarModal() {
       this.modal2 = 0;
       this.modal = 0;
       this.tituloModal = '';
-      this.idpersona = 0;
-      this.nombre_persona = '';
-      this.numpuesto = 0;
-      this.numcontador = 0;
-      this.area = '';
-      this.errorPuesto = 0;
+      this.codigo = '';
+      this.tipoproducto = '';
+      this.medida = '';
+      this.precio = '';
+      this.descripcion = '';
+      this.errorLlanta = 0;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
       switch (modelo) {
-        case "puesto":
+        case 'llanta':
           {
             switch (accion) {
-              case "registrar":
+              case 'registrar':
                 {
                   this.modal = 1;
                   this.tipoAccion = 1;
-                  this.tituloModal = 'Registrar Puesto';
-                  this.idpersona = 0;
-                  this.nombre_persona = '';
-                  this.numpuesto = 0;
-                  this.numcontador = 0;
-                  this.area = '';
+                  this.tituloModal = 'Registrar Llanta o Tubo';
+                  this.codigo = '';
+                  this.tipoproducto = '';
+                  this.medida = '';
+                  this.precio = '';
+                  this.descripcion = '';
                   break;
                 }
-              case "actualizar":
+              case 'actualizar':
                 {
                   this.modal = 1;
                   this.tipoAccion = 2;
-                  this.tituloModal = 'Actualizar Puesto';
-                  this.puesto_id = data['id'];
-                  this.idpersona = data['idpersona'];
-                  this.nombre_persona = data['nombre_persona'];
-                  this.numpuesto = data['numpuesto'];
-                  this.numcontador = data['numcontador'];
-                  this.area = data['area'];
+                  this.tituloModal = 'Actualizar Llanta o Tubo';
+                  this.llanta_id = data['id'];
+                  this.codigo = data['codigo'];
+                  this.tipoproducto = data['tipoproducto'];
+                  this.medida = data['medida'];
+                  this.precio = data['precio'];
+                  this.descripcion = data['descripcion'];
                   break;
                 }
             }
           }
       }
-      this.selectPersona();
     }
   },
   mounted: function mounted() {
-    this.listarPuesto(1, this.buscar, this.criterio);
+    this.listarLlanta(1, this.buscar, this.criterio);
   }
 });
 
@@ -2860,17 +2848,17 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       persona_id: 0,
-      nombre: "",
-      telefono: "",
-      email: "",
-      cargo: "",
-      usuario: "",
-      password: "",
-      idrol: "",
+      nombre: '',
+      telefono: '',
+      email: '',
+      cargo: '',
+      usuario: '',
+      password: '',
+      idrol: '',
       arrayPersona: [],
       arrayRol: [],
       modal: 0,
-      tituloModal: "",
+      tituloModal: '',
       tipoAccion: 0,
       errorPersona: 0,
       errorMostrarMsjPersona: [],
@@ -2883,8 +2871,8 @@ __webpack_require__.r(__webpack_exports__);
         to: 0
       },
       offset: 3,
-      criterio: "nombre",
-      buscar: ""
+      criterio: 'nombre',
+      buscar: ''
     };
   },
   computed: {
@@ -2915,7 +2903,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     listarPersona: function listarPersona(page, buscar, criterio) {
       var me = this;
-      var url = "/user?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = '/user?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayPersona = respuesta.personas.data;
@@ -2926,7 +2914,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectRol: function selectRol() {
       var me = this;
-      var url = "/rol/selectRol";
+      var url = '/rol/selectRol';
       axios.get(url).then(function (response) {
         //console.log(response);
         var respuesta = response.data;
@@ -2947,7 +2935,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
       var me = this;
-      axios.post("/user/registrar", {
+      axios.post('/user/registrar', {
         nombre: this.nombre,
         telefono: this.telefono,
         email: this.email,
@@ -2957,7 +2945,7 @@ __webpack_require__.r(__webpack_exports__);
         password: this.password
       }).then(function (response) {
         me.cerrarModal();
-        me.listarPersona(1, "", "nombre");
+        me.listarPersona(1, '', 'nombre');
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2967,7 +2955,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
       var me = this;
-      axios.put("/user/actualizar", {
+      axios.put('/user/actualizar', {
         nombre: this.nombre,
         telefono: this.telefono,
         email: this.email,
@@ -2978,7 +2966,7 @@ __webpack_require__.r(__webpack_exports__);
         id: this.persona_id
       }).then(function (response) {
         me.cerrarModal();
-        me.listarPersona(1, "", "nombre");
+        me.listarPersona(1, '', 'nombre');
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2986,22 +2974,22 @@ __webpack_require__.r(__webpack_exports__);
     validarPersona: function validarPersona() {
       this.errorPersona = 0;
       this.errorMostrarMsjPersona = [];
-      if (!this.nombre) this.errorMostrarMsjPersona.push("El nombre de la persona no puede estar vacío.");
-      if (!this.usuario) this.errorMostrarMsjPersona.push("El nombre de usuario no puede estar vacío.");
-      if (!this.password) this.errorMostrarMsjPersona.push("La password del usuario no puede estar vacía.");
-      if (this.idrol == 0) this.errorMostrarMsjPersona.push("Seleccione una Role.");
+      if (!this.nombre) this.errorMostrarMsjPersona.push('El nombre de la persona no puede estar vacío.');
+      if (!this.usuario) this.errorMostrarMsjPersona.push('El nombre de usuario no puede estar vacío.');
+      if (!this.password) this.errorMostrarMsjPersona.push('La password del usuario no puede estar vacía.');
+      if (this.idrol == 0) this.errorMostrarMsjPersona.push('Seleccione una Role.');
       if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
       return this.errorPersona;
     },
     cerrarModal: function cerrarModal() {
       this.modal = 0;
-      this.tituloModal = "";
-      this.nombre = "";
-      this.cargo = "CEO";
-      this.telefono = "";
-      this.email = "";
-      this.usuario = "";
-      this.password = "";
+      this.tituloModal = '';
+      this.nombre = '';
+      this.cargo = 'CEO';
+      this.telefono = '';
+      this.email = '';
+      this.usuario = '';
+      this.password = '';
       this.idrol = 0;
       this.errorPersona = 0;
     },
@@ -3009,37 +2997,37 @@ __webpack_require__.r(__webpack_exports__);
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
       this.selectRol();
       switch (modelo) {
-        case "persona":
+        case 'persona':
           {
             switch (accion) {
-              case "registrar":
+              case 'registrar':
                 {
                   this.modal = 1;
-                  this.tituloModal = "Registrar Usuario";
-                  this.nombre = "";
-                  this.cargo = "CEO";
-                  this.telefono = "";
-                  this.email = "";
-                  this.usuario = "";
-                  this.password = "";
+                  this.tituloModal = 'Registrar Usuario';
+                  this.nombre = '';
+                  this.cargo = 'CEO';
+                  this.telefono = '';
+                  this.email = '';
+                  this.usuario = '';
+                  this.password = '';
                   this.idrol = 0;
                   this.tipoAccion = 1;
                   break;
                 }
-              case "actualizar":
+              case 'actualizar':
                 {
                   //console.log(data);
                   this.modal = 1;
-                  this.tituloModal = "Actualizar Usuario";
+                  this.tituloModal = 'Actualizar Usuario';
                   this.tipoAccion = 2;
-                  this.persona_id = data["id"];
-                  this.nombre = data["nombre"];
-                  this.cargo = data["cargo"];
-                  this.telefono = data["telefono"];
-                  this.email = data["email"];
-                  this.usuario = data["usuario"];
-                  this.password = data["password"];
-                  this.idrol = data["idrol"];
+                  this.persona_id = data['id'];
+                  this.nombre = data['nombre'];
+                  this.cargo = data['cargo'];
+                  this.telefono = data['telefono'];
+                  this.email = data['email'];
+                  this.usuario = data['usuario'];
+                  this.password = data['password'];
+                  this.idrol = data['idrol'];
                   break;
                 }
             }
@@ -3049,25 +3037,25 @@ __webpack_require__.r(__webpack_exports__);
     desactivarUsuario: function desactivarUsuario(id) {
       var _this = this;
       Swal.fire({
-        title: "Esta seguro de desactivar este usuario?",
-        type: "warning",
+        title: 'Esta seguro de desactivar este usuario?',
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Aceptar!",
-        cancelButtonText: "Cancelar",
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar!',
+        cancelButtonText: 'Cancelar',
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
         buttonsStyling: false,
         reverseButtons: true
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put("/user/desactivar", {
+          axios.put('/user/desactivar', {
             id: id
           }).then(function (response) {
-            me.listarPersona(1, "", "nombre");
-            Swal.fire("Desactivado!", "El registro ha sido desactivado con éxito.", "success");
+            me.listarPersona(1, '', 'nombre');
+            Swal.fire('Desactivado!', 'El registro ha sido desactivado con éxito.', 'success');
           })["catch"](function (error) {
             console.log(error);
           });
@@ -3079,25 +3067,25 @@ __webpack_require__.r(__webpack_exports__);
     activarUsuario: function activarUsuario(id) {
       var _this2 = this;
       Swal.fire({
-        title: "Esta seguro de activar este usuario?",
-        type: "warning",
+        title: 'Esta seguro de activar este usuario?',
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Aceptar!",
-        cancelButtonText: "Cancelar",
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar!',
+        cancelButtonText: 'Cancelar',
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
         buttonsStyling: false,
         reverseButtons: true
       }).then(function (result) {
         if (result.value) {
           var me = _this2;
-          axios.put("/user/activar", {
+          axios.put('/user/activar', {
             id: id
           }).then(function (response) {
-            me.listarPersona(1, "", "nombre");
-            Swal.fire("Activado!", "El registro ha sido activado con éxito.", "success");
+            me.listarPersona(1, '', 'nombre');
+            Swal.fire('Activado!', 'El registro ha sido activado con éxito.', 'success');
           })["catch"](function (error) {
             console.log(error);
           });
@@ -5024,19 +5012,19 @@ var render = function render() {
     staticClass: "card-header"
   }, [_c("i", {
     staticClass: "fa fa-align-justify"
-  }), _vm._v(" Gestión de Puestos\n                        "), _c("button", {
+  }), _vm._v(" Gestión de Llantas y Tubos\n              "), _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
       type: "button"
     },
     on: {
       click: function click($event) {
-        return _vm.abrirModal("puesto", "registrar");
+        return _vm.abrirModal("llanta", "registrar");
       }
     }
-  }, [_vm._v("\n                             "), _c("i", {
+  }, [_vm._v("\n                 "), _c("i", {
     staticClass: "fa fa-plus-square"
-  }), _vm._v(" Nuevo\n                        ")]), _vm._v(" "), _c("div", {
+  }), _vm._v(" Nuevo\n              ")]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "form-group row"
@@ -5065,13 +5053,17 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      value: "numpuesto"
+      value: "tipoproducto"
     }
-  }, [_vm._v("Número de Puesto")]), _vm._v(" "), _c("option", {
+  }, [_vm._v("Tipo de Producto")]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "area"
+      value: "codigo"
     }
-  }, [_vm._v("Área")])]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Codigo")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "medida"
+    }
+  }, [_vm._v("Medida")])]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5089,7 +5081,7 @@ var render = function render() {
     on: {
       keyup: function keyup($event) {
         if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-        return _vm.listarPuesto(1, _vm.buscar, _vm.criterio);
+        return _vm.listarLlanta(1, _vm.buscar, _vm.criterio);
       },
       input: function input($event) {
         if ($event.target.composing) return;
@@ -5103,16 +5095,16 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        return _vm.listarPuesto(1, _vm.buscar, _vm.criterio);
+        return _vm.listarLlanta(1, _vm.buscar, _vm.criterio);
       }
     }
   }, [_c("i", {
     staticClass: "fa fa-search"
-  }), _vm._v(" Buscar")])])])]), _vm._v(" "), _c("br"), _vm._v(" "), _c("table", {
+  }), _vm._v("\n                        Buscar\n                      ")])])])]), _vm._v(" "), _c("br"), _vm._v(" "), _c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayPuesto, function (puesto) {
+  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayLlanta, function (llanta) {
     return _c("tr", {
-      key: puesto.id
+      key: llanta.id
     }, [_c("td", [_c("button", {
       staticClass: "btn btn-warning btn-sm",
       attrs: {
@@ -5120,7 +5112,7 @@ var render = function render() {
       },
       on: {
         click: function click($event) {
-          return _vm.abrirModal("puesto", "actualizar", puesto);
+          return _vm.abrirModal("llanta", "actualizar", llanta);
         }
       }
     }, [_c("i", {
@@ -5132,7 +5124,7 @@ var render = function render() {
       },
       on: {
         click: function click($event) {
-          return _vm.eliminarPuesto(puesto.id);
+          return _vm.eliminarLlantar(llanta.id);
         }
       }
     }, [_c("i", {
@@ -5140,22 +5132,27 @@ var render = function render() {
     })])]), _vm._v(" "), _c("td", {
       staticClass: "align-middle",
       domProps: {
-        textContent: _vm._s(puesto.nombre_persona)
+        textContent: _vm._s(llanta.codigo)
       }
     }), _vm._v(" "), _c("td", {
       staticClass: "align-middle",
       domProps: {
-        textContent: _vm._s(puesto.numpuesto)
+        textContent: _vm._s(llanta.tipoproducto)
       }
     }), _vm._v(" "), _c("td", {
       staticClass: "align-middle",
       domProps: {
-        textContent: _vm._s(puesto.numcontador)
+        textContent: _vm._s(llanta.medida)
       }
     }), _vm._v(" "), _c("td", {
       staticClass: "align-middle",
       domProps: {
-        textContent: _vm._s(puesto.area)
+        textContent: _vm._s(llanta.precio)
+      }
+    }), _vm._v(" "), _c("td", {
+      staticClass: "align-middle",
+      domProps: {
+        textContent: _vm._s(llanta.descripcion)
       }
     })]);
   }), 0)]), _vm._v(" "), _c("nav", [_c("ul", {
@@ -5265,14 +5262,44 @@ var render = function render() {
     attrs: {
       "for": "text-input"
     }
-  }, [_vm._v("Nombre de Arrendatario (*)")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Codigo")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.codigo,
+      expression: "codigo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: ""
+    },
+    domProps: {
+      value: _vm.codigo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.codigo = $event.target.value;
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-md-3 form-control-label",
+    attrs: {
+      "for": "text-input"
+    }
+  }, [_vm._v("Tipo de Producto")]), _vm._v(" "), _c("div", {
     staticClass: "col-md-9"
   }, [_c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.idpersona,
-      expression: "idpersona"
+      value: _vm.tipoproducto,
+      expression: "tipoproducto"
     }],
     staticClass: "form-control",
     on: {
@@ -5283,51 +5310,45 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.idpersona = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+        _vm.tipoproducto = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
       }
     }
   }, [_c("option", {
     attrs: {
-      value: "0",
-      disabled: "",
-      selected: ""
+      value: "llanta"
     }
-  }, [_vm._v("Selecciona un Arrendatario")]), _vm._v(" "), _vm._l(_vm.arrayPersona, function (persona) {
-    return _c("option", {
-      key: persona.id,
-      domProps: {
-        value: persona.id,
-        textContent: _vm._s(persona.nombre)
-      }
-    });
-  })], 2)])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Llanta")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "tubo"
+    }
+  }, [_vm._v("Tubo")])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
     staticClass: "col-md-3 form-control-label",
     attrs: {
       "for": "text-input"
     }
-  }, [_vm._v("Número de puesto (*)")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Medida")]), _vm._v(" "), _c("div", {
     staticClass: "col-md-9"
   }, [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.numpuesto,
-      expression: "numpuesto"
+      value: _vm.medida,
+      expression: "medida"
     }],
     staticClass: "form-control",
     attrs: {
-      type: "number",
+      type: "text",
       placeholder: ""
     },
     domProps: {
-      value: _vm.numpuesto
+      value: _vm.medida
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.numpuesto = $event.target.value;
+        _vm.medida = $event.target.value;
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -5337,27 +5358,27 @@ var render = function render() {
     attrs: {
       "for": "text-input"
     }
-  }, [_vm._v("Número de contador (*)")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Precio ($)")]), _vm._v(" "), _c("div", {
     staticClass: "col-md-9"
   }, [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.numcontador,
-      expression: "numcontador"
+      value: _vm.precio,
+      expression: "precio"
     }],
     staticClass: "form-control",
     attrs: {
-      type: "number",
+      step: "0.01",
       placeholder: ""
     },
     domProps: {
-      value: _vm.numcontador
+      value: _vm.precio
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.numcontador = $event.target.value;
+        _vm.precio = $event.target.value;
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -5367,87 +5388,40 @@ var render = function render() {
     attrs: {
       "for": "text-input"
     }
-  }, [_vm._v("Área")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Descripcion")]), _vm._v(" "), _c("div", {
     staticClass: "col-md-9"
-  }, [_c("select", {
+  }, [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.area,
-      expression: "area"
+      value: _vm.descripcion,
+      expression: "descripcion"
     }],
     staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: ""
+    },
+    domProps: {
+      value: _vm.descripcion
+    },
     on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.area = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.descripcion = $event.target.value;
       }
     }
-  }, [_c("option", {
-    attrs: {
-      value: "0",
-      disabled: ""
-    }
-  }, [_vm._v("Selecciona una opción")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "bazar"
-    }
-  }, [_vm._v("Bazares")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "cereal"
-    }
-  }, [_vm._v("Cereales")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "farmacia"
-    }
-  }, [_vm._v("Farmacias")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "mixto"
-    }
-  }, [_vm._v("Mixtos")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "verdura"
-    }
-  }, [_vm._v("Verduras")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "lacteo"
-    }
-  }, [_vm._v("Lacteos")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "carne"
-    }
-  }, [_vm._v("Carnes")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "marisco"
-    }
-  }, [_vm._v("Mariscos")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "comedores"
-    }
-  }, [_vm._v("Comedores")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "anclas"
-    }
-  }, [_vm._v("Anclas")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "chaleth"
-    }
-  }, [_vm._v("Chaleths")])])])]), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.errorPuesto,
-      expression: "errorPuesto"
+      value: _vm.errorLlanta,
+      expression: "errorLlanta"
     }],
     staticClass: "form-group row div-error"
   }, [_c("div", {
     staticClass: "text-center text-error"
-  }, _vm._l(_vm.errorMostrarMsjPuesto, function (error) {
+  }, _vm._l(_vm.errorMostrarMsjLlanta, function (error) {
     return _c("div", {
       key: error,
       domProps: {
@@ -5466,27 +5440,27 @@ var render = function render() {
         return _vm.cerrarModal();
       }
     }
-  }, [_vm._v("Cerrar")]), _vm._v(" "), _vm.tipoAccion == 1 ? _c("button", {
+  }, [_vm._v("\n              Cerrar\n            ")]), _vm._v(" "), _vm.tipoAccion == 1 ? _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
       type: "button"
     },
     on: {
       click: function click($event) {
-        return _vm.registrarPuesto();
+        return _vm.registrarLlanta();
       }
     }
-  }, [_vm._v("Guardar")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
+  }, [_vm._v("\n              Guardar\n            ")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
       type: "button"
     },
     on: {
       click: function click($event) {
-        return _vm.actualizarPuesto();
+        return _vm.actualizarLlanta();
       }
     }
-  }, [_vm._v("Actualizar")]) : _vm._e()])])])])])]);
+  }, [_vm._v("\n              Actualizar\n            ")]) : _vm._e()])])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -5503,7 +5477,7 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Arrendatario")]), _vm._v(" "), _c("th", [_vm._v("No. de puesto")]), _vm._v(" "), _c("th", [_vm._v("No. de contador")]), _vm._v(" "), _c("th", [_vm._v("Área")])])]);
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Codigo")]), _vm._v(" "), _c("th", [_vm._v("Tipo de Producto")]), _vm._v(" "), _c("th", [_vm._v("Medida")]), _vm._v(" "), _c("th", [_vm._v("Precio")]), _vm._v(" "), _c("th", [_vm._v("Descripcion")])])]);
 }];
 render._withStripped = true;
 
@@ -5720,7 +5694,7 @@ var render = function render() {
     staticClass: "card-header"
   }, [_c("i", {
     staticClass: "fa fa-align-justify"
-  }), _vm._v(" Usuarios\n                "), _c("button", {
+  }), _vm._v(" Usuarios\n        "), _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
       type: "button"
@@ -5732,7 +5706,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fa fa-plus-square"
-  }), _vm._v(" Nuevo\n                ")])]), _vm._v(" "), _c("div", {
+  }), _vm._v(" Nuevo\n        ")])]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "form-group row"
@@ -5804,7 +5778,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fa fa-search"
-  }), _vm._v(" Buscar\n                            ")])])])]), _vm._v(" "), _c("table", {
+  }), _vm._v(" Buscar\n              ")])])])]), _vm._v(" "), _c("table", {
     staticClass: "table table-bordered table-striped table-sm table-responsive"
   }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayPersona, function (persona) {
     return _c("tr", {
@@ -5821,7 +5795,7 @@ var render = function render() {
       }
     }, [_c("i", {
       staticClass: "fa fa-edit"
-    })]), _vm._v("\n                                 \n                                "), persona.condicion ? [_c("button", {
+    })]), _vm._v("\n                 \n                "), persona.condicion ? [_c("button", {
       staticClass: "btn btn-danger btn-sm",
       attrs: {
         type: "button"
@@ -6044,11 +6018,11 @@ var render = function render() {
     attrs: {
       value: "Gestor de venta"
     }
-  }, [_vm._v("\n                                        Gestor de venta\n                                    ")]), _vm._v(" "), _c("option", {
+  }, [_vm._v("Gestor de venta")]), _vm._v(" "), _c("option", {
     attrs: {
       value: "Asistente de administrador de tienda"
     }
-  }, [_vm._v("\n                                        Asistente de administrador de tienda\n                                    ")]), _vm._v(" "), _c("option", {
+  }, [_vm._v("\n                    Asistente de administrador de tienda\n                  ")]), _vm._v(" "), _c("option", {
     attrs: {
       value: "Bodega"
     }
@@ -6060,7 +6034,7 @@ var render = function render() {
     attrs: {
       value: "Despacho"
     }
-  }, [_vm._v("\n                                        Despacho\n                                    ")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Despacho")])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
     staticClass: "col-md-3 form-control-label",
@@ -6153,7 +6127,7 @@ var render = function render() {
       value: "0",
       disabled: ""
     }
-  }, [_vm._v("\n                                        Seleccione\n                                    ")]), _vm._v(" "), _vm._l(_vm.arrayRol, function (role) {
+  }, [_vm._v("Seleccione")]), _vm._v(" "), _vm._l(_vm.arrayRol, function (role) {
     return _c("option", {
       key: role.id,
       domProps: {
@@ -6250,7 +6224,7 @@ var render = function render() {
         return _vm.cerrarModal();
       }
     }
-  }, [_vm._v("\n                        Cerrar\n                    ")]), _vm._v(" "), _vm.tipoAccion == 1 ? _c("button", {
+  }, [_vm._v("\n            Cerrar\n          ")]), _vm._v(" "), _vm.tipoAccion == 1 ? _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
       type: "button"
@@ -6260,7 +6234,7 @@ var render = function render() {
         return _vm.registrarPersona();
       }
     }
-  }, [_vm._v("\n                        Guardar\n                    ")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
+  }, [_vm._v("\n            Guardar\n          ")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
       type: "button"
@@ -6270,7 +6244,7 @@ var render = function render() {
         return _vm.actualizarPersona();
       }
     }
-  }, [_vm._v("\n                        Actualizar\n                    ")]) : _vm._e()])])])])]);
+  }, [_vm._v("\n            Actualizar\n          ")]) : _vm._e()])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -10808,7 +10782,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    overflow-y: scroll;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.fechaPdf{\n    display: list-item !important;\n    overflow-y: scroll;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n.img{\n    width: 30%;\n    margin: auto;\n    display: block;\n    margin-bottom: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  overflow-y: scroll;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.fechaPdf {\r\n  display: list-item !important;\r\n  overflow-y: scroll;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\n.img {\r\n  width: 30%;\r\n  margin: auto;\r\n  display: block;\r\n  margin-bottom: 10px;\n}\r\n", ""]);
 
 // exports
 
@@ -10846,7 +10820,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.modal-content {\r\n    width: 100% !important;\r\n    position: absolute !important;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    position: absolute !important;\r\n    background-color: #3c29297a !important;\n}\n.div-error {\r\n    display: flex;\r\n    justify-content: center;\n}\n.text-error {\r\n    color: red !important;\r\n    font-weight: bold;\n}\r\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\r\n", ""]);
 
 // exports
 
@@ -55489,7 +55463,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\ProyectosLaravel\sysvrctires\resources\assets\js\app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\TACACHICO\Documents\sysvrctires\resources\assets\js\app.js */"./resources/assets/js/app.js");
 
 
 /***/ })
