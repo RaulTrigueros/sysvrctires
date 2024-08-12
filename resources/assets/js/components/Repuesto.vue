@@ -11,10 +11,10 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <i class="fa fa-align-justify"></i> Gestión de Llantas y Tubos
+                <i class="fa fa-align-justify"></i> Gestión Repuestos
                 <button
                   type="button"
-                  @click="abrirModal('llanta', 'registrar')"
+                  @click="abrirModal('repuesto', 'registrar')"
                   class="btn btn-primary"
                 >
                   &nbsp;<i class="fa fa-plus-square"></i>&nbsp;Nuevo
@@ -27,20 +27,19 @@
                           class="form-control col-md-3"
                           v-model="criterio"
                         >
-                          <option value="tipoproducto">Tipo de Producto</option>
                           <option value="codigo">Codigo</option>
-                          <option value="medida">Medida</option>
+                          <option value="nombre">Nombre</option>
                         </select>
                         <input
                           type="text"
                           v-model="buscar"
-                          @keyup.enter="listarLlanta(1, buscar, criterio)"
+                          @keyup.enter="listarRepuesto(1, buscar, criterio)"
                           class="form-control"
                           placeholder="Texto a buscar"
                         />
                         <button
                           type="submit"
-                          @click="listarLlanta(1, buscar, criterio)"
+                          @click="listarRepuesto(1, buscar, criterio)"
                           class="btn btn-primary"
                         >
                           <i class="fa fa-search"></i>
@@ -56,18 +55,19 @@
                       <tr>
                         <th>Opciones</th>
                         <th>Codigo</th>
-                        <th>Tipo de Producto</th>
-                        <th>Medida</th>
+                        <th>Nombre</th>
                         <th>Precio ($)</th>
                         <th>Descripcion</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="llanta in arrayLlanta" :key="llanta.id">
+                      <tr v-for="repuesto in arrayRepuesto" :key="repuesto.id">
                         <td>
                           <button
                             type="button"
-                            @click="abrirModal('llanta', 'actualizar', llanta)"
+                            @click="
+                              abrirModal('repuesto', 'actualizar', repuesto)
+                            "
                             class="btn btn-warning btn-sm"
                           >
                             <i class="fa fa-edit"></i>
@@ -75,21 +75,17 @@
                           <button
                             type="button"
                             class="btn btn-danger btn-sm"
-                            @click="eliminarLlanta(llanta.id)"
+                            @click="eliminarRepuesto(repuesto.id)"
                           >
                             <i class="fa fa-trash"></i>
                           </button>
                         </td>
-                        <td class="align-middle" v-text="llanta.codigo"></td>
+                        <td class="align-middle" v-text="repuesto.codigo"></td>
+                        <td class="align-middle" v-text="repuesto.nombre"></td>
+                        <td class="align-middle" v-text="repuesto.precio"></td>
                         <td
                           class="align-middle"
-                          v-text="llanta.tipoproducto"
-                        ></td>
-                        <td class="align-middle" v-text="llanta.medida"></td>
-                        <td class="align-middle" v-text="llanta.precio"></td>
-                        <td
-                          class="align-middle"
-                          v-text="llanta.descripcion"
+                          v-text="repuesto.descripcion"
                         ></td>
                       </tr>
                     </tbody>
@@ -194,23 +190,12 @@
                 </div>
                 <div class="form-group row">
                   <label class="col-md-3 form-control-label" for="text-input"
-                    >Tipo de Producto</label
-                  >
-                  <div class="col-md-9">
-                    <select class="form-control" v-model="tipoproducto">
-                      <option value="llanta">Llanta</option>
-                      <option value="tubo">Tubo</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-3 form-control-label" for="text-input"
-                    >Medida</label
+                    >Nombre</label
                   >
                   <div class="col-md-9">
                     <input
                       type="text"
-                      v-model="medida"
+                      v-model="nombre"
                       class="form-control"
                       placeholder=""
                     />
@@ -242,10 +227,10 @@
                     />
                   </div>
                 </div>
-                <div v-show="errorLlanta" class="form-group row div-error">
+                <div v-show="errorRepuesto" class="form-group row div-error">
                   <div class="text-center text-error">
                     <div
-                      v-for="error in errorMostrarMsjLlanta"
+                      v-for="error in errorMostrarMsjRepuesto"
                       :key="error"
                       v-text="error"
                     ></div>
@@ -265,7 +250,7 @@
                 type="button"
                 v-if="tipoAccion == 1"
                 class="btn btn-primary"
-                @click="registrarLlanta()"
+                @click="registrarRepuesto()"
               >
                 Guardar
               </button>
@@ -273,7 +258,7 @@
                 type="button"
                 v-if="tipoAccion == 2"
                 class="btn btn-primary"
-                @click="actualizarLlanta()"
+                @click="actualizarRepuesto()"
               >
                 Actualizar
               </button>
@@ -294,19 +279,18 @@
 export default {
   data() {
     return {
-      llanta_id: 0,
+      repuesto_id: 0,
       codigo: '',
-      tipoproducto: '',
-      medida: '',
+      nombre: '',
       precio: '',
       descripcion: '',
-      arrayLlanta: [],
+      arrayRepuesto: [],
       modal: 0,
       modal2: 0,
       tituloModal: '',
       tipoAccion: 0,
-      errorLlanta: 0,
-      errorMostrarMsjLlanta: [],
+      errorRepuesto: 0,
+      errorMostrarMsjRepuesto: [],
       //    bandImagenValida: false,
       pagination: {
         total: 0,
@@ -350,15 +334,20 @@ export default {
     },
   },
   methods: {
-    listarLlanta(page, buscar, criterio) {
+    listarRepuesto(page, buscar, criterio) {
       let me = this;
       var url =
-        '/llanta?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+        '/repuesto?page=' +
+        page +
+        '&buscar=' +
+        buscar +
+        '&criterio=' +
+        criterio;
       axios
         .get(url)
         .then(function (response) {
           var respuesta = response.data;
-          me.arrayLlanta = respuesta.llantas.data;
+          me.arrayRepuesto = respuesta.repuestos.data;
           me.pagination = respuesta.pagination;
         })
         .catch(function (error) {
@@ -371,55 +360,53 @@ export default {
       me.pagination.current_page = page;
       me.listarLlanta(page, buscar, criterio);
     },
-    registrarLlanta() {
-      if (this.validarLlanta()) {
+    registrarRepuesto() {
+      if (this.validarRepuesto()) {
         return;
       }
 
       let me = this;
       axios
-        .post('/llanta/registrar', {
+        .post('/repuesto/registrar', {
           codigo: this.codigo,
-          tipoproducto: this.tipoproducto,
-          medida: this.medida,
+          nombre: this.nombre,
           precio: this.precio,
           descripcion: this.descripcion,
         })
         .then(function (response) {
           me.cerrarModal();
-          me.listarLlanta(1, '', 'codigo');
+          me.listarRepuesto(1, '', 'codigo');
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    actualizarLlanta() {
-      if (this.validarLlanta()) {
+    actualizarRepuesto() {
+      if (this.validarRepuesto()) {
         return;
       }
 
       let me = this;
       axios
-        .put('/llanta/actualizar', {
+        .put('/repuesto/actualizar', {
           codigo: this.codigo,
-          tipoproducto: this.tipoproducto,
-          medida: this.medida,
+          nombre: this.nombre,
           precio: this.precio,
           descripcion: this.descripcion,
-          id: this.llanta_id,
+          id: this.repuesto_id,
         })
         .then(function (response) {
           me.cerrarModal();
-          me.listarLlanta(1, '', 'codigo');
+          me.listarRepuesto(1, '', 'codigo');
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    eliminarLlanta(id) {
+    eliminarRepuesto(id) {
       swal
         .fire({
-          title: 'Esta seguro de eliminar este producto?',
+          title: 'Esta seguro de eliminar este repuesto?',
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -435,14 +422,14 @@ export default {
           if (result.value) {
             let me = this;
             axios
-              .put('/llanta/eliminar', {
+              .put('/repuesto/eliminar', {
                 id: id,
               })
               .then(function (response) {
-                me.listarLlanta(1, '', 'codigo');
+                me.listarRepuesto(1, '', 'codigo');
                 swal.fire(
                   'Eliminado!',
-                  'Registro de Producto Eliminado con éxito!',
+                  'Registro de Repuesto Eliminado con éxito!',
                   'success'
                 );
               })
@@ -456,31 +443,33 @@ export default {
           }
         });
     },
-    validarLlanta() {
-      this.errorLlanta = 0;
-      this.errorMostrarMsjLlanta = [];
+    validarRepuesto() {
+      this.errorRepuesto = 0;
+      this.errorMostrarMsjRepuesto = [];
 
-      if (this.errorLlanta === 0) {
+      if (this.errorLRepuesto === 0) {
         if (!this.codigo)
-          this.errorMostrarMsjLlanta.push(
-            'Debe ingresar un codigo de producto'
+          this.errorMostrarMsjRepuesto.push(
+            'Debe ingresar un codigo de Repuesto'
           );
-        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
+        if (this.errorMostrarMsjRepuesto.length) this.errorRepuesto = 1;
       }
 
-      if (this.errorLlanta === 0) {
-        if (!this.medida)
-          this.errorMostrarMsjLlanta.push('Debe ingresar un número de medida');
-        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
+      if (this.errorRepuesto === 0) {
+        if (!this.nombre)
+          this.errorMostrarMsjRepuesto.push(
+            'Debe ingresar un nombre de Repuesto'
+          );
+        if (this.errorMostrarMsjRepuesto.length) this.errorRepuesto = 1;
       }
 
-      if (this.errorLlanta === 0) {
+      if (this.errorRepuesto === 0) {
         if (!this.precio)
-          this.errorMostrarMsjLlanta.push('Debe ingresar precio de producto');
-        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
+          this.errorMostrarMsjRepuesto.push('Debe ingresar precio de Repuesto');
+        if (this.errorMostrarMsjRepuesto.length) this.errorRepuesto = 1;
       }
 
-      return this.errorLlanta;
+      return this.errorRepuesto;
     },
 
     cerrarModal() {
@@ -488,23 +477,21 @@ export default {
       this.modal = 0;
       this.tituloModal = '';
       this.codigo = '';
-      this.tipoproducto = '';
-      this.medida = '';
+      this.nombre = '';
       this.precio = '';
       this.descripcion = '';
-      this.errorLlanta = 0;
+      this.errorRepuesto = 0;
     },
     abrirModal(modelo, accion, data = []) {
       switch (modelo) {
-        case 'llanta': {
+        case 'repuesto': {
           switch (accion) {
             case 'registrar': {
               this.modal = 1;
               this.tipoAccion = 1;
-              this.tituloModal = 'Registrar Llanta o Tubo';
+              this.tituloModal = 'Registrar Repuesto';
               this.codigo = '';
-              this.tipoproducto = '';
-              this.medida = '';
+              this.nombre = '';
               this.precio = '';
               this.descripcion = '';
               break;
@@ -512,11 +499,10 @@ export default {
             case 'actualizar': {
               this.modal = 1;
               this.tipoAccion = 2;
-              this.tituloModal = 'Actualizar Llanta o Tubo';
-              this.llanta_id = data['id'];
+              this.tituloModal = 'Actualizar Repuesto';
+              this.repuesto_id = data['id'];
               this.codigo = data['codigo'];
-              this.tipoproducto = data['tipoproducto'];
-              this.medida = data['medida'];
+              this.nombre = data['nombre'];
               this.precio = data['precio'];
               this.descripcion = data['descripcion'];
               break;
@@ -528,7 +514,7 @@ export default {
   },
 
   mounted() {
-    this.listarLlanta(1, this.buscar, this.criterio);
+    this.listarRepuesto(1, this.buscar, this.criterio);
   },
 };
 </script>
