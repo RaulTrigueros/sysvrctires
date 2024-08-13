@@ -1,10 +1,10 @@
 <?php
- 
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
- 
-class CreateEnergiasTable extends Migration
+
+class CreatePedidosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -22,8 +22,8 @@ class CreateEnergiasTable extends Migration
             $table->string('area',50);*/
             $table->integer('idpuesto')->unsigned();
             $table->foreign('idpuesto')->references('id')->on('puestos');
-            $table->decimal('lecturaanterior',11,2);
-            $table->decimal('lecturaactual',11,2);
+            $table->decimal('lecturaanterior', 11, 2);
+            $table->decimal('lecturaactual', 11, 2);
             $table->decimal('costokwh', 11, 2);
             $table->date('fechavencimiento');
             $table->date('fechainicio');
@@ -36,7 +36,7 @@ class CreateEnergiasTable extends Migration
             $table->timestamps();
         });
     }
- 
+
     /**
      * Reverse the migrations.
      *
