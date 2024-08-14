@@ -13,27 +13,14 @@ class CreatePedidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('energias', function (Blueprint $table) {
+        Schema::create('pedidos', function (Blueprint $table) {
             $table->increments('id');
-            /*$table->integer('idpersona')->unsigned();
-            $table->foreign('idpersona')->references('id')->on('personas');
-            $table->integer('numpuesto');
-            $table->bigInteger('numcontador');
-            $table->string('area',50);*/
-            $table->integer('idpuesto')->unsigned();
-            $table->foreign('idpuesto')->references('id')->on('puestos');
-            $table->decimal('lecturaanterior', 11, 2);
-            $table->decimal('lecturaactual', 11, 2);
-            $table->decimal('costokwh', 11, 2);
-            $table->date('fechavencimiento');
-            $table->date('fechainicio');
-            $table->date('fechafin');
-            $table->date('mesfacturado');
-            $table->date('fechaemision');
-            $table->decimal('consumo', 11, 2);
-            $table->decimal('totalpago', 11, 2);
-            $table->boolean('estado')->default(1);
+            $table->unsignedBigInteger('persona_id');
+            $table->enum('tipo_pago', ['contado', 'credito']);
+            $table->enum('tipo_cliente', ['tallerista', 'mayorista', 'distribuidor', 'importador']);
             $table->timestamps();
+
+            $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
         });
     }
 
@@ -44,6 +31,6 @@ class CreatePedidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('energias');
+        Schema::dropIfExists('pedidos');
     }
 }

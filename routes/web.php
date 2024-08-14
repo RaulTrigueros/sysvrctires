@@ -3,7 +3,7 @@
 // use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\PedidoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +70,10 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::get('/cliente/selectCliente', 'ClienteController@selectCliente');
 
     //MÓDULO DE PEDIDO
+    Route::apiResource('pedidos', PedidoController::class);
+    Route::get('/producto/{tipo}/{codigo}', 'ProductoController@showProducto');
+
+
     Route::get('/persona/selectPersona', 'ClienteController@selectCliente');
     Route::get('/energia', 'EnergiaController@index');
     Route::post('/energia/registrar', 'EnergiaController@store');

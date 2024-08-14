@@ -13,7 +13,7 @@
   @if (Auth::check())
           @if(Auth::user()->idrol==1)
           <template v-if="menu==70">
-            <energia></energia>
+            <pedido></pedido>
           </template>
           <template v-if="menu==71">
             <cliente></cliente>
@@ -39,7 +39,7 @@
 
           @elseif(Auth::user()->idrol==2)
           <template v-if="menu==70">
-            <energia></energia>
+            <pedido></pedido>
           </template>
           <template v-if="menu==71">
             <cliente></cliente>
@@ -53,7 +53,7 @@
           
           @elseif(Auth::user()->idrol==3)
           <template v-if="menu==70">
-            <energia></energia>
+            <pedido></pedido>
             </template>
             <template v-if="menu==71">
             <cliente></cliente>

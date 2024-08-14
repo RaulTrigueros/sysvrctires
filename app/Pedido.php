@@ -6,27 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pedido extends Model
 {
-    protected $fillable = [
-        'idpersona',
-        'idllanta',
-        'idrepuesto',
-        'tipopago',
-        'tipocliente',
-        'tipoproducto',
-        'cantidad',
-        'total',
-        'estado'
-    ];
+    protected $fillable = ['persona_id', 'tipo_pago', 'tipo_cliente'];
+
     public function persona()
     {
-        return $this->belongsTo('App\Persona');
+        return $this->belongsTo(Persona::class);
     }
-    public function llanta()
+
+    public function detalles()
     {
-        return $this->belongsTo('App\Llanta');
-    }
-    public function repuesto()
-    {
-        return $this->belongsTo('App\Repuesto');
+        return $this->hasMany(DetallePedido::class);
     }
 }

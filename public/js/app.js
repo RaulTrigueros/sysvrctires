@@ -2011,526 +2011,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=script&lang=js":
-/*!************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Energia.vue?vue&type=script&lang=js ***!
-  \************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//import axios from 'axios'
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      energia_id: 0,
-      idpersona: 0,
-      idpuesto: 0,
-      nombre_persona: '',
-      numpuesto: 0,
-      numcontador: 0,
-      area: '',
-      lecturaanterior: 0,
-      lecturaactual: 0,
-      costokwh: 0,
-      fechavencimiento: '',
-      fechainicio: '',
-      fechafin: '',
-      mesfacturado: '',
-      fechaemision: '',
-      consumo: 0,
-      totalpago: 0,
-      arrayEnergia: [],
-      modal: 0,
-      modal2: 0,
-      tituloModal: '',
-      tipoAccion: 0,
-      errorEnergia: 0,
-      errorMostrarMsjEnergia: [],
-      //    bandImagenValida: false,
-      pagination: {
-        'total': 0,
-        'current_page': 0,
-        'per_page': 0,
-        'last_page': 0,
-        'from': 0,
-        'to': 0
-      },
-      offset: 3,
-      criterio: 'numpuesto',
-      buscar: '',
-      arrayPuesto: []
-    };
-  },
-  computed: {
-    isActived: function isActived() {
-      return this.pagination.current_page;
-    },
-    pagesNumber: function pagesNumber() {
-      if (!this.pagination.to) {
-        return [];
-      }
-      var from = this.pagination.current_page - this.offset;
-      if (from < 1) {
-        from = 1;
-      }
-      var to = from + this.offset * 2;
-      if (to >= this.pagination.last_page) {
-        to = this.pagination.last_page;
-      }
-      var pagesArray = [];
-      while (from <= to) {
-        pagesArray.push(from);
-        from++;
-      }
-      return pagesArray;
-    }
-  },
-  methods: {
-    listarEnergia: function listarEnergia(page, buscar, criterio) {
-      var me = this;
-      var url = '/energia?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayEnergia = respuesta.energias.data;
-        me.pagination = respuesta.pagination;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    cargarPdf: function cargarPdf() {
-      window.open('/energia/generarReporteEnergia', '_blank');
-    },
-    pdfpago: function pdfpago() {
-      window.open('/energia/pdf/nopagado');
-    },
-    pdffechamensual: function pdffechamensual(inicio, fin) {
-      if (this.validarFechaMensual()) {
-        return;
-      } else {
-        window.open('/energia/pdf/fecha' + '/' + inicio + '/' + fin + '/');
-      }
-    },
-    pdfpuesto: function pdfpuesto(puesto) {
-      if (this.validarPuesto()) {
-        return;
-      } else {
-        window.open('/energia/pdf/puesto' + '/' + puesto + '/');
-      }
-    },
-    pdfFactura: function pdfFactura(id) {
-      window.open('/energia/pdfFactura/' + id, '_blank');
-    },
-    onFileChange: function onFileChange(e) {
-      this.bandImagenValida = true;
-      this.errorEnergia = 0;
-      this.errorMostrarMsjEnergia = [];
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      if (!(files[0]['type'] === 'image/png' || files[0]['type'] === 'image/jpg' || files[0]['type'] === 'image/jpeg')) {
-        this.errorMostrarMsjEnergia.push("Solo se permiten imagenes png, jpg y jpeg");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-        e.preventDefault();
-        this.bandImagenValida = false;
-      }
-      if (files[0]['size'] > 60 * 1024) {
-        this.errorMostrarMsjEnergia.push("El tamaño del archivo tiene que ser menor o igual a 60 KB");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-        e.preventDefault();
-        this.bandImagenValida = false;
-      }
-      this.crearImagen(files[0]);
-    },
-    crearImagen: function crearImagen(file) {
-      var imagen = new Image();
-      var reader = new FileReader();
-      var vm = this;
-      reader.onload = function (e) {
-        vm.imagen = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    quitarImagen: function quitarImagen(e) {
-      this.errorEnergia = 0;
-      this.errorMostrarMsjEnergia = [];
-      this.imagen = '';
-      this.bandImagenValida = true;
-    },
-    selectPuesto: function selectPuesto() {
-      var me = this;
-      var url = '/puesto/selectPuesto';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayPuesto = respuesta.puestos;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    /* selectPersona(){
-         let me = this;
-         var url = '/persona/selectPersona';
-         axios.get(url).then(function (response) {
-            var respuesta = response.data;
-            me.arrayPersona = respuesta.personas;
-         })
-         .catch(function (error) {
-             console.log(error);
-         })
-     },*/
-    cambiarPagina: function cambiarPagina(page, buscar, criterio) {
-      var me = this;
-      me.pagination.current_page = page;
-      me.listarEnergia(page, buscar, criterio);
-    },
-    registrarEnergia: function registrarEnergia() {
-      if (this.validarEnergia()) {
-        return;
-      }
-      var me = this;
-      axios.post('/energia/registrar', {
-        'idpuesto': this.idpuesto,
-        'nombre_persona': this.nombre_persona,
-        'numpuesto': this.numpuesto,
-        'numcontador': this.numcontador,
-        'area': this.area,
-        'lecturaanterior': this.lecturaanterior,
-        'lecturaactual': this.lecturaactual,
-        'fechavencimiento': this.fechavencimiento,
-        'fechainicio': this.fechainicio,
-        'fechafin': this.fechafin,
-        'mesfacturado': this.mesfacturado,
-        'fechaemision': this.fechaemision,
-        'consumo': this.consumo,
-        'costokwh': this.costokwh,
-        'totalpago': this.consumo * 0.16
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarEnergia(1, '', 'numpuesto');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    actualizarEnergia: function actualizarEnergia() {
-      if (this.validarEnergia()) {
-        return;
-      }
-      var me = this;
-      axios.put('/energia/actualizar', {
-        'idpuesto': this.idpuesto,
-        'nombre_persona': this.nombre_persona,
-        'numpuesto': this.numpuesto,
-        'numcontador': this.numcontador,
-        'area': this.area,
-        'lecturaanterior': this.lecturaanterior,
-        'lecturaactual': this.lecturaactual,
-        'fechavencimiento': this.fechavencimiento,
-        'fechainicio': this.fechainicio,
-        'fechafin': this.fechafin,
-        'mesfacturado': this.mesfacturado,
-        'fechaemision': this.fechaemision,
-        'consumo': this.consumo,
-        'costokwh': this.costokwh,
-        'totalpago': this.consumo * 0.16,
-        'id': this.energia_id
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarEnergia(1, '', 'numpuesto');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    desactivarEnergia: function desactivarEnergia(id) {
-      var _this = this;
-      Swal.fire({
-        title: 'Marcar factura como pagada?',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: "#d33",
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonClass: 'btn btn-success',
-        cancelButtonClass: 'btn btn-danger',
-        buttonsStyling: false,
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this;
-          axios.put('/energia/desactivar', {
-            'id': id
-          }).then(function (response) {
-            me.listarEnergia(1, '', 'nombre_persona');
-            Swal.fire('Pagado!', 'Esta Factura ha sido pagada!', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        // Read more about handling dismissals
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    activarEnergia: function activarEnergia(id) {
-      var _this2 = this;
-      Swal.fire({
-        title: 'Está segura de Revertir el estado de la factura?',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: "#d33",
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonClass: 'btn btn-success',
-        cancelButtonClass: 'btn btn-danger',
-        buttonsStyling: false,
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this2;
-          axios.put('/energia/activar', {
-            'id': id
-          }).then(function (response) {
-            me.listarEnergia(1, '', 'nombre_persona');
-            Swal.fire('Realizado!', 'Esta factura no ha sido pagada!', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        // Read more about handling dismissals
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    validarEnergia: function validarEnergia() {
-      this.errorEnergia = 0;
-      this.errorMostrarMsjEnergia = [];
-      if (this.idpuesto === 0) this.errorMostrarMsjEnergia.push("Ingrese un número de puesto");
-      if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-
-      /*   if(this.errorEnergia===0){
-             if(!this.numpuesto) this.errorMostrarMsjEnergia.push("Debe ingresar un número de puesto");
-             if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-         }
-           if(this.errorEnergia===0){
-             if(!this.numcontador) this.errorMostrarMsjEnergia.push("Debe ingresar un número de contador");
-             if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-         }
-           if(this.errorEnergia===0){
-             if(!this.area) this.errorMostrarMsjEnergia.push("Debe seleccionar el área de venta");
-             if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-         }*/
-
-      if (this.errorEnergia === 0) {
-        if (!this.lecturaanterior) this.errorMostrarMsjEnergia.push("Debe ingresar la lectura de contador anterior");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (!this.lecturaactual) this.errorMostrarMsjEnergia.push("Debe ingresar la lectura de contador actual");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (!this.fechavencimiento) this.errorMostrarMsjEnergia.push("La Fecha de vencimiento es necesaria para el registro");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (!this.mesfacturado) this.errorMostrarMsjEnergia.push("Debe ingresar el mes de facturación");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (!this.fechaemision) this.errorMostrarMsjEnergia.push("Debe ingresar la fecha de emisión de factura");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-
-      /*  if(this.errorEnergia===0){
-            if(this.numcontador<= 0) this.errorMostrarMsjEnergia.push("El número de contador debe ser un número positivo");
-            if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-        }
-           if(this.errorEnergia===0){
-            if(this.numpuesto<= 0) this.errorMostrarMsjEnergia.push("El número de puesto debe ser un número positivo");
-            if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-        }*/
-
-      if (this.errorEnergia === 0) {
-        if (this.fechainicio > this.fechafin) this.errorMostrarMsjEnergia.push("La fecha de inicio no puede ser mayor a la fecha de fin");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (this.costokwh <= 0) this.errorMostrarMsjEnergia.push("El costo por kwh debe ser un número positivo");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (this.lecturaanterior <= 0) this.errorMostrarMsjEnergia.push("El valor de lectura anterior debe ser un número positivo");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (this.lecturaactual <= 0) this.errorMostrarMsjEnergia.push("El valor de lectura actual debe ser un número positivo");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      return this.errorEnergia;
-    },
-    //Validaciones para filtro por fechas y equipos
-    validarFecha: function validarFecha() {
-      this.errorEnergia = 0;
-      this.errorMostrarMsjEnergia = [];
-      if (this.errorEnergia === 0) {
-        if (!this.fechainicio) this.errorMostrarMsjEnergia.push("Fecha de inicio es necesaria para filtrar");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (!this.fechafin) this.errorMostrarMsjEnergia.push("Fecha de fin es necesaria para filtrar");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (this.fechainicio > this.fechafin) this.errorMostrarMsjEnergia.push("La fecha de inicio no puede ser mayor a la fecha de fin");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-
-      /* if(this.errorEnergia===0){
-           if(!this.idtipocombustible) this.errorMostrarMsjEnergia.push("Equipo es necesario para filtrar");
-           if(this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-       }*/
-
-      return this.errorEnergia;
-    },
-    //Validaciones para filtro solo por rango de fechas
-    validarFechaMensual: function validarFechaMensual() {
-      this.errorEnergia = 0;
-      this.errorMostrarMsjEnergia = [];
-      if (this.errorEnergia === 0) {
-        if (!this.fechainicio) this.errorMostrarMsjEnergia.push("Fecha de inicio es necesaria para filtrar");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (!this.fechafin) this.errorMostrarMsjEnergia.push("Fecha de fin es necesaria para filtrar");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      if (this.errorEnergia === 0) {
-        if (this.fechainicio > this.fechafin) this.errorMostrarMsjEnergia.push("La fecha de inicio no puede ser mayor a la fecha de fin");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      return this.errorEnergia;
-    },
-    //Validaciones para filtro solo por puesto    
-    validarPuesto: function validarPuesto() {
-      this.errorEnergia = 0;
-      this.errorMostrarMsjEnergia = [];
-      if (this.errorEnergia === 0) {
-        if (!this.numpuesto) this.errorMostrarMsjEnergia.push("El número de puesto es necesario para filtrar");
-        if (this.errorMostrarMsjEnergia.length) this.errorEnergia = 1;
-      }
-      return this.errorEnergia;
-    },
-    cerrarModal: function cerrarModal() {
-      this.modal2 = 0;
-      this.modal = 0;
-      this.tituloModal = '';
-      this.idpuesto = 0;
-      this.idpersona = 0;
-      this.nombre_persona = '';
-      this.numpuesto = 0;
-      this.numcontador = 0;
-      this.area = '';
-      this.lecturaanterior = 0;
-      this.lecturaactual = 0;
-      this.fechavencimiento = '';
-      this.fechainicio = '';
-      this.fechafin = '';
-      this.mesfacturado = '';
-      this.fechaemision = '';
-      this.consumo = 0;
-      this.costokwh = 0;
-      this.totalpago = 0;
-      this.estado = 0;
-      this.errorEnergia = 0;
-    },
-    abrirModal: function abrirModal(modelo, accion) {
-      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-      switch (modelo) {
-        case "energia":
-          {
-            switch (accion) {
-              case "registrar":
-                {
-                  this.modal = 1;
-                  this.tipoAccion = 1;
-                  this.tituloModal = 'Registrar Consumo de energía';
-                  this.idpuesto = 0;
-                  this.idpersona = 0;
-                  this.nombre_persona = '';
-                  this.numpuesto = 0;
-                  this.numcontador = 0;
-                  this.area = '';
-                  this.lecturaanterior = 0;
-                  this.lecturaactual = 0;
-                  this.fechavencimiento = '';
-                  this.fechainicio = '';
-                  this.fechafin = '';
-                  this.mesfacturado = '';
-                  this.fechaemision = '';
-                  this.consumo = 0;
-                  this.costokwh = 0;
-                  this.totalpago = 0;
-                  break;
-                }
-              case "actualizar":
-                {
-                  this.modal = 1;
-                  this.tipoAccion = 2;
-                  this.tituloModal = 'Actualizar Consumo de energía';
-                  this.energia_id = data['id'];
-                  this.idpuesto = data['idpuesto'];
-                  this.idpersona = data['idpersona'];
-                  this.nombre_persona = data['nombre_persona'];
-                  this.numpuesto = data['numpuesto'];
-                  this.numcontador = data['numcontador'];
-                  this.area = data['area'];
-                  this.lecturaanterior = data['lecturaanterior'];
-                  this.lecturaactual = data['lecturaactual'];
-                  ;
-                  this.fechavencimiento = data['fechavencimiento'];
-                  this.fechainicio = data['fechainicio'];
-                  this.fechafin = data['fechafin'];
-                  this.mesfacturado = data['mesfacturado'];
-                  this.fechaemision = data['fechaemision'];
-                  this.consumo = data['consumo'];
-                  this.costokwh = data['costokwh'];
-                  this.totalpago = data['totalpago'];
-                  break;
-                }
-              case "filtrar":
-                {
-                  this.modal2 = 1;
-                  this.tipoAccion = 2;
-                  this.tituloModal = 'filtrar reporte de energía';
-                  this.fechainicio = 0;
-                  this.fechafin = 0;
-                  this.idpuesto = 0;
-                  break;
-                }
-              case "filtrar2":
-                {
-                  this.modal2 = 1;
-                  this.tipoAccion = 1;
-                  this.tituloModal = 'filtrar reporte de competencias por fecha';
-                  this.fechainicio = '';
-                  this.fechafin = '';
-                  this.nombre_persona = '';
-                  break;
-                }
-            }
-          }
-      }
-      //this.selectPersona();
-      this.selectPuesto();
-    }
-  },
-  mounted: function mounted() {
-    this.listarEnergia(1, this.buscar, this.criterio);
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Llanta.vue?vue&type=script&lang=js":
 /*!***********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Llanta.vue?vue&type=script&lang=js ***!
@@ -2746,6 +2226,69 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.listarLlanta(1, this.buscar, this.criterio);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Pedido.vue?vue&type=script&lang=js":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Pedido.vue?vue&type=script&lang=js ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      personas: [],
+      pedido: {
+        persona_id: null,
+        tipo_pago: 'contado',
+        tipo_cliente: 'tallerista',
+        detalles: []
+      }
+    };
+  },
+  methods: {
+    cargarPersonas: function cargarPersonas() {
+      var _this = this;
+      axios.get('/api/cliente').then(function (response) {
+        _this.personas = response.data;
+      });
+    },
+    agregarDetalle: function agregarDetalle() {
+      this.pedido.detalles.push({
+        tipo_producto: '',
+        codigo_producto: '',
+        nombre_producto: '',
+        cantidad: 1
+      });
+    },
+    cargarProducto: function cargarProducto(detalle, index) {
+      var _this2 = this;
+      if (detalle.tipo_producto && detalle.codigo_producto) {
+        axios.get('/producto/${detalle.tipo_producto}/${detalle.codigo_producto}').then(function (response) {
+          _this2.pedido.detalles[index].nombre_producto = response.data.nombre || 'Sin nombre';
+        })["catch"](function (error) {
+          console.log('Producto no encontrado o error en la solicitud');
+          _this2.pedido.detalles[index].nombre_producto = 'Producto no encontrado';
+        });
+      }
+    },
+    guardarPedido: function guardarPedido() {
+      axios.post('/api/pedidos', this.pedido).then(function (response) {
+        console.log('Pedido guardado:', response.data);
+        // Aquí puedes redirigir o limpiar el formulario
+      })["catch"](function (error) {
+        console.log('Error al guardar el pedido:', error);
+      });
+    }
+  },
+  created: function created() {
+    this.cargarPersonas();
   }
 });
 
@@ -4162,1042 +3705,6 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=template&id=8cbac6fc":
-/*!**********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Energia.vue?vue&type=template&id=8cbac6fc ***!
-  \**********************************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function render() {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("main", {}, [_vm._m(0), _vm._v(" "), _c("div", [_c("div", {
-    staticClass: "container-fluid"
-  }, [_c("div", {
-    staticClass: "animated fadeIn"
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("div", {
-    staticClass: "card"
-  }, [_c("div", {
-    staticClass: "card-header"
-  }, [_c("i", {
-    staticClass: "fa fa-align-justify"
-  }), _vm._v(" Consumo de Energía\n                    "), _c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.abrirModal("energia", "registrar");
-      }
-    }
-  }, [_vm._v("\n                         "), _c("i", {
-    staticClass: "fa fa-plus-square"
-  }), _vm._v(" Nuevo\n                    ")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-info",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.abrirModal("energia", "filtrar");
-      }
-    }
-  }, [_vm._v("\n                         "), _c("i", {
-    staticClass: "fa fa-file-pdf-o"
-  }), _vm._v(" Reporte de Energia Eléctrica\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "card-body"
-  }, [_c("div", {
-    staticClass: "form-group row"
-  }, [_c("div", {
-    staticClass: "col-md-8"
-  }, [_c("div", {
-    staticClass: "input-group"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.criterio,
-      expression: "criterio"
-    }],
-    staticClass: "form-control col-md-3",
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.criterio = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "numpuesto"
-    }
-  }, [_vm._v("Número de Puesto")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.buscar,
-      expression: "buscar"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Texto a buscar"
-    },
-    domProps: {
-      value: _vm.buscar
-    },
-    on: {
-      keyup: function keyup($event) {
-        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-        return _vm.listarEnergia(1, _vm.buscar, _vm.criterio);
-      },
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.buscar = $event.target.value;
-      }
-    }
-  }), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "submit"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.listarEnergia(1, _vm.buscar, _vm.criterio);
-      }
-    }
-  }, [_c("i", {
-    staticClass: "fa fa-search"
-  }), _vm._v(" Buscar")])])])]), _vm._v(" "), _c("br"), _vm._v(" "), _c("table", {
-    staticClass: "table table-bordered table-striped table-sm table-responsive"
-  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayEnergia, function (energia) {
-    return _c("tr", {
-      key: energia.id
-    }, [_c("td", [_c("button", {
-      staticClass: "btn btn-info btn-sm",
-      attrs: {
-        type: "button"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.pdfFactura(energia.id);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-file-pdf-o"
-    })]), _vm._v(" "), _c("button", {
-      staticClass: "btn btn-warning btn-sm",
-      attrs: {
-        type: "button"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.abrirModal("energia", "actualizar", energia);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-edit"
-    })]), _vm._v(" "), energia.estado ? [_c("button", {
-      staticClass: "btn btn-danger btn-sm",
-      attrs: {
-        type: "button"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.desactivarEnergia(energia.id);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-trash"
-    })])] : [_c("button", {
-      staticClass: "btn btn-info btn-sm",
-      attrs: {
-        type: "button"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.activarEnergia(energia.id);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-check"
-    })])]], 2), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.nombre_persona)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.numpuesto)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.numcontador)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.area)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.lecturaanterior)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.lecturaactual)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle"
-    }, [_vm._v(_vm._s(energia.fechavencimiento))]), _vm._v(" "), _c("td", {
-      staticClass: "align-middle"
-    }, [_vm._v(_vm._s(energia.mesfacturado))]), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.consumo)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle",
-      domProps: {
-        textContent: _vm._s(energia.totalpago)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "align-middle"
-    }, [energia.estado ? _c("div", [_c("span", {
-      staticClass: "badge badge-success"
-    }, [_vm._v("Sin pago")])]) : _c("div", [_c("span", {
-      staticClass: "badge badge-danger"
-    }, [_vm._v("Pagado")])])])]);
-  }), 0)]), _vm._v(" "), _c("nav", [_c("ul", {
-    staticClass: "pagination"
-  }, [_vm.pagination.current_page > 1 ? _c("li", {
-    staticClass: "page-item"
-  }, [_c("a", {
-    staticClass: "page-link",
-    attrs: {
-      href: "#"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.cambiarPagina(_vm.pagination.current_page - 1, _vm.buscar, _vm.criterio);
-      }
-    }
-  }, [_vm._v("Anterior")])]) : _vm._e(), _vm._v(" "), _vm._l(_vm.pagesNumber, function (page) {
-    return _c("li", {
-      key: page,
-      staticClass: "page-item",
-      "class": [page == _vm.isActived ? "active" : ""]
-    }, [_c("a", {
-      staticClass: "page-link",
-      attrs: {
-        href: "#"
-      },
-      domProps: {
-        textContent: _vm._s(page)
-      },
-      on: {
-        click: function click($event) {
-          $event.preventDefault();
-          return _vm.cambiarPagina(page, _vm.buscar, _vm.criterio);
-        }
-      }
-    })]);
-  }), _vm._v(" "), _vm.pagination.current_page < _vm.pagination.last_page ? _c("li", {
-    staticClass: "page-item"
-  }, [_c("a", {
-    staticClass: "page-link",
-    attrs: {
-      href: "#"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.cambiarPagina(_vm.pagination.current_page + 1, _vm.buscar, _vm.criterio);
-      }
-    }
-  }, [_vm._v("Siguiente")])]) : _vm._e()], 2)])])])])])])]), _vm._v(" "), _c("div", {
-    staticClass: "modal",
-    "class": {
-      mostrar: _vm.modal
-    },
-    staticStyle: {
-      display: "none"
-    },
-    attrs: {
-      tabindex: "-1",
-      role: "dialog",
-      "aria-labelledby": "myModalLabel",
-      "aria-hidden": "true"
-    }
-  }, [_c("div", {
-    staticClass: "modal-dialog modal-primary modal-lg",
-    attrs: {
-      role: "document"
-    }
-  }, [_c("div", {
-    staticClass: "modal-content"
-  }, [_c("div", {
-    staticClass: "modal-header"
-  }, [_c("h4", {
-    staticClass: "modal-title",
-    domProps: {
-      textContent: _vm._s(_vm.tituloModal)
-    }
-  }), _vm._v(" "), _c("button", {
-    staticClass: "close",
-    attrs: {
-      type: "button",
-      "aria-label": "Close"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.cerrarModal();
-      }
-    }
-  }, [_c("span", {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])])]), _vm._v(" "), _c("div", {
-    staticClass: "modal-body"
-  }, [_c("form", {
-    staticClass: "form-horizontal",
-    attrs: {
-      action: "",
-      method: "post",
-      enctype: "multipart/form-data"
-    }
-  }, [_c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Número de Puesto (*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.idpuesto,
-      expression: "idpuesto"
-    }],
-    staticClass: "form-control",
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.idpuesto = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "0",
-      disabled: "",
-      selected: ""
-    }
-  }, [_vm._v("Selecciona un Puesto")]), _vm._v(" "), _vm._l(_vm.arrayPuesto, function (puesto) {
-    return _c("option", {
-      key: puesto.id,
-      domProps: {
-        value: puesto.id,
-        textContent: _vm._s(puesto.numpuesto)
-      }
-    });
-  })], 2)])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Número de Contador (*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.idpuesto,
-      expression: "idpuesto"
-    }],
-    staticClass: "form-control",
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.idpuesto = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "0",
-      disabled: "",
-      selected: ""
-    }
-  }, [_vm._v("Número de contador")]), _vm._v(" "), _vm._l(_vm.arrayPuesto, function (puesto) {
-    return _c("option", {
-      key: puesto.id,
-      domProps: {
-        value: puesto.id,
-        textContent: _vm._s(puesto.numcontador)
-      }
-    });
-  })], 2)])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Área(*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.idpuesto,
-      expression: "idpuesto"
-    }],
-    staticClass: "form-control",
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.idpuesto = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "0",
-      disabled: "",
-      selected: ""
-    }
-  }, [_vm._v("Área")]), _vm._v(" "), _vm._l(_vm.arrayPuesto, function (puesto) {
-    return _c("option", {
-      key: puesto.id,
-      domProps: {
-        value: puesto.id,
-        textContent: _vm._s(puesto.area)
-      }
-    });
-  })], 2)])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Lectura anterior Kwh (*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.lecturaanterior,
-      expression: "lecturaanterior"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "number",
-      placeholder: "cantidad kwh"
-    },
-    domProps: {
-      value: _vm.lecturaanterior
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.lecturaanterior = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Lectura actual Kwh (*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.lecturaactual,
-      expression: "lecturaactual"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "number",
-      placeholder: "cantidad kwh"
-    },
-    domProps: {
-      value: _vm.lecturaactual
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.lecturaactual = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Fecha Vencimiento(*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.fechavencimiento,
-      expression: "fechavencimiento"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.fechavencimiento
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.fechavencimiento = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Fecha Inicio(*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.fechainicio,
-      expression: "fechainicio"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.fechainicio
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.fechainicio = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Fecha Fin(*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.fechafin,
-      expression: "fechafin"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.fechafin
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.fechafin = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Mes Facturado(*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.mesfacturado,
-      expression: "mesfacturado"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.mesfacturado
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.mesfacturado = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Fecha de Emision(*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.fechaemision,
-      expression: "fechaemision"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.fechaemision
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.fechaemision = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("h4", [_vm._v("Detalles de consumo")]), _vm._v(" "), _c("hr"), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Consumo del Mes (*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("output", {
-    staticClass: "form-control",
-    attrs: {
-      step: "0.01",
-      placeholder: ""
-    }
-  }, [_vm._v(_vm._s(_vm.consumo = _vm.lecturaactual - _vm.lecturaanterior) + " kwh")])])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Costo por Kwh (*)")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("output", {
-    staticClass: "form-control",
-    attrs: {
-      step: "0.01",
-      placeholder: ""
-    }
-  }, [_vm._v("$ " + _vm._s(_vm.costokwh = 0.16))])])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Total a pagar")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("output", {
-    staticClass: "form-control",
-    attrs: {
-      step: "0.01"
-    }
-  }, [_vm._v("$ " + _vm._s(_vm.consumo * 0.16))])])]), _vm._v(" "), _c("div", {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: _vm.errorEnergia,
-      expression: "errorEnergia"
-    }],
-    staticClass: "form-group row div-error"
-  }, [_c("div", {
-    staticClass: "text-center text-error"
-  }, _vm._l(_vm.errorMostrarMsjEnergia, function (error) {
-    return _c("div", {
-      key: error,
-      domProps: {
-        textContent: _vm._s(error)
-      }
-    });
-  }), 0)])])]), _vm._v(" "), _c("div", {
-    staticClass: "modal-footer"
-  }, [_c("button", {
-    staticClass: "btn btn-secondary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.cerrarModal();
-      }
-    }
-  }, [_vm._v("Cerrar")]), _vm._v(" "), _vm.tipoAccion == 1 ? _c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.registrarEnergia();
-      }
-    }
-  }, [_vm._v("Guardar")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.actualizarEnergia();
-      }
-    }
-  }, [_vm._v("Actualizar")]) : _vm._e()])])])]), _vm._v(" "), _c("div", {
-    staticClass: "modal",
-    "class": {
-      fechaPdf: _vm.modal2
-    },
-    staticStyle: {
-      display: "none"
-    },
-    attrs: {
-      tabindex: "-1",
-      role: "dialog",
-      "aria-labelledby": "myModalLabel",
-      "aria-hidden": "true"
-    }
-  }, [_c("div", {
-    staticClass: "modal-dialog modal-primary modal-lg",
-    attrs: {
-      role: "document"
-    }
-  }, [_c("div", {
-    staticClass: "modal-content"
-  }, [_c("div", {
-    staticClass: "modal-header"
-  }, [_c("h4", {
-    staticClass: "modal-title",
-    domProps: {
-      textContent: _vm._s(_vm.tituloModal)
-    }
-  }), _vm._v(" "), _c("button", {
-    staticClass: "close",
-    attrs: {
-      type: "button",
-      "aria-label": "Close"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.cerrarModal();
-      }
-    }
-  }, [_c("span", {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])])]), _vm._v(" "), _c("div", {
-    staticClass: "modal-body"
-  }, [_c("form", {
-    staticClass: "form-horizontal",
-    attrs: {
-      action: "",
-      method: "post",
-      enctype: "multipart/form-data"
-    }
-  }, [_c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Fecha de inicio ")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.fechainicio,
-      expression: "fechainicio"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.fechainicio
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.fechainicio = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Fecha de fin ")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.fechafin,
-      expression: "fechafin"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.fechafin
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.fechafin = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-md-3 form-control-label",
-    attrs: {
-      "for": "text-input"
-    }
-  }, [_vm._v("Número de puesto")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.numpuesto,
-      expression: "numpuesto"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "number",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.numpuesto
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.numpuesto = $event.target.value;
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: _vm.errorEnergia,
-      expression: "errorEnergia"
-    }],
-    staticClass: "form-group row div-error"
-  }, [_c("div", {
-    staticClass: "text-center text-error"
-  }, _vm._l(_vm.errorMostrarMsjEnergia, function (error) {
-    return _c("div", {
-      key: error,
-      domProps: {
-        textContent: _vm._s(error)
-      }
-    });
-  }), 0)])])]), _vm._v(" "), _c("div", {
-    staticClass: "modal-footer"
-  }, [_c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.cerrarModal();
-      }
-    }
-  }, [_vm._v("Cerrar")]), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
-    staticClass: "btn btn-secondary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.cargarPdf();
-      }
-    }
-  }, [_vm._v("Reporte completo de Consumos")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
-    staticClass: "btn btn-secondary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.pdffechamensual(_vm.fechainicio, _vm.fechafin, "energias");
-      }
-    }
-  }, [_vm._v("filtrar por fecha")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
-    staticClass: "btn btn-secondary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.pdfpago();
-      }
-    }
-  }, [_vm._v("filtrar No pagados")]) : _vm._e(), _vm._v(" "), _vm.tipoAccion == 2 ? _c("button", {
-    staticClass: "btn btn-secondary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.pdfpuesto(_vm.numpuesto, "energias");
-      }
-    }
-  }, [_vm._v("filtrar por puesto")]) : _vm._e()])])])])])]);
-};
-var staticRenderFns = [function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("ol", {
-    staticClass: "breadcrumb"
-  }, [_c("li", {
-    staticClass: "breadcrumb-item"
-  }, [_c("a", {
-    attrs: {
-      href: "/"
-    }
-  }, [_vm._v("Ir a Portal")])])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("thead", [_c("tr", [_c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Opciones")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Arrendatario")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("No. de puesto")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("No. de contador")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Área")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Lec. Anterior")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Lec. Actual")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Fecha Vencimiento")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Mes Facturado")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Consumo")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Total a pagar")]), _vm._v(" "), _c("th", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("Estado")])])]);
-}];
-render._withStripped = true;
-
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Llanta.vue?vue&type=template&id=25bea8d1":
 /*!*********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Llanta.vue?vue&type=template&id=25bea8d1 ***!
@@ -5693,6 +4200,228 @@ var staticRenderFns = [function () {
     _c = _vm._self._c;
   return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Codigo")]), _vm._v(" "), _c("th", [_vm._v("Tipo de Producto")]), _vm._v(" "), _c("th", [_vm._v("Medida")]), _vm._v(" "), _c("th", [_vm._v("Precio ($)")]), _vm._v(" "), _c("th", [_vm._v("Descripcion")])])]);
 }];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Pedido.vue?vue&type=template&id=04bcfc88":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Pedido.vue?vue&type=template&id=04bcfc88 ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("h1", [_vm._v("Gestión de Pedidos")]), _vm._v(" "), _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.guardarPedido.apply(null, arguments);
+      }
+    }
+  }, [_c("div", [_c("label", [_vm._v("Cliente:")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.pedido.persona_id,
+      expression: "pedido.persona_id"
+    }],
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.pedido, "persona_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, _vm._l(_vm.personas, function (persona) {
+    return _c("option", {
+      key: persona.id,
+      domProps: {
+        value: persona.id
+      }
+    }, [_vm._v("\n          " + _vm._s(persona.nombre) + "\n        ")]);
+  }), 0)]), _vm._v(" "), _c("div", [_c("label", [_vm._v("Tipo de Pago:")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.pedido.tipo_pago,
+      expression: "pedido.tipo_pago"
+    }],
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.pedido, "tipo_pago", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "contado"
+    }
+  }, [_vm._v("Contado")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "credito"
+    }
+  }, [_vm._v("Crédito")])])]), _vm._v(" "), _c("div", [_c("label", [_vm._v("Tipo de Cliente:")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.pedido.tipo_cliente,
+      expression: "pedido.tipo_cliente"
+    }],
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.pedido, "tipo_cliente", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "tallerista"
+    }
+  }, [_vm._v("Tallerista")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "mayorista"
+    }
+  }, [_vm._v("Mayorista")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "distribuidor"
+    }
+  }, [_vm._v("Distribuidor")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "importador"
+    }
+  }, [_vm._v("Importador")])])]), _vm._v(" "), _vm._l(_vm.pedido.detalles, function (detalle, index) {
+    return _c("div", {
+      key: index
+    }, [_c("label", [_vm._v("Tipo de Producto:")]), _vm._v(" "), _c("select", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: detalle.tipo_producto,
+        expression: "detalle.tipo_producto"
+      }],
+      on: {
+        change: [function ($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+            return o.selected;
+          }).map(function (o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val;
+          });
+          _vm.$set(detalle, "tipo_producto", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        }, function ($event) {
+          return _vm.cargarProducto(detalle, index);
+        }]
+      }
+    }, [_c("option", {
+      attrs: {
+        value: "llanta"
+      }
+    }, [_vm._v("Llanta")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "tubo"
+      }
+    }, [_vm._v("Tubo")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "repuesto"
+      }
+    }, [_vm._v("Repuesto")])]), _vm._v(" "), _c("label", [_vm._v("Código del Producto:")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: detalle.codigo_producto,
+        expression: "detalle.codigo_producto"
+      }],
+      attrs: {
+        type: "text"
+      },
+      domProps: {
+        value: detalle.codigo_producto
+      },
+      on: {
+        blur: function blur($event) {
+          return _vm.cargarProducto(detalle, index);
+        },
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(detalle, "codigo_producto", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _c("label", [_vm._v("Nombre del Producto:")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: detalle.nombre_producto,
+        expression: "detalle.nombre_producto"
+      }],
+      attrs: {
+        type: "text",
+        disabled: ""
+      },
+      domProps: {
+        value: detalle.nombre_producto
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(detalle, "nombre_producto", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _c("label", [_vm._v("Cantidad:")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: detalle.cantidad,
+        expression: "detalle.cantidad"
+      }],
+      attrs: {
+        type: "number"
+      },
+      domProps: {
+        value: detalle.cantidad
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(detalle, "cantidad", $event.target.value);
+        }
+      }
+    })]);
+  }), _vm._v(" "), _c("button", {
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.agregarDetalle
+    }
+  }, [_vm._v("Agregar Producto")]), _vm._v(" "), _c("button", {
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("Guardar Pedido")])], 2)]);
+};
+var staticRenderFns = [];
 render._withStripped = true;
 
 
@@ -11414,25 +10143,6 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.modal-content {\r\n    width: 100% !important;\r\n    position: absolute !important;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    position: absolute !important;\r\n    background-color: #3c29297a !important;\n}\n.div-error {\r\n    display: flex;\r\n    justify-content: center;\n}\n.text-error {\r\n    color: red !important;\r\n    font-weight: bold;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    overflow-y: scroll;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.fechaPdf{\n    display: list-item !important;\n    overflow-y: scroll;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n.img{\n    width: 30%;\n    margin: auto;\n    display: block;\n    margin-bottom: 10px;\n}\n", ""]);
 
 // exports
 
@@ -42648,36 +41358,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--5-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--5-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Llanta.vue?vue&type=style&index=0&id=25bea8d1&lang=css":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Llanta.vue?vue&type=style&index=0&id=25bea8d1&lang=css ***!
@@ -55475,7 +54155,7 @@ Vue.use(vue_form_wizard__WEBPACK_IMPORTED_MODULE_1___default.a);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('energia', __webpack_require__(/*! ./components/Energia.vue */ "./resources/assets/js/components/Energia.vue")["default"]);
+Vue.component('pedido', __webpack_require__(/*! ./components/Pedido.vue */ "./resources/assets/js/components/Pedido.vue")["default"]);
 Vue.component('cliente', __webpack_require__(/*! ./components/Cliente.vue */ "./resources/assets/js/components/Cliente.vue")["default"]);
 Vue.component('llanta', __webpack_require__(/*! ./components/Llanta.vue */ "./resources/assets/js/components/Llanta.vue")["default"]);
 Vue.component('repuesto', __webpack_require__(/*! ./components/Repuesto.vue */ "./resources/assets/js/components/Repuesto.vue")["default"]);
@@ -55738,93 +54418,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/Energia.vue":
-/*!****************************************************!*\
-  !*** ./resources/assets/js/components/Energia.vue ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Energia_vue_vue_type_template_id_8cbac6fc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Energia.vue?vue&type=template&id=8cbac6fc */ "./resources/assets/js/components/Energia.vue?vue&type=template&id=8cbac6fc");
-/* harmony import */ var _Energia_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Energia.vue?vue&type=script&lang=js */ "./resources/assets/js/components/Energia.vue?vue&type=script&lang=js");
-/* empty/unused harmony star reexport *//* harmony import */ var _Energia_vue_vue_type_style_index_0_id_8cbac6fc_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css */ "./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _Energia_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Energia_vue_vue_type_template_id_8cbac6fc__WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Energia_vue_vue_type_template_id_8cbac6fc__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/Energia.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/Energia.vue?vue&type=script&lang=js":
-/*!****************************************************************************!*\
-  !*** ./resources/assets/js/components/Energia.vue?vue&type=script&lang=js ***!
-  \****************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Energia.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=script&lang=js");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css":
-/*!************************************************************************************************!*\
-  !*** ./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css ***!
-  \************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_style_index_0_id_8cbac6fc_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--5-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--5-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=style&index=0&id=8cbac6fc&lang=css");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_style_index_0_id_8cbac6fc_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_style_index_0_id_8cbac6fc_lang_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_style_index_0_id_8cbac6fc_lang_css__WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_style_index_0_id_8cbac6fc_lang_css__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/Energia.vue?vue&type=template&id=8cbac6fc":
-/*!**********************************************************************************!*\
-  !*** ./resources/assets/js/components/Energia.vue?vue&type=template&id=8cbac6fc ***!
-  \**********************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_template_id_8cbac6fc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./Energia.vue?vue&type=template&id=8cbac6fc */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Energia.vue?vue&type=template&id=8cbac6fc");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_template_id_8cbac6fc__WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Energia_vue_vue_type_template_id_8cbac6fc__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/assets/js/components/Llanta.vue":
 /*!***************************************************!*\
   !*** ./resources/assets/js/components/Llanta.vue ***!
@@ -55907,6 +54500,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Llanta_vue_vue_type_template_id_25bea8d1__WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Llanta_vue_vue_type_template_id_25bea8d1__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Pedido.vue":
+/*!***************************************************!*\
+  !*** ./resources/assets/js/components/Pedido.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Pedido_vue_vue_type_template_id_04bcfc88__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Pedido.vue?vue&type=template&id=04bcfc88 */ "./resources/assets/js/components/Pedido.vue?vue&type=template&id=04bcfc88");
+/* harmony import */ var _Pedido_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pedido.vue?vue&type=script&lang=js */ "./resources/assets/js/components/Pedido.vue?vue&type=script&lang=js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Pedido_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Pedido_vue_vue_type_template_id_04bcfc88__WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Pedido_vue_vue_type_template_id_04bcfc88__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/Pedido.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Pedido.vue?vue&type=script&lang=js":
+/*!***************************************************************************!*\
+  !*** ./resources/assets/js/components/Pedido.vue?vue&type=script&lang=js ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pedido_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Pedido.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Pedido.vue?vue&type=script&lang=js");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pedido_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Pedido.vue?vue&type=template&id=04bcfc88":
+/*!*********************************************************************************!*\
+  !*** ./resources/assets/js/components/Pedido.vue?vue&type=template&id=04bcfc88 ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Pedido_vue_vue_type_template_id_04bcfc88__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./Pedido.vue?vue&type=template&id=04bcfc88 */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Pedido.vue?vue&type=template&id=04bcfc88");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Pedido_vue_vue_type_template_id_04bcfc88__WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Pedido_vue_vue_type_template_id_04bcfc88__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
