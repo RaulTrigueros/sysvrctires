@@ -1,16 +1,10 @@
 <template>
   <div>
-    <h1>Gestión de Pedidos</h1>
     <form @submit.prevent="guardarPedido">
-      <!-- Formulario para los datos del cliente -->
       <div>
         <label>Cliente:</label>
         <select v-model="pedido.persona_id">
-          <option
-            v-for="persona in personas"
-            :key="persona.id"
-            :value="persona.id"
-          >
+          <option v-for="persona in personas" :value="persona.id">
             {{ persona.nombre }}
           </option>
         </select>
@@ -34,33 +28,26 @@
         </select>
       </div>
 
-      <!-- Agregar productos -->
-      <div v-for="(detalle, index) in pedido.detalles" :key="index">
+      <div v-for="(producto, index) in pedido.productos" :key="index">
         <label>Tipo de Producto:</label>
-        <select
-          v-model="detalle.tipo_producto"
-          @change="cargarProducto(detalle, index)"
-        >
-          <option value="llanta">Llanta</option>
-          <option value="tubo">Tubo</option>
-          <option value="repuesto">Repuesto</option>
+        <select v-model="producto.tipo_producto">
+          <option value="LlantaTubo">Llanta/Tubo</option>
+          <option value="Repuesto">Repuesto</option>
         </select>
 
-        <label>Código del Producto:</label>
-        <input
-          type="text"
-          v-model="detalle.codigo_producto"
-          @blur="cargarProducto(detalle, index)"
-        />
-
-        <label>Nombre del Producto:</label>
-        <input type="text" v-model="detalle.nombre_producto" disabled />
+        <label>Código de Producto:</label>
+        <input type="text" v-model="producto.codigo_producto" />
 
         <label>Cantidad:</label>
-        <input type="number" v-model="detalle.cantidad" />
+        <input type="number" v-model="producto.cantidad" />
+
+        <label>Precio:</label>
+        <input type="number" v-model="producto.precio" />
+
+        <button @click="removerProducto(index)">Eliminar</button>
       </div>
 
-      <button type="button" @click="agregarDetalle">Agregar Producto</button>
+      <button @click="agregarProducto">Añadir Producto</button>
       <button type="submit">Guardar Pedido</button>
     </form>
   </div>
@@ -70,58 +57,40 @@
 export default {
   data() {
     return {
-      personas: [],
+      personas: [], // Obtén la lista de personas desde la API
       pedido: {
         persona_id: null,
         tipo_pago: 'contado',
         tipo_cliente: 'tallerista',
-        detalles: [],
+        productos: [
+          {
+            tipo_producto: 'LlantaTubo',
+            codigo_producto: '',
+            cantidad: 0,
+            precio: 0,
+          },
+        ],
       },
     };
   },
   methods: {
-    cargarPersonas() {
-      axios.get('/api/cliente').then((response) => {
-        this.personas = response.data;
-      });
-    },
-    agregarDetalle() {
-      this.pedido.detalles.push({
-        tipo_producto: '',
+    agregarProducto() {
+      this.pedido.productos.push({
+        tipo_producto: 'LlantaTubo',
         codigo_producto: '',
-        nombre_producto: '',
-        cantidad: 1,
+        cantidad: 0,
+        precio: 0,
       });
     },
-    cargarProducto(detalle, index) {
-      if (detalle.tipo_producto && detalle.codigo_producto) {
-        axios
-          .get('/producto/${detalle.tipo_producto}/${detalle.codigo_producto}')
-          .then((response) => {
-            this.pedido.detalles[index].nombre_producto =
-              response.data.nombre || 'Sin nombre';
-          })
-          .catch((error) => {
-            console.log('Producto no encontrado o error en la solicitud');
-            this.pedido.detalles[index].nombre_producto =
-              'Producto no encontrado';
-          });
-      }
+    removerProducto(index) {
+      this.pedido.productos.splice(index, 1);
     },
     guardarPedido() {
-      axios
-        .post('/api/pedidos', this.pedido)
-        .then((response) => {
-          console.log('Pedido guardado:', response.data);
-          // Aquí puedes redirigir o limpiar el formulario
-        })
-        .catch((error) => {
-          console.log('Error al guardar el pedido:', error);
-        });
+      // Llama a la API de Laravel para guardar el pedido
     },
   },
-  created() {
-    this.cargarPersonas();
+  mounted() {
+    // Obtén la lista de personas desde la API
   },
 };
 </script>

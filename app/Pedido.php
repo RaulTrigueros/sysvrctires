@@ -13,8 +13,8 @@ class Pedido extends Model
         return $this->belongsTo(Persona::class);
     }
 
-    public function detalles()
+    public function productos()
     {
-        return $this->hasMany(DetallePedido::class);
+        return $this->hasMany(PedidoProducto::class);
     }
 }

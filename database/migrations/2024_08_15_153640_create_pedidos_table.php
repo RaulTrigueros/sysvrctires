@@ -14,7 +14,7 @@ class CreatePedidosTable extends Migration
     public function up()
     {
         Schema::create('pedidos', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedBigInteger('persona_id');
             $table->enum('tipo_pago', ['contado', 'credito']);
             $table->enum('tipo_cliente', ['tallerista', 'mayorista', 'distribuidor', 'importador']);

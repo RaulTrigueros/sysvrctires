@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDetallePedidosTable extends Migration
+class CreatePedidoProductoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateDetallePedidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('detalle_pedidos', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('pedido_producto', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('pedido_id');
-            $table->string('tipo_producto');
-            $table->string('codigo_producto'); // Aquí se guarda el código del producto
+            $table->string('codigo_producto');
+            $table->enum('tipo_producto', ['LlantaTubo', 'Repuesto']);
             $table->integer('cantidad');
-            $table->timestamps();
+            $table->decimal('precio', 10, 2);
 
             $table->foreign('pedido_id')->references('id')->on('pedidos')->onDelete('cascade');
         });
@@ -32,6 +32,6 @@ class CreateDetallePedidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detalle_pedidos');
+        Schema::dropIfExists('pedido_producto');
     }
 }

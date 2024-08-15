@@ -70,8 +70,7 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::get('/cliente/selectCliente', 'ClienteController@selectCliente');
 
     //MÓDULO DE PEDIDO
-    Route::apiResource('pedidos', PedidoController::class);
-    Route::get('/producto/{tipo}/{codigo}', 'ProductoController@showProducto');
+    Route::resource('pedidos', PedidoController::class);
 
 
     Route::get('/persona/selectPersona', 'ClienteController@selectCliente');
