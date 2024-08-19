@@ -28,4 +28,11 @@ class PedidoController extends Controller
 
         return response()->json($pedido);
     }
+
+    // Método para obtener la lista de pedidos
+    public function index()
+    {
+        $pedidos = Pedido::with('productos')->get();
+        return response()->json($pedidos);
+    }
 }

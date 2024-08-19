@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\ClienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,9 @@ Route::group(['middleware' => ['Administrador']], function () {
 
     //MÓDULO DE PEDIDO
     Route::resource('pedidos', PedidoController::class);
+    Route::get('/pedidos', [PedidoController::class, 'index']);
+    Route::post('/pedidos/registrar', [PedidoController::class, 'store']);
+    Route::get('/personas', [ClienteController::class, 'index']);
 
 
     Route::get('/persona/selectPersona', 'ClienteController@selectCliente');

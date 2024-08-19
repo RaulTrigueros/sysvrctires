@@ -3,10 +3,14 @@
     <form @submit.prevent="guardarPedido">
       <div>
         <label>Cliente:</label>
-        <select v-model="pedido.persona_id">
-          <option v-for="persona in personas" :value="persona.id">
-            {{ persona.nombre }}
-          </option>
+        <select class="form-control" v-model="pedido.persona_id">
+          <option value="0" disabled selected>Selecciona un Cliente</option>
+          <option
+            v-for="persona in arrayPersona"
+            :key="persona.id"
+            :value="persona.id"
+            v-text="persona.nombre"
+          ></option>
         </select>
       </div>
 
@@ -58,8 +62,10 @@ export default {
   data() {
     return {
       personas: [], // Obtén la lista de personas desde la API
+      pedidos: [], // Aquí se almacenarán los pedidos obtenidos
+      arrayPersona: [],
       pedido: {
-        persona_id: null,
+        persona_id: 0,
         tipo_pago: 'contado',
         tipo_cliente: 'tallerista',
         productos: [
@@ -86,11 +92,45 @@ export default {
       this.pedido.productos.splice(index, 1);
     },
     guardarPedido() {
-      // Llama a la API de Laravel para guardar el pedido
+      axios
+        .post('/pedidos/registrar', this.pedido)
+        .then((response) => {
+          console.log('Pedido guardado:', response.data);
+          // Puedes redirigir o hacer algo más después de guardar
+        })
+        .catch((error) => {
+          console.error('Error al guardar el pedido:', error);
+          // Maneja los errores aquí
+        });
+    },
+    obtenerPedidos() {
+      axios
+        .get('/pedidos')
+        .then((response) => {
+          this.pedidos = response.data;
+        })
+        .catch((error) => {
+          console.error('Error al obtener los pedidos:', error);
+        });
+    },
+    selectCliente() {
+      let me = this;
+      var url = '/persona/selectPersona';
+      axios
+        .get(url)
+        .then(function (response) {
+          var respuesta = response.data;
+          me.arrayPersona = respuesta.personas;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
   mounted() {
+    this.obtenerPedidos();
     // Obtén la lista de personas desde la API
+    this.selectCliente();
   },
 };
 </script>
