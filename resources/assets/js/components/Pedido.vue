@@ -1,136 +1,1000 @@
 <template>
-  <div>
-    <form @submit.prevent="guardarPedido">
-      <div>
-        <label>Cliente:</label>
-        <select class="form-control" v-model="pedido.persona_id">
-          <option value="0" disabled selected>Selecciona un Cliente</option>
-          <option
-            v-for="persona in arrayPersona"
-            :key="persona.id"
-            :value="persona.id"
-            v-text="persona.nombre"
-          ></option>
-        </select>
+  <main class="main">
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Escritorio</a></li>
+    </ol>
+    <div class="container-fluid">
+      <!-- Ejemplo de tabla Listado -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Pedidos
+          <button
+            type="button"
+            @click="mostrarDetalle()"
+            class="btn btn-secondary"
+          >
+            <i class="icon-plus"></i>&nbsp;Nuevo
+          </button>
+        </div>
+        <!-- Listado-->
+        <template v-if="listado == 1">
+          <div class="card-body">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <select class="form-control col-md-3" v-model="criterio">
+                    <option value="personas.codigo">Codigo de Cliente</option>
+                    <option value="personas.nombre">Nombre de Cliente</option>
+                    <option value="fecha_hora">Fecha-Hora</option>
+                  </select>
+                  <input
+                    type="text"
+                    v-model="buscar"
+                    @keyup.enter="listarPedido(1, buscar, criterio)"
+                    class="form-control"
+                    placeholder="Texto a buscar"
+                  />
+                  <button
+                    type="submit"
+                    @click="listarPedido(1, buscar, criterio)"
+                    class="btn btn-primary"
+                  >
+                    <i class="fa fa-search"></i> Buscar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>Opciones</th>
+                    <th>Codigo</th>
+                    <th>Cliente</th>
+                    <th>Tipo Cliente</th>
+                    <th>Tipo Pago</th>
+                    <th>Fecha Hora</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="pedido in arrayPedido" :key="pedido.id">
+                    <td>
+                      <button
+                        type="button"
+                        @click="verPedido(pedido.id)"
+                        class="btn btn-success btn-sm"
+                      >
+                        <i class="icon-eye"></i>
+                      </button>
+                      &nbsp;
+                      <button
+                        type="button"
+                        @click="pdfPedido(pedido.id)"
+                        class="btn btn-info btn-sm"
+                      >
+                        <i class="icon-doc"></i>
+                      </button>
+                      &nbsp;
+                      <template v-if="pedido.estado == 'Registrado'">
+                        <button
+                          type="button"
+                          class="btn btn-danger btn-sm"
+                          @click="desactivarPedido(pedido.id)"
+                        >
+                          <i class="icon-trash"></i>
+                        </button>
+                      </template>
+                    </td>
+                    <td v-text="pedido.codigo"></td>
+                    <td v-text="pedido.nombre"></td>
+                    <td v-text="pedido.tipo_cliente"></td>
+                    <td v-text="pedido.tipo_pago"></td>
+                    <td v-text="pedido.fecha_hora"></td>
+                    <td v-text="pedido.estado"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <nav>
+              <ul class="pagination">
+                <li class="page-item" v-if="pagination.current_page > 1">
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="
+                      cambiarPagina(
+                        pagination.current_page - 1,
+                        buscar,
+                        criterio
+                      )
+                    "
+                    >Ant</a
+                  >
+                </li>
+                <li
+                  class="page-item"
+                  v-for="page in pagesNumber"
+                  :key="page"
+                  :class="[page == isActived ? 'active' : '']"
+                >
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="cambiarPagina(page, buscar, criterio)"
+                    v-text="page"
+                  ></a>
+                </li>
+                <li
+                  class="page-item"
+                  v-if="pagination.current_page < pagination.last_page"
+                >
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="
+                      cambiarPagina(
+                        pagination.current_page + 1,
+                        buscar,
+                        criterio
+                      )
+                    "
+                    >Sig</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </template>
+        <!--Fin Listado-->
+        <!-- Detalle-->
+        <template v-else-if="listado == 0">
+          <div class="card-body">
+            <div class="form-group row border">
+              <div class="col-md-9">
+                <div class="form-group">
+                  <label for="">Cliente(*)</label>
+                  <v-select
+                    :on-search="selectCliente"
+                    label="nombre"
+                    :options="arrayCliente"
+                    placeholder="Buscar Clientes..."
+                    :onChange="getDatosCliente"
+                  >
+                  </v-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo Cliente</label>
+                  <select class="form-control" v-model="tipo_cliente">
+                    <option value="0">Seleccione</option>
+                    <option value="TALLERISTA">Tallerista</option>
+                    <option value="MAYOREO">Mayoreo</option>
+                    <option value="DISTRIBUIDOR">Distribuidor</option>
+                    <option value="IMPORTADOR">Importador</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo Pago</label>
+                  <select class="form-control" v-model="tipo_pago">
+                    <option value="0">Seleccione</option>
+                    <option value="CONTADO">Contado</option>
+                    <option value="CREDITO">Credito</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="">Fecha</label>
+                <input type="date" class="form-control" v-model="fecha_hora" />
+              </div>
+              <div class="col-md-3">
+                <label for="">Direccion</label>
+                <input type="text" class="form-control" v-model="direccion" />
+              </div>
+              <div class="col-md-3">
+                <label for="">Telefono</label>
+                <input type="text" class="form-control" v-model="telefono" />
+              </div>
+              <div class="col-md-12">
+                <div v-show="errorPedido" class="form-group row div-error">
+                  <div class="text-center text-error">
+                    <div
+                      v-for="error in errorMostrarMsjPedido"
+                      :key="error"
+                      v-text="error"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row border">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label
+                    >Producto
+                    <span style="color: red" v-show="llanta_id == 0"
+                      >(*Seleccione)</span
+                    ></label
+                  >
+                  <div class="form-inline">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="codigo"
+                      @keyup.enter="buscarProducto()"
+                      placeholder="Ingrese Producto"
+                    />
+                    <button @click="abrirModal()" class="btn btn-primary">
+                      ...
+                    </button>
+                    <input
+                      type="text"
+                      readonly
+                      class="form-control"
+                      v-model="tipoproducto"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label
+                    >Cantidad
+                    <span style="color: red" v-show="cantidad == 0"
+                      >(*Ingrese)</span
+                    ></label
+                  >
+                  <input
+                    type="number"
+                    value="0"
+                    class="form-control"
+                    v-model="cantidad"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <button
+                    @click="agregarDetalle()"
+                    class="btn btn-success form-control btnagregar"
+                  >
+                    <i class="icon-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row border">
+              <div class="table-responsive col-md-12">
+                <table class="table table-bordered table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>Opciones</th>
+                      <th>Codigo</th>
+                      <th>Tipo Producto</th>
+                      <th>Cantidad</th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="arrayDetalle.length">
+                    <tr
+                      v-for="(detalle, index) in arrayDetalle"
+                      :key="detalle.id"
+                    >
+                      <td>
+                        <input
+                          v-model="detalle.codigo"
+                          type="text"
+                          class="form-control"
+                        />
+                      </td>
+                      <td>
+                        <button
+                          @click="eliminarDetalle(index)"
+                          type="button"
+                          class="btn btn-danger btn-sm"
+                        >
+                          <i class="icon-close"></i>
+                        </button>
+                      </td>
+                      <td v-text="detalle.tipoproducto"></td>
+                      <td>
+                        <span
+                          style="color: red"
+                          v-show="detalle.cantidad > detalle.stock"
+                          >Stock: {{ detalle.stock }}</span
+                        >
+                        <input
+                          v-model="detalle.cantidad"
+                          type="number"
+                          class="form-control"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          v-model="detalle.descripcion"
+                          type="text"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="6">NO hay artículos agregados</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <button
+                  type="button"
+                  @click="ocultarDetalle()"
+                  class="btn btn-secondary"
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="registrarPedido()"
+                >
+                  Registrar Pedido
+                </button>
+              </div>
+            </div>
+          </div>
+        </template>
+        <!-- Fin Detalle-->
+        <!-- Ver ingreso -->
+        <template v-else-if="listado == 2">
+          <div class="card-body">
+            <div class="form-group row border">
+              <div class="col-md-9">
+                <div class="form-group">
+                  <label for="">Codigo de Cliente</label>
+                  <p v-text="codigo"></p>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="form-group">
+                  <label for="">Cliente</label>
+                  <p v-text="cliente"></p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="">Fecha y Hora</label>
+                <p v-text="fecha_hora"></p>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo de Cliente</label>
+                  <p v-text="tipo_cliente"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo de Pago</label>
+                  <p v-text="tipo_pago"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Dirección</label>
+                  <p v-text="direccion"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Telefono</label>
+                  <p v-text="telefono"></p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row border">
+              <div class="table-responsive col-md-12">
+                <table class="table table-bordered table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>Codigo Producto</th>
+                      <th>Tipo Producto</th>
+                      <th>Cantidad</th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="arrayDetalle.length">
+                    <tr v-for="detalle in arrayDetalle" :key="detalle.id">
+                      <td v-text="detalle.codigo"></td>
+                      <td v-text="detalle.tipoproducto"></td>
+                      <td v-text="detalle.cantidad"></td>
+                      <td v-text="detalle.descripcion"></td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="5">NO hay artículos agregados</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <button
+                  type="button"
+                  @click="ocultarDetalle()"
+                  class="btn btn-secondary"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </template>
+        <!-- fin ver ingreso -->
       </div>
-
-      <div>
-        <label>Tipo de Pago:</label>
-        <select v-model="pedido.tipo_pago">
-          <option value="contado">Contado</option>
-          <option value="credito">Crédito</option>
-        </select>
+      <!-- Fin ejemplo de tabla Listado -->
+    </div>
+    <!--Inicio del modal agregar/actualizar-->
+    <div
+      class="modal fade"
+      tabindex="-1"
+      :class="{ mostrar: modal }"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-primary modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" v-text="tituloModal"></h4>
+            <button
+              type="button"
+              class="close"
+              @click="cerrarModal()"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <select class="form-control col-md-3" v-model="criterioA">
+                    <option value="nombre">Nombre</option>
+                    <option value="descripcion">Descripción</option>
+                    <option value="codigo">Código</option>
+                  </select>
+                  <input
+                    type="text"
+                    v-model="buscarA"
+                    @keyup.enter="listarTipoproducto(buscarA, criterioA)"
+                    class="form-control"
+                    placeholder="Texto a buscar"
+                  />
+                  <button
+                    type="submit"
+                    @click="listarTipoproducto(buscarA, criterioA)"
+                    class="btn btn-primary"
+                  >
+                    <i class="fa fa-search"></i> Buscar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>Opciones</th>
+                    <th>Código de Producto</th>
+                    <th>Tipo de Producto</th>
+                    <th>Descripcion</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="tipoproducto in arrayTipoproducto"
+                    :key="tipoproducto.id"
+                  >
+                    <td>
+                      <button
+                        type="button"
+                        @click="agregarDetalleModal(tipoproducto)"
+                        class="btn btn-success btn-sm"
+                      >
+                        <i class="icon-check"></i>
+                      </button>
+                    </td>
+                    <td v-text="tipoproducto.codigo"></td>
+                    <td v-text="tipoproducto.nombre"></td>
+                    <td v-text="tipoproducto.descripcion"></td>
+                    <td>
+                      <div v-if="tipoproducto.condicion">
+                        <span class="badge badge-success">Activo</span>
+                      </div>
+                      <div v-else>
+                        <span class="badge badge-danger">Desactivado</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="cerrarModal()"
+            >
+              Cerrar
+            </button>
+            <button
+              type="button"
+              v-if="tipoAccion == 1"
+              class="btn btn-primary"
+              @click="registrarPersona()"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              v-if="tipoAccion == 2"
+              class="btn btn-primary"
+              @click="actualizarPersona()"
+            >
+              Actualizar
+            </button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
       </div>
-
-      <div>
-        <label>Tipo de Cliente:</label>
-        <select v-model="pedido.tipo_cliente">
-          <option value="tallerista">Tallerista</option>
-          <option value="mayorista">Mayorista</option>
-          <option value="distribuidor">Distribuidor</option>
-          <option value="importador">Importador</option>
-        </select>
-      </div>
-
-      <div v-for="(producto, index) in pedido.productos" :key="index">
-        <label>Tipo de Producto:</label>
-        <select v-model="producto.tipo_producto">
-          <option value="LlantaTubo">Llanta/Tubo</option>
-          <option value="Repuesto">Repuesto</option>
-        </select>
-
-        <label>Código de Producto:</label>
-        <input type="text" v-model="producto.codigo_producto" />
-
-        <label>Cantidad:</label>
-        <input type="number" v-model="producto.cantidad" />
-
-        <label>Precio:</label>
-        <input type="number" v-model="producto.precio" />
-
-        <button @click="removerProducto(index)">Eliminar</button>
-      </div>
-
-      <button @click="agregarProducto">Añadir Producto</button>
-      <button type="submit">Guardar Pedido</button>
-    </form>
-  </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!--Fin del modal-->
+  </main>
 </template>
 
 <script>
+import vSelect from 'vue-select';
 export default {
+  props: ['ruta'],
   data() {
     return {
-      personas: [], // Obtén la lista de personas desde la API
-      pedidos: [], // Aquí se almacenarán los pedidos obtenidos
-      arrayPersona: [],
-      pedido: {
-        persona_id: 0,
-        tipo_pago: 'contado',
-        tipo_cliente: 'tallerista',
-        productos: [
-          {
-            tipo_producto: 'LlantaTubo',
-            codigo_producto: '',
-            cantidad: 0,
-            precio: 0,
-          },
-        ],
+      pedido_id: 0,
+      persona_id: 0,
+      cliente: '',
+      tipo_cliente: 'MAYOREO',
+      tipo_pago: 'CONTADO',
+      codigo: '',
+      direccion: '',
+      telefono: '',
+      fecha_hora: '',
+      arrayPedido: [],
+      arrayCliente: [],
+      arrayDetalle: [],
+      listado: 1,
+      modal: 0,
+      tituloModal: '',
+      tipoAccion: 0,
+      errorPedido: 0,
+      errorMostrarMsjPedido: [],
+      pagination: {
+        total: 0,
+        current_page: 0,
+        per_page: 0,
+        last_page: 0,
+        from: 0,
+        to: 0,
       },
+      offset: 3,
+      criterio: 'fecha_hora',
+      buscar: '',
+      criterioA: 'codigo',
+      buscarA: '',
+      arrayTipoproducto: [],
+      llanta_id: 0,
+      codigo: '',
+      tipoproducto: '',
+      cantidad: 0,
+      descripcion: '',
     };
   },
+  components: {
+    vSelect,
+  },
+  computed: {
+    isActived: function () {
+      return this.pagination.current_page;
+    },
+    //Calcula los elementos de la paginación
+    pagesNumber: function () {
+      if (!this.pagination.to) {
+        return [];
+      }
+
+      var from = this.pagination.current_page - this.offset;
+      if (from < 1) {
+        from = 1;
+      }
+
+      var to = from + this.offset * 2;
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
+
+      var pagesArray = [];
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+      return pagesArray;
+    },
+  },
   methods: {
-    agregarProducto() {
-      this.pedido.productos.push({
-        tipo_producto: 'LlantaTubo',
-        codigo_producto: '',
-        cantidad: 0,
-        precio: 0,
-      });
-    },
-    removerProducto(index) {
-      this.pedido.productos.splice(index, 1);
-    },
-    guardarPedido() {
-      axios
-        .post('/pedidos/registrar', this.pedido)
-        .then((response) => {
-          console.log('Pedido guardado:', response.data);
-          // Puedes redirigir o hacer algo más después de guardar
-        })
-        .catch((error) => {
-          console.error('Error al guardar el pedido:', error);
-          // Maneja los errores aquí
-        });
-    },
-    obtenerPedidos() {
-      axios
-        .get('/pedidos')
-        .then((response) => {
-          this.pedidos = response.data;
-        })
-        .catch((error) => {
-          console.error('Error al obtener los pedidos:', error);
-        });
-    },
-    selectCliente() {
+    listarPedido(page, buscar, criterio) {
       let me = this;
-      var url = '/persona/selectPersona';
+      var url =
+        this.ruta +
+        '/pedido?page=' +
+        page +
+        '&buscar=' +
+        buscar +
+        '&criterio=' +
+        criterio;
       axios
         .get(url)
         .then(function (response) {
           var respuesta = response.data;
-          me.arrayPersona = respuesta.personas;
+          me.arrayPedido = respuesta.pedidos.data;
+          me.pagination = respuesta.pagination;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
+    selectCliente(search, loading) {
+      let me = this;
+      loading(true);
+
+      var url = this.ruta + '/cliente/selectCliente?filtro=' + search;
+      axios
+        .get(url)
+        .then(function (response) {
+          let respuesta = response.data;
+          q: search;
+          me.arrayCliente = respuesta.clientes;
+          loading(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    getDatosCliente(val1) {
+      let me = this;
+      me.loading = true;
+      me.persona_id = val1.id;
+    },
+    buscarTipoproducto() {
+      let me = this;
+      var url =
+        this.ruta +
+        '/tipoproducto/buscarTipoproductoPedido?filtro=' +
+        me.codigo;
+
+      axios
+        .get(url)
+        .then(function (response) {
+          var respuesta = response.data;
+          me.arrayTipoproducto = respuesta.tipoproductos;
+
+          if (me.arrayTipoproducto.length > 0) {
+            me.tipoproducto = me.arrayTipoproducto[0]['tipoproducto'];
+            me.llanta_id = me.arrayTipoproducto[0]['id'];
+            me.descripcion = me.arrayTipoproducto[0]['descripcion'];
+            me.codigo = me.arrayTipoproducto[0]['codigo'];
+          } else {
+            me.tipoproducto = 'No existe artículo';
+            me.llanta_id = 0;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    pdfPedido(id) {
+      window.open(this.ruta + '/pedido/pdf/' + id + ',' + '_blank');
+    },
+    cambiarPagina(page, buscar, criterio) {
+      let me = this;
+      //Actualiza la página actual
+      me.pagination.current_page = page;
+      //Envia la petición para visualizar la data de esa página
+      me.listarPedido(page, buscar, criterio);
+    },
+    encuentra(id) {
+      var sw = 0;
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (this.arrayDetalle[i].llanta_id == id) {
+          sw = true;
+        }
+      }
+      return sw;
+    },
+    eliminarDetalle(index) {
+      let me = this;
+      me.arrayDetalle.splice(index, 1);
+    },
+    agregarDetalle() {
+      let me = this;
+      if (me.llanta_id == 0 || me.cantidad == 0 || me.codigo == 0) {
+      } else {
+        if (me.encuentra(me.llanta_id)) {
+          swal({
+            type: 'error',
+            title: 'Error...',
+            text: 'Ese producto ya se encuentra agregado!',
+          });
+        } else {
+          if (me.cantidad > me.stock) {
+            swal({
+              type: 'error',
+              title: 'Error...',
+              text: 'NO hay stock disponible!',
+            });
+          } else {
+            me.arrayDetalle.push({
+              llanta_id: me.llanta_id,
+              tipoproducto: me.tipoproducto,
+              cantidad: me.cantidad,
+              codigo: me.codigo,
+              descripcion: me.descripcion,
+            });
+            me.codigo = '';
+            me.llanta_id = 0;
+            me.tipoproducto = '';
+            me.cantidad = 0;
+            me.descripcion = 0;
+          }
+        }
+      }
+    },
+    agregarDetalleModal(data = []) {
+      let me = this;
+      if (me.encuentra(data['id'])) {
+        swal({
+          type: 'error',
+          title: 'Error...',
+          text: 'Ese producto ya se encuentra agregado!',
+        });
+      } else {
+        me.arrayDetalle.push({
+          llanta_id: data['id'],
+          tipoproducto: data['tipoproducto'],
+          cantidad: 1,
+          descripcion: data['descripcion'],
+        });
+      }
+    },
+    listarTipoproducto(buscar, criterio) {
+      let me = this;
+      var url =
+        this.ruta +
+        '/tipoproducto/listarTipoproductoPedido?buscar=' +
+        buscar +
+        '&criterio=' +
+        criterio;
+      axios
+        .get(url)
+        .then(function (response) {
+          var respuesta = response.data;
+          me.arrayTipoproducto = respuesta.tipoproductos.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    registrarPedido() {
+      if (this.validarPedido()) {
+        return;
+      }
+
+      let me = this;
+
+      axios
+        .post(this.ruta + '/pedido/registrar', {
+          persona_id: this.persona_id,
+          tipo_cliente: this.tipo_cliente,
+          tipo_pago: this.tipo_pago,
+          fecha_hora: this.fecha_hora,
+          direccion: this.direccion,
+          telefono: this.telefono,
+          data: this.arrayDetalle,
+        })
+        .then(function (response) {
+          me.listado = 1;
+          me.listarPedido(1, '', 'fecha_hora');
+          me.persona_id = 0;
+          me.tipo_cliente = 'MAYOREO';
+          me.tipo_pago = 'CONTADO';
+          me.fecha_hora = '';
+          me.direccion = 0.18;
+          me.telefono = 0.0;
+          me.llanta_id = 0;
+          me.codigo = '';
+          me.tipoproducto = '';
+          me.cantidad = 0;
+          me.descripcion = '';
+          me.arrayDetalle = [];
+          window.open(
+            this.ruta + '/pedido/pdf/' + response.data.id + ',' + '_blank'
+          );
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    validarPedido() {
+      let me = this;
+      me.errorPedido = 0;
+      me.errorMostrarMsjPedido = [];
+      var art;
+
+      if (me.persona_id == 0)
+        me.errorMostrarMsjPedido.push('Seleccione un Cliente');
+      if (me.tipo_cliente == 0)
+        me.errorMostrarMsjPedido.push('Seleccione el tipo de cliente');
+      if (me.arrayDetalle.length <= 0)
+        me.errorMostrarMsjPedido.push('Ingrese detalles');
+
+      if (me.errorMostrarMsjPedido.length) me.errorPedido = 1;
+
+      return me.errorPedido;
+    },
+    mostrarDetalle() {
+      let me = this;
+      me.listado = 0;
+
+      me.persona_id = 0;
+      me.tipo_cliente = 'MAYOREO';
+      me.tipo_pago = 'CONTADO';
+      me.fecha_hora = '';
+      me.direccion = '';
+      me.telefono = '';
+      me.llanta_id = 0;
+      me.codigo = '';
+      me.tipoproducto = '';
+      me.cantidad = 0;
+      me.descripcion = 0;
+      me.arrayDetalle = [];
+    },
+    ocultarDetalle() {
+      this.listado = 1;
+    },
+    verPedido(id) {
+      let me = this;
+      me.listado = 2;
+
+      //Obtener los datos del ingreso
+      var arrayPedidoT = [];
+      var url = this.ruta + '/pedido/obtenerCabecera?id=' + id;
+
+      axios
+        .get(url)
+        .then(function (response) {
+          var respuesta = response.data;
+          arrayPedidoT = respuesta.pedido;
+
+          me.persona_id = arrayPedidoT[0]['nombre'];
+          me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+          me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
+          me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
+          me.direccion = arrayPedidoT[0]['direccion'];
+          me.telefono = arrayPedidoT[0]['telefono'];
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      //Obtener los datos de los detalles
+      var urld = '/pedido/obtenerDetalles?id=' + id;
+
+      axios
+        .get(urld)
+        .then(function (response) {
+          console.log(response);
+          var respuesta = response.data;
+          me.arrayDetalle = respuesta.detalles;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    cerrarModal() {
+      this.modal = 0;
+      this.tituloModal = '';
+    },
+    abrirModal() {
+      this.arrayTipoproducto = [];
+      this.modal = 1;
+      this.tituloModal = 'Seleccione uno o varios productos';
+    },
+    desactivarPedido(id) {
+      swal({
+        title: 'Esta seguro de anular este pedido?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar!',
+        cancelButtonText: 'Cancelar',
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false,
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.value) {
+          let me = this;
+
+          axios
+            .put(this.ruta + '/pedido/desactivar', {
+              id: id,
+            })
+            .then(function (response) {
+              me.listarPedido(1, '', 'fecha_hora');
+              swal(
+                'Anulado!',
+                'El pedido ha sido anulado con éxito.',
+                'success'
+              );
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else if (
+          // Read more about handling dismissals
+          result.dismiss === swal.DismissReason.cancel
+        ) {
+        }
+      });
+    },
   },
   mounted() {
-    this.obtenerPedidos();
-    // Obtén la lista de personas desde la API
-    this.selectCliente();
+    this.listarPedido(1, this.buscar, this.criterio);
   },
 };
 </script>
+<style>
+.modal-content {
+  width: 100% !important;
+  position: absolute !important;
+}
+.mostrar {
+  display: list-item !important;
+  opacity: 1 !important;
+  position: absolute !important;
+  background-color: #3c29297a !important;
+}
+.div-error {
+  display: flex;
+  justify-content: center;
+}
+.text-error {
+  color: red !important;
+  font-weight: bold;
+}
+@media (min-width: 600px) {
+  .btnagregar {
+    margin-top: 2rem;
+  }
+}
+</style>

@@ -3,36 +3,197 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Pedido;
-use App\PedidoProducto;
+use App\DetallePedido;
+use App\User;
+use App\Notifications\NotifyAdmin;
 
 class PedidoController extends Controller
 {
-    public function store(Request $request)
+    public function index(Request $request)
     {
-        $pedido = Pedido::create([
-            'persona_id' => $request->persona_id,
-            'tipo_pago' => $request->tipo_pago,
-            'tipo_cliente' => $request->tipo_cliente,
-        ]);
+        if (!$request->ajax()) return redirect('/');
 
-        foreach ($request->productos as $producto) {
-            PedidoProducto::create([
-                'pedido_id' => $pedido->id,
-                'codigo_producto' => $producto['codigo_producto'],
-                'tipo_producto' => $producto['tipo_producto'],
-                'cantidad' => $producto['cantidad'],
-                'precio' => $producto['precio'],
-            ]);
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+
+        if ($buscar == '') {
+            $pedidos = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
+                ->select(
+                    'pedidos.id',
+                    'tipo_pago',
+                    'tipo_cliente',
+                    'pedidos.fecha_hora',
+                    'pedidos.estado',
+                    'personas.nombre',
+                    'personas.codigo'
+                )
+                ->orderBy('pedidos.id', 'desc')->paginate(3);
+        } else {
+            $pedidos = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
+                ->select(
+                    'pedidos.id',
+                    'tipo_pago',
+                    'tipo_cliente',
+                    'pedidos.fecha_hora',
+                    'pedidos.estado',
+                    'personas.nombre',
+                    'personas.codigo'
+                )
+                ->where('pedidos.' . $criterio, 'like', '%' . $buscar . '%')
+                ->orderBy('pedidos.id', 'desc')->paginate(3);
         }
 
-        return response()->json($pedido);
+        return [
+            'pagination' => [
+                'total'        => $pedidos->total(),
+                'current_page' => $pedidos->currentPage(),
+                'per_page'     => $pedidos->perPage(),
+                'last_page'    => $pedidos->lastPage(),
+                'from'         => $pedidos->firstItem(),
+                'to'           => $pedidos->lastItem(),
+            ],
+            'pedidos' => $pedidos
+        ];
+    }
+    public function obtenerCabecera(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+        $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
+            ->select(
+                'pedidos.id',
+                'tipo_pago',
+                'tipo_cliente',
+                'pedidos.fecha_hora',
+                'pedidos.estado',
+                'personas.nombre',
+                'personas.codigo'
+            )
+            ->where('pedidos.id', '=', $id)
+            ->orderBy('pedidos.id', 'desc')->take(1)->get();
+
+        return ['pedido' => $pedido];
+    }
+    public function obtenerDetalles(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+        $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
+            ->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
+            ->select(
+                'detalle_pedidos.cantidad',
+                'llantas.tipoproducto as tipoproducto',
+                'repuestos.nombre'
+            )
+            ->where('detalle_pedidos.pedido_id', '=', $id)
+            ->orderBy('detalle_pedidos.id', 'desc')->get();
+
+        return ['detalles' => $detalles];
+    }
+    public function pdf(Request $request, $id)
+    {
+        $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
+            ->select(
+                'pedidos.id',
+                'pedidos.tipo_pago',
+                'pedidos.tipo_cliente',
+                'pedidos.estado',
+                'personas.nombre',
+                'personas.direccion',
+                'personas.telefono',
+                'personas.codigo'
+
+            )
+            ->where('pedidos.id', '=', $id)
+            ->orderBy('pedidos.id', 'desc')->take(1)->get();
+
+        $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
+            ->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
+            ->select(
+                'detalle_pedidos.cantidad',
+                'llantas.tipoproducto as tipoproducto',
+                'llantas.descripcion',
+                'repuestos.nombre',
+                'repuestos.descripcion'
+            )
+            ->where('detalle_pedidos.pedido_id', '=', $id)
+            ->orderBy('detalle_pedidos.id', 'desc')->get();
+
+        $numpedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
+            ->select('personas.codigo')->where('id', $id)->get();
+
+        $pdf = \PDF::loadView('pdf.pedido', ['pedido' => $pedido, 'detalles' => $detalles]);
+        return $pdf->download('pedido-' . $numpedido[0]->codigo . '.pdf');
     }
 
-    // Método para obtener la lista de pedidos
-    public function index()
+    public function store(Request $request)
     {
-        $pedidos = Pedido::with('productos')->get();
-        return response()->json($pedidos);
+        if (!$request->ajax()) return redirect('/');
+
+        try {
+            DB::beginTransaction();
+
+            $pedido = new Pedido();
+            $pedido->persona_id = $request->persona_id;
+            $pedido->tipo_pago = $request->tipo_pago;
+            $pedido->tipo_cliente = $request->tipo_cliente;
+            $pedido->direccion = $request->direccion;
+            $pedido->telefono = $request->telefono;
+            $pedido->fecha_hora = $mytime->toDateString();
+            $pedido->estado = 'Registrado';
+            $pedido->save();
+
+            $detalles = $request->data; //Array de detalles
+            //Recorro todos los elementos
+
+            foreach ($detalles as $ep => $det) {
+                $detalle = new DetallePedido();
+                $detalle->pedido_id = $pedido->id;
+                $detalle->llanta_id = $det['llanta_id'];
+                $detalle->repuesto_id = $det['repuesto_id'];
+                $detalle->cantidad = $det['cantidad'];
+                $detalle->save();
+            }
+
+            $fechaActual = date('Y-m-d');
+            $numPedidos = DB::table('pedidos')->whereDate('created_at', $fechaActual)->count();
+            $numIngresos = DB::table('ingresos')->whereDate('created_at', $fechaActual)->count();
+
+            $arregloDatos = [
+                'pedidos' => [
+                    'numero' => $numPedidos,
+                    'msj' => 'Pedidos'
+                ],
+                'ingresos' => [
+                    'numero' => $numIngresos,
+                    'msj' => 'Ingresos'
+                ]
+            ];
+            $allUsers = User::all();
+
+            foreach ($allUsers as $notificar) {
+                User::findOrFail($notificar->id)->notify(new NotifyAdmin($arregloDatos));
+            }
+
+            DB::commit();
+            return [
+                'id' => $pedido->id
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+
+    public function desactivar(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->estado = 'Anulado';
+        $pedido->save();
     }
 }

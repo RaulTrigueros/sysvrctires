@@ -47,12 +47,12 @@ class ClienteController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         $filtro = $request->filtro;
-        $clientes = Persona::where('codigo', 'like', '%' . $filtro . '%')
-            ->orWhere('nombre', 'like', '%' . $filtro . '%')
+        $clientes = Persona::where('nombre', 'like', '%' . $filtro . '%')
+            ->orWhere('codigo', 'like', '%' . $filtro . '%')
             ->select('id', 'codigo', 'nombre')
             ->orderBy('nombre', 'asc')->get();
 
-        return ['personas' => $clientes];
+        return ['clientes' => $clientes];
     }
 
     public function store(Request $request)

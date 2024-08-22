@@ -1,0 +1,25 @@
+{
+  "folders": [
+	{
+		"name": "sysvrctires",
+		"path": "."
+	},
+	{
+		"name": "app.tacachico.gob.sv",
+		"path": "D:/01-Documentación de Unidad de Desarrollo Informático/01- Desarrollo de Sistemas Informáticos/app.tacachico.gob.sv"
+	},
+	{
+		"name": "ConsumoEnergiaElectrica_produccion",
+		"path": "D:/01-Documentación de Unidad de Desarrollo Informático/01- Desarrollo de Sistemas Informáticos/ConsumoEnergiaElectrica_produccion"
+	},
+	{
+		"name": "developer-combustible",
+		"path": "D:/01-Documentación de Unidad de Desarrollo Informático/01- Desarrollo de Sistemas Informáticos/developer-combustible"
+	},
+	{
+		"name": "sistema",
+		"path": "../sistema"
+	}
+],
+  "settings": {}
+}

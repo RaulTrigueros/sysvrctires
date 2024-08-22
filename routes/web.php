@@ -71,10 +71,17 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::get('/cliente/selectCliente', 'ClienteController@selectCliente');
 
     //MÓDULO DE PEDIDO
-    Route::resource('pedidos', PedidoController::class);
+    Route::get('/pedido', 'PedidoController@index');
+    Route::post('/pedido/registrar', 'PedidoController@store');
+    Route::put('/pedido/desactivar', 'PedidoController@desactivar');
+    Route::get('/pedido/obtenerCabecera', 'PedidoController@obtenerCabecera');
+    Route::get('/pedido/obtenerDetalles', 'PedidoController@obtenerDetalles');
+    Route::get('/pedido/pdf/{id}', 'PedidoController@pdf')->name('pedido_pdf');
+
+    /*Route::resource('pedidos', PedidoController::class);
     Route::get('/pedidos', [PedidoController::class, 'index']);
     Route::post('/pedidos/registrar', [PedidoController::class, 'store']);
-    Route::get('/personas', [ClienteController::class, 'index']);
+    Route::get('/personas', [ClienteController::class, 'index']);*/
 
 
     Route::get('/persona/selectPersona', 'ClienteController@selectCliente');
