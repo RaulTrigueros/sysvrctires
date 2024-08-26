@@ -70,6 +70,7 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::put('/cliente/eliminar', 'ClienteController@destroy');
     Route::get('/cliente/selectCliente', 'ClienteController@selectCliente');
 
+
     //MÓDULO DE PEDIDO
     Route::get('/pedido', 'PedidoController@index');
     Route::post('/pedido/registrar', 'PedidoController@store');
@@ -103,6 +104,8 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::post('/llanta/registrar', 'LlantaController@store');
     Route::put('/llanta/actualizar', 'LlantaController@update');
     Route::put('/llanta/eliminar', 'LlantaController@destroy');
+    Route::get('/llanta/buscarTipoproductoPedido', 'LlantaController@buscarTipoproductoPedido');
+    Route::get('/llanta/listarTipoproductoPedido', 'LlantaController@listarTipoproductoPedido');
 
     //GESTION DE REPUESTOS
     Route::get('/repuesto/selectRepuesto', 'RepuestoController@selectRepuesto');

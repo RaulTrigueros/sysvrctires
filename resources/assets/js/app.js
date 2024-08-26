@@ -42,7 +42,7 @@ const app = new Vue({
     el: '#app',
     data: {
         menu: 0,
-        idProyecto: 0
+        idProyecto: 0,
     }
 });
 export default app;

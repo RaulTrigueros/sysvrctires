@@ -14,7 +14,7 @@
             @click="mostrarDetalle()"
             class="btn btn-secondary"
           >
-            <i class="icon-plus"></i>&nbsp;Nuevo
+            <i class="fa fa-plus-square"></i>&nbsp;Nuevo
           </button>
         </div>
         <!-- Listado-->
@@ -151,12 +151,13 @@
         <!-- Detalle-->
         <template v-else-if="listado == 0">
           <div class="card-body">
+            <!-- Inicio cabecera-->
             <div class="form-group row border">
               <div class="col-md-9">
                 <div class="form-group">
                   <label for="">Cliente(*)</label>
                   <v-select
-                    :on-search="selectCliente"
+                    :search="selectCliente"
                     label="nombre"
                     :options="arrayCliente"
                     placeholder="Buscar Clientes..."
@@ -211,6 +212,9 @@
                 </div>
               </div>
             </div>
+            <!--FIN cabecera-->
+
+            <!--INICIO Obtener Detalle-->
             <div class="form-group row border">
               <div class="col-md-4">
                 <div class="form-group">
@@ -225,7 +229,7 @@
                       type="text"
                       class="form-control"
                       v-model="codigo"
-                      @keyup.enter="buscarProducto()"
+                      @keyup.enter="buscarTipoproducto()"
                       placeholder="Ingrese Producto"
                     />
                     <button @click="abrirModal()" class="btn btn-primary">
@@ -262,11 +266,12 @@
                     @click="agregarDetalle()"
                     class="btn btn-success form-control btnagregar"
                   >
-                    <i class="icon-plus"></i>
+                    <i class="fa fa-plus-square"></i>
                   </button>
                 </div>
               </div>
             </div>
+            <!--FIN Obtener Detalle-->
             <div class="form-group row border">
               <div class="table-responsive col-md-12">
                 <table class="table table-bordered table-striped table-sm">
@@ -364,7 +369,7 @@
               <div class="col-md-9">
                 <div class="form-group">
                   <label for="">Cliente</label>
-                  <p v-text="cliente"></p>
+                  <p v-text="nombre"></p>
                 </div>
               </div>
               <div class="col-md-3">
@@ -468,8 +473,9 @@
               <div class="col-md-6">
                 <div class="input-group">
                   <select class="form-control col-md-3" v-model="criterioA">
-                    <option value="nombre">Nombre</option>
+                    <option value="tipoproducto">Tipo de Producto</option>
                     <option value="descripcion">Descripción</option>
+                    <option value="medida">Medida</option>
                     <option value="codigo">Código</option>
                   </select>
                   <input
@@ -511,7 +517,7 @@
                         @click="agregarDetalleModal(tipoproducto)"
                         class="btn btn-success btn-sm"
                       >
-                        <i class="icon-check"></i>
+                        <i class="fa fa-check"></i>
                       </button>
                     </td>
                     <td v-text="tipoproducto.codigo"></td>
@@ -572,7 +578,7 @@ export default {
     return {
       pedido_id: 0,
       persona_id: 0,
-      cliente: '',
+      nombre: '',
       tipo_cliente: 'MAYOREO',
       tipo_pago: 'CONTADO',
       codigo: '',
@@ -607,6 +613,7 @@ export default {
       tipoproducto: '',
       cantidad: 0,
       descripcion: '',
+      medida: '',
     };
   },
   components: {
@@ -687,21 +694,20 @@ export default {
     buscarTipoproducto() {
       let me = this;
       var url =
-        this.ruta +
-        '/tipoproducto/buscarTipoproductoPedido?filtro=' +
-        me.codigo;
+        this.ruta + '/llanta/buscarTipoproductoPedido?filtro=' + me.codigo;
 
       axios
         .get(url)
         .then(function (response) {
           var respuesta = response.data;
-          me.arrayTipoproducto = respuesta.tipoproductos;
+          me.arrayTipoproducto = respuesta.llantas;
 
           if (me.arrayTipoproducto.length > 0) {
+            me.codigo = me.arrayTipoproducto[0]['codigo'];
             me.tipoproducto = me.arrayTipoproducto[0]['tipoproducto'];
             me.llanta_id = me.arrayTipoproducto[0]['id'];
             me.descripcion = me.arrayTipoproducto[0]['descripcion'];
-            me.codigo = me.arrayTipoproducto[0]['codigo'];
+            me.medida = me.arrayTipoproducto[0]['medida'];
           } else {
             me.tipoproducto = 'No existe artículo';
             me.llanta_id = 0;
@@ -789,7 +795,7 @@ export default {
       let me = this;
       var url =
         this.ruta +
-        '/tipoproducto/listarTipoproductoPedido?buscar=' +
+        '/llanta/listarTipoproductoPedido?buscar=' +
         buscar +
         '&criterio=' +
         criterio;
@@ -797,7 +803,7 @@ export default {
         .get(url)
         .then(function (response) {
           var respuesta = response.data;
-          me.arrayTipoproducto = respuesta.tipoproductos.data;
+          me.arrayTipoproducto = respuesta.llantas.data;
         })
         .catch(function (error) {
           console.log(error);

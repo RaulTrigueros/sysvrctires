@@ -2250,10 +2250,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['ruta'],
   data: function data() {
-    return _defineProperty(_defineProperty(_defineProperty(_defineProperty({
+    return _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({
       pedido_id: 0,
       persona_id: 0,
-      cliente: '',
+      nombre: '',
       tipo_cliente: 'MAYOREO',
       tipo_pago: 'CONTADO',
       codigo: '',
@@ -2284,7 +2284,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       buscarA: '',
       arrayTipoproducto: [],
       llanta_id: 0
-    }, "codigo", ''), "tipoproducto", ''), "cantidad", 0), "descripcion", '');
+    }, "codigo", ''), "tipoproducto", ''), "cantidad", 0), "descripcion", ''), "medida", '');
   },
   components: {
     vSelect: vue_select__WEBPACK_IMPORTED_MODULE_0___default.a
@@ -2346,15 +2346,16 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     },
     buscarTipoproducto: function buscarTipoproducto() {
       var me = this;
-      var url = this.ruta + '/tipoproducto/buscarTipoproductoPedido?filtro=' + me.codigo;
+      var url = this.ruta + '/llanta/buscarTipoproductoPedido?filtro=' + me.codigo;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayTipoproducto = respuesta.tipoproductos;
+        me.arrayTipoproducto = respuesta.llantas;
         if (me.arrayTipoproducto.length > 0) {
+          me.codigo = me.arrayTipoproducto[0]['codigo'];
           me.tipoproducto = me.arrayTipoproducto[0]['tipoproducto'];
           me.llanta_id = me.arrayTipoproducto[0]['id'];
           me.descripcion = me.arrayTipoproducto[0]['descripcion'];
-          me.codigo = me.arrayTipoproducto[0]['codigo'];
+          me.medida = me.arrayTipoproducto[0]['medida'];
         } else {
           me.tipoproducto = 'No existe artículo';
           me.llanta_id = 0;
@@ -2439,10 +2440,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     },
     listarTipoproducto: function listarTipoproducto(buscar, criterio) {
       var me = this;
-      var url = this.ruta + '/tipoproducto/listarTipoproductoPedido?buscar=' + buscar + '&criterio=' + criterio;
+      var url = this.ruta + '/llanta/listarTipoproductoPedido?buscar=' + buscar + '&criterio=' + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayTipoproducto = respuesta.tipoproductos.data;
+        me.arrayTipoproducto = respuesta.llantas.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -4533,7 +4534,7 @@ var render = function render() {
       }
     }
   }, [_c("i", {
-    staticClass: "icon-plus"
+    staticClass: "fa fa-plus-square"
   }), _vm._v(" Nuevo\n        ")])]), _vm._v(" "), _vm.listado == 1 ? [_c("div", {
     staticClass: "card-body"
   }, [_c("div", {
@@ -4740,7 +4741,7 @@ var render = function render() {
     }
   }, [_vm._v("Cliente(*)")]), _vm._v(" "), _c("v-select", {
     attrs: {
-      "on-search": _vm.selectCliente,
+      search: _vm.selectCliente,
       label: "nombre",
       options: _vm.arrayCliente,
       placeholder: "Buscar Clientes...",
@@ -4957,7 +4958,7 @@ var render = function render() {
     on: {
       keyup: function keyup($event) {
         if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-        return _vm.buscarProducto();
+        return _vm.buscarTipoproducto();
       },
       input: function input($event) {
         if ($event.target.composing) return;
@@ -5039,7 +5040,7 @@ var render = function render() {
       }
     }
   }, [_c("i", {
-    staticClass: "icon-plus"
+    staticClass: "fa fa-plus-square"
   })])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row border"
   }, [_c("div", {
@@ -5186,7 +5187,7 @@ var render = function render() {
     }
   }, [_vm._v("Cliente")]), _vm._v(" "), _c("p", {
     domProps: {
-      textContent: _vm._s(_vm.cliente)
+      textContent: _vm._s(_vm.nombre)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-3"
@@ -5342,13 +5343,17 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      value: "nombre"
+      value: "tipoproducto"
     }
-  }, [_vm._v("Nombre")]), _vm._v(" "), _c("option", {
+  }, [_vm._v("Tipo de Producto")]), _vm._v(" "), _c("option", {
     attrs: {
       value: "descripcion"
     }
   }, [_vm._v("Descripción")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "medida"
+    }
+  }, [_vm._v("Medida")]), _vm._v(" "), _c("option", {
     attrs: {
       value: "codigo"
     }
@@ -5407,7 +5412,7 @@ var render = function render() {
         }
       }
     }, [_c("i", {
-      staticClass: "icon-check"
+      staticClass: "fa fa-check"
     })])]), _vm._v(" "), _c("td", {
       domProps: {
         textContent: _vm._s(tipoproducto.codigo)

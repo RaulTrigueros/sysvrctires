@@ -17,7 +17,7 @@ class LlantaController extends Controller
 
     public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
@@ -107,5 +107,51 @@ class LlantaController extends Controller
 
         $this->bitacoraService->store('Eliminación de registro', 'Llanta');
         return "Éxito";
+    }
+
+    public function listarTipoproductoPedido(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+
+        if ($buscar == '') {
+            $llantas = Llanta::select(
+                'llantas.id',
+                'llantas.codigo',
+                'llantas.tipoproducto',
+                'llantas.medida',
+                'llantas.precio',
+                'llantas.descripcion'
+            )
+                ->orderBy('llantas.id', 'desc')->paginate(10);
+        } else {
+            $llantas = Llanta::select(
+                'llantas.id',
+                'llantas.codigo',
+                'llantas.tipoproducto',
+                'llantas.medida',
+                'llantas.precio',
+                'llantas.descripcion'
+            )
+                ->Where('llantas.' . $criterio, 'like', '%' . $buscar . '%')
+                ->orderBy('llantas.id', 'desc')->paginate(10);
+        }
+
+        return ['llantas' => $llantas];
+    }
+
+    public function buscarTipoproductoPedido(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $filtro = $request->filtro;
+        $llantas = Llanta::where('codigo', '=', $filtro)
+            ->select('id', 'codigo', 'tipoproducto', 'medida', 'descripcion')
+            ->orderBy('codigo', 'asc')
+            ->take(1)->get();
+
+        return ['llantas' => $llantas];
     }
 }

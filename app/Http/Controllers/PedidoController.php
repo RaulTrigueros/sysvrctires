@@ -66,12 +66,13 @@ class PedidoController extends Controller
         $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'tipo_pago',
-                'tipo_cliente',
+                'pedido.tipo_pago',
+                'pedidos.tipo_cliente',
                 'pedidos.fecha_hora',
-                'pedidos.estado',
                 'personas.nombre',
-                'personas.codigo'
+                'personas.codigo',
+                'personas.direccion',
+                'personas.telefono'
             )
             ->where('pedidos.id', '=', $id)
             ->orderBy('pedidos.id', 'desc')->take(1)->get();
