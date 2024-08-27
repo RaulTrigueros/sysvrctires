@@ -2432,6 +2432,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       } else {
         me.arrayDetalle.push({
           llanta_id: data['id'],
+          codigo: data['codigo'],
           tipoproducto: data['tipoproducto'],
           cantidad: 1,
           descripcion: data['descripcion']
@@ -4513,9 +4514,7 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("main", {
-    staticClass: "main"
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
+  return _c("main", {}, [_vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "container-fluid"
   }, [_c("div", {
     staticClass: "card"
@@ -4629,7 +4628,7 @@ var render = function render() {
         }
       }
     }, [_c("i", {
-      staticClass: "icon-eye"
+      staticClass: "fa fa-eye"
     })]), _vm._v("\n                     \n                    "), _c("button", {
       staticClass: "btn btn-info btn-sm",
       attrs: {
@@ -4641,7 +4640,7 @@ var render = function render() {
         }
       }
     }, [_c("i", {
-      staticClass: "icon-doc"
+      staticClass: "fa fa-file-pdf-o"
     })]), _vm._v("\n                     \n                    "), pedido.estado == "Registrado" ? [_c("button", {
       staticClass: "btn btn-danger btn-sm",
       attrs: {
@@ -4653,7 +4652,7 @@ var render = function render() {
         }
       }
     }, [_c("i", {
-      staticClass: "icon-trash"
+      staticClass: "fa fa-trash"
     })])] : _vm._e()], 2), _vm._v(" "), _c("td", {
       domProps: {
         textContent: _vm._s(pedido.codigo)
@@ -4950,7 +4949,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "text",
-      placeholder: "Ingrese Producto"
+      placeholder: "Ingrese Codigo"
     },
     domProps: {
       value: _vm.codigo
@@ -4994,6 +4993,57 @@ var render = function render() {
       }
     }
   })])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("Precio")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.precio,
+      expression: "precio"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "number",
+      readonly: "",
+      step: "any"
+    },
+    domProps: {
+      value: _vm.precio
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.precio = $event.target.value;
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-2"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("Descripcion")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.descripcion,
+      expression: "descripcion"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.descripcion
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.descripcion = $event.target.value;
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-2"
   }, [_c("div", {
     staticClass: "form-group"
@@ -5050,27 +5100,11 @@ var render = function render() {
   }, [_vm._m(2), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle, index) {
     return _c("tr", {
       key: detalle.id
-    }, [_c("td", [_c("input", {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: detalle.codigo,
-        expression: "detalle.codigo"
-      }],
-      staticClass: "form-control",
-      attrs: {
-        type: "text"
-      },
-      domProps: {
-        value: detalle.codigo
-      },
-      on: {
-        input: function input($event) {
-          if ($event.target.composing) return;
-          _vm.$set(detalle, "codigo", $event.target.value);
-        }
+    }, [_c("td", {
+      staticStyle: {
+        "text-align": "center"
       }
-    })]), _vm._v(" "), _c("td", [_c("button", {
+    }, [_c("button", {
       staticClass: "btn btn-danger btn-sm",
       attrs: {
         type: "button"
@@ -5081,22 +5115,26 @@ var render = function render() {
         }
       }
     }, [_c("i", {
-      staticClass: "icon-close"
+      staticClass: "fa fa-close"
     })])]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      },
+      domProps: {
+        textContent: _vm._s(detalle.codigo)
+      }
+    }), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      },
       domProps: {
         textContent: _vm._s(detalle.tipoproducto)
       }
-    }), _vm._v(" "), _c("td", [_c("span", {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: detalle.cantidad > detalle.stock,
-        expression: "detalle.cantidad > detalle.stock"
-      }],
+    }), _vm._v(" "), _c("td", {
       staticStyle: {
-        color: "red"
+        "text-align": "center"
       }
-    }, [_vm._v("Stock: " + _vm._s(detalle.stock))]), _vm._v(" "), _c("input", {
+    }, [_c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -5104,6 +5142,9 @@ var render = function render() {
         expression: "detalle.cantidad"
       }],
       staticClass: "form-control",
+      staticStyle: {
+        "text-align": "center"
+      },
       attrs: {
         type: "number"
       },
@@ -5116,27 +5157,14 @@ var render = function render() {
           _vm.$set(detalle, "cantidad", $event.target.value);
         }
       }
-    })]), _vm._v(" "), _c("td", [_c("input", {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: detalle.descripcion,
-        expression: "detalle.descripcion"
-      }],
-      staticClass: "form-control",
-      attrs: {
-        type: "text"
+    })]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
       },
       domProps: {
-        value: detalle.descripcion
-      },
-      on: {
-        input: function input($event) {
-          if ($event.target.composing) return;
-          _vm.$set(detalle, "descripcion", $event.target.value);
-        }
+        textContent: _vm._s(detalle.descripcion)
       }
-    })])]);
+    })]);
   }), 0) : _c("tbody", [_vm._m(3)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
@@ -5419,7 +5447,7 @@ var render = function render() {
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
-        textContent: _vm._s(tipoproducto.nombre)
+        textContent: _vm._s(tipoproducto.tipoproducto)
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
@@ -5483,7 +5511,27 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Codigo")]), _vm._v(" "), _c("th", [_vm._v("Tipo Producto")]), _vm._v(" "), _c("th", [_vm._v("Cantidad")]), _vm._v(" "), _c("th", [_vm._v("Descripción")])])]);
+  return _c("thead", [_c("tr", [_c("th", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("Opciones")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("Codigo")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("Tipo Producto")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("Cantidad")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("Descripción")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

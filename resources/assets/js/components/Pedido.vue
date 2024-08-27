@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <main class="">
     <!-- Breadcrumb -->
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Escritorio</a></li>
@@ -66,7 +66,7 @@
                         @click="verPedido(pedido.id)"
                         class="btn btn-success btn-sm"
                       >
-                        <i class="icon-eye"></i>
+                        <i class="fa fa-eye"></i>
                       </button>
                       &nbsp;
                       <button
@@ -74,7 +74,7 @@
                         @click="pdfPedido(pedido.id)"
                         class="btn btn-info btn-sm"
                       >
-                        <i class="icon-doc"></i>
+                        <i class="fa fa-file-pdf-o"></i>
                       </button>
                       &nbsp;
                       <template v-if="pedido.estado == 'Registrado'">
@@ -83,7 +83,7 @@
                           class="btn btn-danger btn-sm"
                           @click="desactivarPedido(pedido.id)"
                         >
-                          <i class="icon-trash"></i>
+                          <i class="fa fa-trash"></i>
                         </button>
                       </template>
                     </td>
@@ -230,7 +230,7 @@
                       class="form-control"
                       v-model="codigo"
                       @keyup.enter="buscarTipoproducto()"
-                      placeholder="Ingrese Producto"
+                      placeholder="Ingrese Codigo"
                     />
                     <button @click="abrirModal()" class="btn btn-primary">
                       ...
@@ -242,6 +242,33 @@
                       v-model="tipoproducto"
                     />
                   </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label
+                    >Precio</label
+                  >
+                  <input
+                    type="number"
+                    readonly
+                    step="any"
+                    class="form-control"
+                    v-model="precio"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label
+                    >Descripcion</label
+                  >
+                  <input
+                    type="text"
+                    readonly
+                    class="form-control"
+                    v-model="descripcion"
+                  />
                 </div>
               </div>
               <div class="col-md-2">
@@ -277,11 +304,11 @@
                 <table class="table table-bordered table-striped table-sm">
                   <thead>
                     <tr>
-                      <th>Opciones</th>
-                      <th>Codigo</th>
-                      <th>Tipo Producto</th>
-                      <th>Cantidad</th>
-                      <th>Descripción</th>
+                      <th style="text-align: center;">Opciones</th>
+                      <th style="text-align: center;">Codigo</th>
+                      <th style="text-align: center;">Tipo Producto</th>
+                      <th style="text-align: center;">Cantidad</th>
+                      <th style="text-align: center;">Descripción</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -289,42 +316,34 @@
                       v-for="(detalle, index) in arrayDetalle"
                       :key="detalle.id"
                     >
-                      <td>
-                        <input
-                          v-model="detalle.codigo"
-                          type="text"
-                          class="form-control"
-                        />
-                      </td>
-                      <td>
+                      <td style="text-align: center">
                         <button
                           @click="eliminarDetalle(index)"
                           type="button"
                           class="btn btn-danger btn-sm"
                         >
-                          <i class="icon-close"></i>
+                          <i class="fa fa-close"></i>
                         </button>
                       </td>
-                      <td v-text="detalle.tipoproducto"></td>
-                      <td>
-                        <span
-                          style="color: red"
-                          v-show="detalle.cantidad > detalle.stock"
-                          >Stock: {{ detalle.stock }}</span
-                        >
-                        <input
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.codigo"
+                      ></td>
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.tipoproducto"
+                      ></td>
+                      <td style="text-align: center">
+                        <input style="text-align: center;"
                           v-model="detalle.cantidad"
                           type="number"
                           class="form-control"
                         />
                       </td>
-                      <td>
-                        <input
-                          v-model="detalle.descripcion"
-                          type="text"
-                          class="form-control"
-                        />
-                      </td>
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.descripcion"
+                      ></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -521,7 +540,7 @@
                       </button>
                     </td>
                     <td v-text="tipoproducto.codigo"></td>
-                    <td v-text="tipoproducto.nombre"></td>
+                    <td v-text="tipoproducto.tipoproducto"></td>
                     <td v-text="tipoproducto.descripcion"></td>
                     <td>
                       <div v-if="tipoproducto.condicion">
@@ -785,6 +804,7 @@ export default {
       } else {
         me.arrayDetalle.push({
           llanta_id: data['id'],
+          codigo: data['codigo'],
           tipoproducto: data['tipoproducto'],
           cantidad: 1,
           descripcion: data['descripcion'],
