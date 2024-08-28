@@ -167,6 +167,18 @@
                 </div>
               </div>
               <div class="col-md-4">
+                <label for="">Codigo de Cliente</label>
+                <input type="text" readonly class="form-control" v-model="codigo" />
+              </div>
+              <div class="col-md-4">
+                <label for="">Direccion</label>
+                <input type="text" readonly class="form-control" v-model="direccion" />
+              </div>
+              <div class="col-md-4">
+                <label for="">Telefono</label>
+                <input type="text" readonly class="form-control" v-model="telefono" />
+              </div>
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>Tipo Cliente</label>
                   <select class="form-control" v-model="tipo_cliente">
@@ -188,19 +200,11 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <label for="">Fecha</label>
                 <input type="date" class="form-control" v-model="fecha_hora" />
               </div>
-              <div class="col-md-3">
-                <label for="">Direccion</label>
-                <input type="text" class="form-control" v-model="direccion" />
-              </div>
-              <div class="col-md-3">
-                <label for="">Telefono</label>
-                <input type="text" class="form-control" v-model="telefono" />
-              </div>
-              <div class="col-md-12">
+              <!--<div class="col-md-12">
                 <div v-show="errorPedido" class="form-group row div-error">
                   <div class="text-center text-error">
                     <div
@@ -210,13 +214,13 @@
                     ></div>
                   </div>
                 </div>
-              </div>
+              </div>-->
             </div>
             <!--FIN cabecera-->
 
             <!--INICIO Obtener Detalle-->
             <div class="form-group row border">
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label
                     >Producto
@@ -232,16 +236,48 @@
                       @keyup.enter="buscarTipoproducto()"
                       placeholder="Ingrese Codigo"
                     />
-                    <button @click="abrirModal()" class="btn btn-primary">
+                    <label
+                    >Cantidad
+                    <span style="color: red" v-show="cantidad == 0"
+                      >(*Ingrese)</span
+                    ></label
+                    >
+                    <input
+                      type="number"
+                      value="0"
+                      class="form-control"
+                      v-model="cantidad"
+                    />
+                    <button @click="abrirModal()" class="btn btn-secondary">
                       ...
                     </button>
-                    <input
-                      type="text"
-                      readonly
-                      class="form-control"
-                      v-model="tipoproducto"
-                    />
                   </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label
+                    >Tipo Producto</label
+                  >
+                  <input
+                    type="text"
+                    readonly
+                    class="form-control"
+                    v-model="tipoproducto"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label
+                    >Medida</label
+                  >
+                  <input
+                    type="text"
+                    readonly
+                    class="form-control"
+                    v-model="medida"
+                  />
                 </div>
               </div>
               <div class="col-md-2">
@@ -258,7 +294,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label
                     >Descripcion</label
@@ -271,23 +307,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label
-                    >Cantidad
-                    <span style="color: red" v-show="cantidad == 0"
-                      >(*Ingrese)</span
-                    ></label
-                  >
-                  <input
-                    type="number"
-                    value="0"
-                    class="form-control"
-                    v-model="cantidad"
-                  />
-                </div>
-              </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <div class="form-group">
                   <button
                     @click="agregarDetalle()"
@@ -295,6 +315,18 @@
                   >
                     <i class="fa fa-plus-square"></i>
                   </button>
+                </div>
+              </div>
+              <!--Mensajes de error-->
+              <div class="col-md-12">
+                <div v-show="errorPedido" class="form-group row div-error">
+                  <div class="text-center text-error">
+                    <div
+                      v-for="error in errorMostrarMsjPedido"
+                      :key="error"
+                      v-text="error"
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -307,8 +339,9 @@
                       <th style="text-align: center;">Opciones</th>
                       <th style="text-align: center;">Codigo</th>
                       <th style="text-align: center;">Tipo Producto</th>
-                      <th style="text-align: center;">Cantidad</th>
+                      <th style="text-align: center;">Medida</th>
                       <th style="text-align: center;">Descripción</th>
+                      <th style="text-align: center;">Cantidad</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -333,6 +366,14 @@
                         style="text-align: center"
                         v-text="detalle.tipoproducto"
                       ></td>
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.medida"
+                      ></td>
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.descripcion"
+                      ></td>
                       <td style="text-align: center">
                         <input style="text-align: center;"
                           v-model="detalle.cantidad"
@@ -340,10 +381,6 @@
                           class="form-control"
                         />
                       </td>
-                      <td
-                        style="text-align: center"
-                        v-text="detalle.descripcion"
-                      ></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -632,6 +669,7 @@ export default {
       tipoproducto: '',
       cantidad: 0,
       descripcion: '',
+      precio: '',
       medida: '',
     };
   },
@@ -727,6 +765,7 @@ export default {
             me.llanta_id = me.arrayTipoproducto[0]['id'];
             me.descripcion = me.arrayTipoproducto[0]['descripcion'];
             me.medida = me.arrayTipoproducto[0]['medida'];
+            me.precio = me.arrayTipoproducto[0]['precio'];
           } else {
             me.tipoproducto = 'No existe artículo';
             me.llanta_id = 0;
@@ -770,11 +809,11 @@ export default {
             text: 'Ese producto ya se encuentra agregado!',
           });
         } else {
-          if (me.cantidad > me.stock) {
+          if (me.cantidad == 0) {
             swal({
               type: 'error',
               title: 'Error...',
-              text: 'NO hay stock disponible!',
+              text: 'Ingrese la cantidad de productos!',
             });
           } else {
             me.arrayDetalle.push({
@@ -782,13 +821,17 @@ export default {
               tipoproducto: me.tipoproducto,
               cantidad: me.cantidad,
               codigo: me.codigo,
+              medida: me.medida,
               descripcion: me.descripcion,
+              precio: me.precio,
             });
             me.codigo = '';
             me.llanta_id = 0;
             me.tipoproducto = '';
+            me.medida = '';
             me.cantidad = 0;
-            me.descripcion = 0;
+            me.descripcion = '';
+            me.precio = '';
           }
         }
       }
@@ -808,6 +851,8 @@ export default {
           tipoproducto: data['tipoproducto'],
           cantidad: 1,
           descripcion: data['descripcion'],
+          medida: data['medida'],
+          precio: data['precio'],
         });
       }
     },
@@ -858,6 +903,8 @@ export default {
           me.llanta_id = 0;
           me.codigo = '';
           me.tipoproducto = '';
+          me.medida = '';
+          me.precio = 0;
           me.cantidad = 0;
           me.descripcion = '';
           me.arrayDetalle = [];
@@ -879,6 +926,8 @@ export default {
         me.errorMostrarMsjPedido.push('Seleccione un Cliente');
       if (me.tipo_cliente == 0)
         me.errorMostrarMsjPedido.push('Seleccione el tipo de cliente');
+     /* if (me.cantidad == 0)
+        me.errorMostrarMsjPedido.push('Ingrese cantidad de productos');*/
       if (me.arrayDetalle.length <= 0)
         me.errorMostrarMsjPedido.push('Ingrese detalles');
 
@@ -900,7 +949,8 @@ export default {
       me.codigo = '';
       me.tipoproducto = '';
       me.cantidad = 0;
-      me.descripcion = 0;
+      me.descripcion = '';
+      me.medida = '';
       me.arrayDetalle = [];
     },
     ocultarDetalle() {

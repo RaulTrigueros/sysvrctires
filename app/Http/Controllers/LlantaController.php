@@ -148,7 +148,7 @@ class LlantaController extends Controller
 
         $filtro = $request->filtro;
         $llantas = Llanta::where('codigo', '=', $filtro)
-            ->select('id', 'codigo', 'tipoproducto', 'medida', 'descripcion')
+            ->select('id', 'codigo', 'tipoproducto', 'medida', 'descripcion', 'precio')
             ->orderBy('codigo', 'asc')
             ->take(1)->get();
 
