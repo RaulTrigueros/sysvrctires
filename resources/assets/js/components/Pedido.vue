@@ -24,8 +24,8 @@
               <div class="col-md-6">
                 <div class="input-group">
                   <select class="form-control col-md-3" v-model="criterio">
-                    <option value="personas.codigo">Codigo de Cliente</option>
-                    <option value="personas.nombre">Nombre de Cliente</option>
+                    <option value="codigo">Codigo de Cliente</option>
+                    <option value="nombre">Nombre de Cliente</option>
                     <option value="fecha_hora">Fecha-Hora</option>
                   </select>
                   <input
@@ -50,7 +50,7 @@
                 <thead>
                   <tr>
                     <th>Opciones</th>
-                    <th>Codigo</th>
+                    <th>Codigo Cliente</th>
                     <th>Cliente</th>
                     <th>Tipo Cliente</th>
                     <th>Tipo Pago</th>
@@ -331,6 +331,8 @@
               </div>
             </div>
             <!--FIN Obtener Detalle-->
+
+            <!--Tabla de productos agregados al detalle-->
             <div class="form-group row border">
               <div class="table-responsive col-md-12">
                 <table class="table table-bordered table-striped table-sm">
@@ -391,6 +393,7 @@
                 </table>
               </div>
             </div>
+            <!--FIN Tabla de productos agregados al detalle-->
             <div class="form-group row">
               <div class="col-md-12">
                 <button
@@ -418,43 +421,43 @@
             <div class="form-group row border">
               <div class="col-md-9">
                 <div class="form-group">
-                  <label for="">Codigo de Cliente</label>
-                  <p v-text="codigo"></p>
-                </div>
-              </div>
-              <div class="col-md-9">
-                <div class="form-group">
-                  <label for="">Cliente</label>
+                  <label for=""><strong>Nombre de Cliente</strong></label>
                   <p v-text="nombre"></p>
                 </div>
               </div>
-              <div class="col-md-3">
-                <label for="">Fecha y Hora</label>
-                <p v-text="fecha_hora"></p>
-              </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>Tipo de Cliente</label>
-                  <p v-text="tipo_cliente"></p>
+                  <label for=""><strong>Codigo de Cliente</strong></label>
+                  <p v-text="codigo"></p>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>Tipo de Pago</label>
-                  <p v-text="tipo_pago"></p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Dirección</label>
+                  <label><strong>Dirección</strong></label>
                   <p v-text="direccion"></p>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>Telefono</label>
+                  <label><strong>Telefono</strong></label>
                   <p v-text="telefono"></p>
                 </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label><strong>Tipo de Cliente</strong></label>
+                  <p v-text="tipo_cliente"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label><strong>Tipo de Pago</strong></label>
+                  <p v-text="tipo_pago"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label for=""><strong>Fecha y Hora</strong></label>
+                <p v-text="fecha_hora"></p>
               </div>
             </div>
             <div class="form-group row border">
@@ -464,16 +467,18 @@
                     <tr>
                       <th>Codigo Producto</th>
                       <th>Tipo Producto</th>
+                      <th>Medida</th>
+                      <th>Descripcion</th>
                       <th>Cantidad</th>
-                      <th>Descripción</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
                     <tr v-for="detalle in arrayDetalle" :key="detalle.id">
                       <td v-text="detalle.codigo"></td>
                       <td v-text="detalle.tipoproducto"></td>
-                      <td v-text="detalle.cantidad"></td>
+                      <td v-text="detalle.medida"></td>
                       <td v-text="detalle.descripcion"></td>
+                      <td v-text="detalle.cantidad"></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -659,7 +664,7 @@ export default {
         to: 0,
       },
       offset: 3,
-      criterio: 'fecha_hora',
+      criterio: 'nombre',
       buscar: '',
       criterioA: 'codigo',
       buscarA: '',
@@ -893,13 +898,13 @@ export default {
         })
         .then(function (response) {
           me.listado = 1;
-          me.listarPedido(1, '', 'fecha_hora');
+          me.listarPedido(1, '', 'persona_id');
           me.persona_id = 0;
           me.tipo_cliente = 'MAYOREO';
           me.tipo_pago = 'CONTADO';
           me.fecha_hora = '';
-          me.direccion = 0.18;
-          me.telefono = 0.0;
+          me.direccion = '';
+          me.telefono = '';
           me.llanta_id = 0;
           me.codigo = '';
           me.tipoproducto = '';
@@ -951,6 +956,7 @@ export default {
       me.cantidad = 0;
       me.descripcion = '';
       me.medida = '';
+      me.precio = 0;
       me.arrayDetalle = [];
     },
     ocultarDetalle() {
@@ -970,7 +976,8 @@ export default {
           var respuesta = response.data;
           arrayPedidoT = respuesta.pedido;
 
-          me.persona_id = arrayPedidoT[0]['nombre'];
+          me.nombre = arrayPedidoT[0]['nombre'];
+          me.codigo = arrayPedidoT[0]['codigo'];
           me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
           me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
           me.fecha_hora = arrayPedidoT[0]['fecha_hora'];

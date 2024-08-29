@@ -19,32 +19,28 @@ class PedidoController extends Controller
         $buscar = $request->buscar;
         $criterio = $request->criterio;
 
-        if ($buscar == '') {
-            $pedidos = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
-                ->select(
-                    'pedidos.id',
-                    'tipo_pago',
-                    'tipo_cliente',
-                    'pedidos.fecha_hora',
-                    'pedidos.estado',
-                    'personas.nombre',
-                    'personas.codigo'
-                )
-                ->orderBy('pedidos.id', 'desc')->paginate(3);
-        } else {
-            $pedidos = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
-                ->select(
-                    'pedidos.id',
-                    'tipo_pago',
-                    'tipo_cliente',
-                    'pedidos.fecha_hora',
-                    'pedidos.estado',
-                    'personas.nombre',
-                    'personas.codigo'
-                )
-                ->where('pedidos.' . $criterio, 'like', '%' . $buscar . '%')
-                ->orderBy('pedidos.id', 'desc')->paginate(3);
+        $query = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
+            ->select(
+                'pedidos.id',
+                'tipo_pago',
+                'tipo_cliente',
+                'pedidos.fecha_hora',
+                'pedidos.estado',
+                'personas.nombre',
+                'personas.codigo'
+            );
+
+        if ($buscar != '') {
+            if ($criterio == 'nombre' || $criterio == 'codigo') {
+                // Busca en la tabla de personas
+                $query->where('personas.' . $criterio, 'like', '%' . $buscar . '%');
+            } else {
+                // Busca en la tabla de pedidos
+                $query->where('pedidos.' . $criterio, 'like', '%' . $buscar . '%');
+            }
         }
+
+        $pedidos = $query->orderBy('pedidos.id', 'desc')->paginate(3);
 
         return [
             'pagination' => [
@@ -89,6 +85,9 @@ class PedidoController extends Controller
             ->select(
                 'detalle_pedidos.cantidad',
                 'llantas.tipoproducto as tipoproducto',
+                'llantas.medida',
+                'llantas.precio',
+                'llantas.descripcion',
                 'repuestos.nombre'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)

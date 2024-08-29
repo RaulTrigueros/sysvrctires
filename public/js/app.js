@@ -2278,7 +2278,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         to: 0
       },
       offset: 3,
-      criterio: 'fecha_hora',
+      criterio: 'nombre',
       buscar: '',
       criterioA: 'codigo',
       buscarA: '',
@@ -2471,7 +2471,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         data: this.arrayDetalle
       }).then(function (response) {
         me.listado = 1;
-        me.listarPedido(1, '', 'fecha_hora');
+        me.listarPedido(1, '', 'persona_id');
         me.persona_id = 0;
         me.tipo_cliente = 'MAYOREO';
         me.tipo_pago = 'CONTADO';
@@ -2519,6 +2519,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       me.cantidad = 0;
       me.descripcion = '';
       me.medida = '';
+      me.precio = 0;
       me.arrayDetalle = [];
     },
     ocultarDetalle: function ocultarDetalle() {
@@ -2534,7 +2535,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         arrayPedidoT = respuesta.pedido;
-        me.persona_id = arrayPedidoT[0]['nombre'];
+        me.nombre = arrayPedidoT[0]['nombre'];
+        me.codigo = arrayPedidoT[0]['codigo'];
         me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
         me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
         me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
@@ -4575,11 +4577,11 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      value: "personas.codigo"
+      value: "codigo"
     }
   }, [_vm._v("Codigo de Cliente")]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "personas.nombre"
+      value: "nombre"
     }
   }, [_vm._v("Nombre de Cliente")]), _vm._v(" "), _c("option", {
     attrs: {
@@ -5270,57 +5272,23 @@ var render = function render() {
     staticClass: "col-md-9"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("Codigo de Cliente")]), _vm._v(" "), _c("p", {
-    domProps: {
-      textContent: _vm._s(_vm.codigo)
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("Cliente")]), _vm._v(" "), _c("p", {
+  }, [_vm._m(4), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.nombre)
     }
   })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
-  }, [_c("label", {
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("Fecha y Hora")]), _vm._v(" "), _c("p", {
-    domProps: {
-      textContent: _vm._s(_vm.fecha_hora)
-    }
-  })]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_c("label", [_vm._v("Tipo de Cliente")]), _vm._v(" "), _c("p", {
+  }, [_vm._m(5), _vm._v(" "), _c("p", {
     domProps: {
-      textContent: _vm._s(_vm.tipo_cliente)
+      textContent: _vm._s(_vm.codigo)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_c("label", [_vm._v("Tipo de Pago")]), _vm._v(" "), _c("p", {
-    domProps: {
-      textContent: _vm._s(_vm.tipo_pago)
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", [_vm._v("Dirección")]), _vm._v(" "), _c("p", {
+  }, [_vm._m(6), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.direccion)
     }
@@ -5328,17 +5296,39 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_c("label", [_vm._v("Telefono")]), _vm._v(" "), _c("p", {
+  }, [_vm._m(7), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.telefono)
     }
-  })])])]), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(8), _vm._v(" "), _c("p", {
+    domProps: {
+      textContent: _vm._s(_vm.tipo_cliente)
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(9), _vm._v(" "), _c("p", {
+    domProps: {
+      textContent: _vm._s(_vm.tipo_pago)
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_vm._m(10), _vm._v(" "), _c("p", {
+    domProps: {
+      textContent: _vm._s(_vm.fecha_hora)
+    }
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row border"
   }, [_c("div", {
     staticClass: "table-responsive col-md-12"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(4), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle) {
+  }, [_vm._m(11), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle) {
     return _c("tr", {
       key: detalle.id
     }, [_c("td", {
@@ -5351,14 +5341,18 @@ var render = function render() {
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
-        textContent: _vm._s(detalle.cantidad)
+        textContent: _vm._s(detalle.medida)
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
         textContent: _vm._s(detalle.descripcion)
       }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
+        textContent: _vm._s(detalle.cantidad)
+      }
     })]);
-  }), 0) : _c("tbody", [_vm._m(5)])])])]), _vm._v(" "), _c("div", {
+  }), 0) : _c("tbody", [_vm._m(12)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5499,7 +5493,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(6), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
+  }, [_vm._m(13), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
     return _c("tr", {
       key: tipoproducto.id
     }, [_c("td", [_c("button", {
@@ -5580,7 +5574,7 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Codigo")]), _vm._v(" "), _c("th", [_vm._v("Cliente")]), _vm._v(" "), _c("th", [_vm._v("Tipo Cliente")]), _vm._v(" "), _c("th", [_vm._v("Tipo Pago")]), _vm._v(" "), _c("th", [_vm._v("Fecha Hora")]), _vm._v(" "), _c("th", [_vm._v("Estado")])])]);
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Codigo Cliente")]), _vm._v(" "), _c("th", [_vm._v("Cliente")]), _vm._v(" "), _c("th", [_vm._v("Tipo Cliente")]), _vm._v(" "), _c("th", [_vm._v("Tipo Pago")]), _vm._v(" "), _c("th", [_vm._v("Fecha Hora")]), _vm._v(" "), _c("th", [_vm._v("Estado")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -5620,7 +5614,47 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("thead", [_c("tr", [_c("th", [_vm._v("Codigo Producto")]), _vm._v(" "), _c("th", [_vm._v("Tipo Producto")]), _vm._v(" "), _c("th", [_vm._v("Cantidad")]), _vm._v(" "), _c("th", [_vm._v("Descripción")])])]);
+  return _c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_c("strong", [_vm._v("Nombre de Cliente")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_c("strong", [_vm._v("Codigo de Cliente")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("Dirección")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("Telefono")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("Tipo de Cliente")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("Tipo de Pago")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_c("strong", [_vm._v("Fecha y Hora")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Codigo Producto")]), _vm._v(" "), _c("th", [_vm._v("Tipo Producto")]), _vm._v(" "), _c("th", [_vm._v("Medida")]), _vm._v(" "), _c("th", [_vm._v("Descripcion")]), _vm._v(" "), _c("th", [_vm._v("Cantidad")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
