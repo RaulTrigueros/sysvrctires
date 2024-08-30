@@ -32,7 +32,7 @@
     <!-- <li class="nav-title">ACCESO</li>-->
       <li class="nav-item nav-dropdown" >  <!--id="nav-admin" -->
         <a class="nav-link nav-dropdown-toggle" href="#">
-          <i class="nav-icon fa fa-user"></i> Usuario</a>
+          <i class="nav-icon fa fa-user"></i> Acceso</a>
         <ul class="nav-dropdown-items">
 
           <li class="nav-item">

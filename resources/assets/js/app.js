@@ -20,7 +20,7 @@ Vue.use(VueFormWizard)
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('energia', require('./components/Energia.vue').default);
+Vue.component('pedido', require('./components/Pedido.vue').default);
 Vue.component('cliente', require('./components/Cliente.vue').default);
 Vue.component('llanta', require('./components/Llanta.vue').default);
 Vue.component('repuesto', require('./components/Repuesto.vue').default);
@@ -42,7 +42,7 @@ const app = new Vue({
     el: '#app',
     data: {
         menu: 0,
-        idProyecto: 0
+        idProyecto: 0,
     }
 });
 export default app;

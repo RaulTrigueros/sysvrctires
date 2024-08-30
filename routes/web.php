@@ -3,7 +3,8 @@
 // use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\ClienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +70,21 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::put('/cliente/eliminar', 'ClienteController@destroy');
     Route::get('/cliente/selectCliente', 'ClienteController@selectCliente');
 
+
     //MÓDULO DE PEDIDO
+    Route::get('/pedido', 'PedidoController@index');
+    Route::post('/pedido/registrar', 'PedidoController@store');
+    Route::put('/pedido/desactivar', 'PedidoController@desactivar');
+    Route::get('/pedido/obtenerCabecera', 'PedidoController@obtenerCabecera');
+    Route::get('/pedido/obtenerDetalles', 'PedidoController@obtenerDetalles');
+    Route::get('/pedido/pdf/{id}', 'PedidoController@pdf')->name('pedido_pdf');
+
+    /*Route::resource('pedidos', PedidoController::class);
+    Route::get('/pedidos', [PedidoController::class, 'index']);
+    Route::post('/pedidos/registrar', [PedidoController::class, 'store']);
+    Route::get('/personas', [ClienteController::class, 'index']);*/
+
+
     Route::get('/persona/selectPersona', 'ClienteController@selectCliente');
     Route::get('/energia', 'EnergiaController@index');
     Route::post('/energia/registrar', 'EnergiaController@store');
@@ -89,6 +104,8 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::post('/llanta/registrar', 'LlantaController@store');
     Route::put('/llanta/actualizar', 'LlantaController@update');
     Route::put('/llanta/eliminar', 'LlantaController@destroy');
+    Route::get('/llanta/buscarTipoproductoPedido', 'LlantaController@buscarTipoproductoPedido');
+    Route::get('/llanta/listarTipoproductoPedido', 'LlantaController@listarTipoproductoPedido');
 
     //GESTION DE REPUESTOS
     Route::get('/repuesto/selectRepuesto', 'RepuestoController@selectRepuesto');
