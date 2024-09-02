@@ -22,8 +22,8 @@ class PedidoController extends Controller
         $query = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'tipo_pago',
-                'tipo_cliente',
+                'pedidos.tipo_pago',
+                'pedidos.tipo_cliente',
                 'pedidos.fecha_hora',
                 'pedidos.estado',
                 'personas.nombre',
@@ -62,7 +62,7 @@ class PedidoController extends Controller
         $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'pedido.tipo_pago',
+                'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
                 'pedidos.fecha_hora',
                 'personas.nombre',
@@ -138,6 +138,8 @@ class PedidoController extends Controller
         try {
             DB::beginTransaction();
 
+            $mytime = Carbon::now();
+
             $pedido = new Pedido();
             $pedido->persona_id = $request->persona_id;
             $pedido->tipo_pago = $request->tipo_pago;
@@ -145,7 +147,7 @@ class PedidoController extends Controller
             $pedido->direccion = $request->direccion;
             $pedido->telefono = $request->telefono;
             $pedido->fecha_hora = $mytime->toDateString();
-            $pedido->estado = 'Registrado';
+            $pedido->estado = 'Proceso';
             $pedido->save();
 
             $detalles = $request->data; //Array de detalles
@@ -160,7 +162,7 @@ class PedidoController extends Controller
                 $detalle->save();
             }
 
-            $fechaActual = date('Y-m-d');
+            /* $fechaActual = date('Y-m-d');
             $numPedidos = DB::table('pedidos')->whereDate('created_at', $fechaActual)->count();
             $numIngresos = DB::table('ingresos')->whereDate('created_at', $fechaActual)->count();
 
@@ -183,7 +185,7 @@ class PedidoController extends Controller
             DB::commit();
             return [
                 'id' => $pedido->id
-            ];
+            ]*/
         } catch (Exception $e) {
             DB::rollBack();
         }

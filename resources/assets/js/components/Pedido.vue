@@ -157,11 +157,11 @@
                 <div class="form-group">
                   <label for="">Cliente(*)</label>
                   <v-select
-                    :search="selectCliente"
+                    @search="selectCliente"  
                     label="nombre"
                     :options="arrayCliente"
                     placeholder="Buscar Clientes..."
-                    :onChange="getDatosCliente"
+                    @input="getDatosCliente"
                   >
                   </v-select>
                 </div>
@@ -739,6 +739,7 @@ export default {
       axios
         .get(url)
         .then(function (response) {
+          console.log(response.data); // Verifica la estructura de la respuesta aquí
           let respuesta = response.data;
           q: search;
           me.arrayCliente = respuesta.clientes;
@@ -889,6 +890,8 @@ export default {
       axios
         .post(this.ruta + '/pedido/registrar', {
           persona_id: this.persona_id,
+          codigo: this.codigo,
+          nombre: this.nombre,
           tipo_cliente: this.tipo_cliente,
           tipo_pago: this.tipo_pago,
           fecha_hora: this.fecha_hora,
@@ -900,6 +903,7 @@ export default {
           me.listado = 1;
           me.listarPedido(1, '', 'persona_id');
           me.persona_id = 0;
+          me.codigo;
           me.tipo_cliente = 'MAYOREO';
           me.tipo_pago = 'CONTADO';
           me.fecha_hora = '';
@@ -1053,6 +1057,7 @@ export default {
   },
   mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
+   // this.selectCliente('test', () => { console.log("Loading..."); });
   },
 };
 </script>
