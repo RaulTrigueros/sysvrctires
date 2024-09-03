@@ -2331,6 +2331,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       loading(true);
       var url = this.ruta + '/cliente/selectCliente?filtro=' + search;
       axios.get(url).then(function (response) {
+        console.log(response.data); // Verifica la estructura de la respuesta aquí
         var respuesta = response.data;
         q: search;
         me.arrayCliente = respuesta.clientes;
@@ -2463,6 +2464,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       var me = this;
       axios.post(this.ruta + '/pedido/registrar', {
         persona_id: this.persona_id,
+        codigo: this.codigo,
+        nombre: this.nombre,
         tipo_cliente: this.tipo_cliente,
         tipo_pago: this.tipo_pago,
         fecha_hora: this.fecha_hora,
@@ -2473,6 +2476,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         me.listado = 1;
         me.listarPedido(1, '', 'persona_id');
         me.persona_id = 0;
+        me.codigo;
         me.tipo_cliente = 'MAYOREO';
         me.tipo_pago = 'CONTADO';
         me.fecha_hora = '';
@@ -2598,6 +2602,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
   },
   mounted: function mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
+    // this.selectCliente('test', () => { console.log("Loading..."); });
   }
 });
 
@@ -4754,11 +4759,13 @@ var render = function render() {
     }
   }, [_vm._v("Cliente(*)")]), _vm._v(" "), _c("v-select", {
     attrs: {
-      search: _vm.selectCliente,
       label: "nombre",
       options: _vm.arrayCliente,
-      placeholder: "Buscar Clientes...",
-      onChange: _vm.getDatosCliente
+      placeholder: "Buscar Clientes..."
+    },
+    on: {
+      search: _vm.selectCliente,
+      input: _vm.getDatosCliente
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"

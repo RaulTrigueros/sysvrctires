@@ -52,6 +52,11 @@ class ClienteController extends Controller
             ->select('id', 'codigo', 'nombre')
             ->orderBy('nombre', 'asc')->get();
 
+        if ($clientes->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron clientes'], 404);
+        }
+
+
         return ['clientes' => $clientes];
     }
 
