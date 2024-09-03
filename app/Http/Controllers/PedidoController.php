@@ -27,11 +27,11 @@ class PedidoController extends Controller
                 'pedidos.fecha_hora',
                 'pedidos.estado',
                 'personas.nombre',
-                'personas.codigo'
+                'personas.codigo as codigo_persona'
             );
 
         if ($buscar != '') {
-            if ($criterio == 'nombre' || $criterio == 'codigo') {
+            if ($criterio == 'nombre' || $criterio == 'codigo_persona') {
                 // Busca en la tabla de personas
                 $query->where('personas.' . $criterio, 'like', '%' . $buscar . '%');
             } else {
@@ -66,7 +66,7 @@ class PedidoController extends Controller
                 'pedidos.tipo_cliente',
                 'pedidos.fecha_hora',
                 'personas.nombre',
-                'personas.codigo',
+                'personas.codigo as codigo_persona',
                 'personas.direccion',
                 'personas.telefono'
             )
@@ -88,7 +88,7 @@ class PedidoController extends Controller
                 'llantas.medida',
                 'llantas.precio',
                 'llantas.descripcion',
-                'repuestos.nombre'
+                'repuestos.nombre as nombre_repuesto'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->orderBy('detalle_pedidos.id', 'desc')->get();
@@ -106,7 +106,7 @@ class PedidoController extends Controller
                 'personas.nombre',
                 'personas.direccion',
                 'personas.telefono',
-                'personas.codigo'
+                'personas.codigo as codigo_persona'
 
             )
             ->where('pedidos.id', '=', $id)
@@ -118,14 +118,14 @@ class PedidoController extends Controller
                 'detalle_pedidos.cantidad',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.descripcion',
-                'repuestos.nombre',
+                'repuestos.nombre as nombre_repuesto',
                 'repuestos.descripcion'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->orderBy('detalle_pedidos.id', 'desc')->get();
 
         $numpedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
-            ->select('personas.codigo')->where('id', $id)->get();
+            ->select('personas.codigo as codigo_persona')->where('id', $id)->get();
 
         $pdf = \PDF::loadView('pdf.pedido', ['pedido' => $pedido, 'detalles' => $detalles]);
         return $pdf->download('pedido-' . $numpedido[0]->codigo . '.pdf');
@@ -144,8 +144,8 @@ class PedidoController extends Controller
             $pedido->persona_id = $request->persona_id;
             $pedido->tipo_pago = $request->tipo_pago;
             $pedido->tipo_cliente = $request->tipo_cliente;
-            $pedido->direccion = $request->direccion;
-            $pedido->telefono = $request->telefono;
+           // $pedido->direccion = $request->direccion;
+            //$pedido->telefono = $request->telefono;
             $pedido->fecha_hora = $mytime->toDateString();
             $pedido->estado = 'Proceso';
             $pedido->save();

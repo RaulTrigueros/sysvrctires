@@ -24,7 +24,7 @@
               <div class="col-md-6">
                 <div class="input-group">
                   <select class="form-control col-md-3" v-model="criterio">
-                    <option value="codigo">Codigo de Cliente</option>
+                    <option value="codigo_persona">Codigo de Cliente</option>
                     <option value="nombre">Nombre de Cliente</option>
                     <option value="fecha_hora">Fecha-Hora</option>
                   </select>
@@ -77,7 +77,7 @@
                         <i class="fa fa-file-pdf-o"></i>
                       </button>
                       &nbsp;
-                      <template v-if="pedido.estado == 'Registrado'">
+                      <template v-if="pedido.estado == 'Proceso'">
                         <button
                           type="button"
                           class="btn btn-danger btn-sm"
@@ -87,7 +87,7 @@
                         </button>
                       </template>
                     </td>
-                    <td v-text="pedido.codigo"></td>
+                    <td v-text="pedido.codigo_persona"></td>
                     <td v-text="pedido.nombre"></td>
                     <td v-text="pedido.tipo_cliente"></td>
                     <td v-text="pedido.tipo_pago"></td>
@@ -153,7 +153,7 @@
           <div class="card-body">
             <!-- Inicio cabecera-->
             <div class="form-group row border">
-              <div class="col-md-9">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label for="">Cliente(*)</label>
                   <v-select
@@ -168,7 +168,7 @@
               </div>
               <div class="col-md-4">
                 <label for="">Codigo de Cliente</label>
-                <input type="text" readonly class="form-control" v-model="codigo" />
+                <input type="text" readonly class="form-control" v-model="codigo_persona" />
               </div>
               <div class="col-md-4">
                 <label for="">Direccion</label>
@@ -428,7 +428,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for=""><strong>Codigo de Cliente</strong></label>
-                  <p v-text="codigo"></p>
+                  <p v-text="codigo_persona"></p>
                 </div>
               </div>
               <div class="col-md-4">
@@ -633,6 +633,7 @@
 
 <script>
 import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css'; // importar los estilos
 export default {
   props: ['ruta'],
   data() {
@@ -642,7 +643,7 @@ export default {
       nombre: '',
       tipo_cliente: 'MAYOREO',
       tipo_pago: 'CONTADO',
-      codigo: '',
+      codigo_persona: '',
       direccion: '',
       telefono: '',
       fecha_hora: '',
@@ -890,7 +891,7 @@ export default {
       axios
         .post(this.ruta + '/pedido/registrar', {
           persona_id: this.persona_id,
-          codigo: this.codigo,
+          codigo_persona: this.codigo_persona,
           nombre: this.nombre,
           tipo_cliente: this.tipo_cliente,
           tipo_pago: this.tipo_pago,
@@ -903,7 +904,7 @@ export default {
           me.listado = 1;
           me.listarPedido(1, '', 'persona_id');
           me.persona_id = 0;
-          me.codigo;
+          me.codigo_persona = '';
           me.tipo_cliente = 'MAYOREO';
           me.tipo_pago = 'CONTADO';
           me.fecha_hora = '';
@@ -949,6 +950,7 @@ export default {
       me.listado = 0;
 
       me.persona_id = 0;
+      me.codigo_persona = '';
       me.tipo_cliente = 'MAYOREO';
       me.tipo_pago = 'CONTADO';
       me.fecha_hora = '';
@@ -981,7 +983,7 @@ export default {
           arrayPedidoT = respuesta.pedido;
 
           me.nombre = arrayPedidoT[0]['nombre'];
-          me.codigo = arrayPedidoT[0]['codigo'];
+          me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
           me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
           me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
           me.fecha_hora = arrayPedidoT[0]['fecha_hora'];

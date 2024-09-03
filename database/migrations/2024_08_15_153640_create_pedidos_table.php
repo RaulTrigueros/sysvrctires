@@ -17,7 +17,7 @@ class CreatePedidosTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('persona_id');
             $table->enum('tipo_pago', ['contado', 'credito']);
-            $table->enum('tipo_cliente', ['tallerista', 'mayorista', 'distribuidor', 'importador']);
+            $table->enum('tipo_cliente', ['tallerista', 'mayoreo', 'distribuidor', 'importador']);
             $table->dateTime('fecha_hora');
             $table->string('estado', 20);
             $table->timestamps();
