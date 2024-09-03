@@ -8,10 +8,18 @@ use Carbon\Carbon;
 use App\Pedido;
 use App\DetallePedido;
 use App\User;
+use App\Services\BitacoraService;
 use App\Notifications\NotifyAdmin;
 
 class PedidoController extends Controller
 {
+    protected $bitacoraService;
+
+    public function __construct(BitacoraService $bitacoraService)
+    {
+        $this->bitacoraService = $bitacoraService;
+    }
+
     public function index(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -81,14 +89,14 @@ class PedidoController extends Controller
 
         $id = $request->id;
         $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
-            ->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
+            //->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
             ->select(
                 'detalle_pedidos.cantidad',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.medida',
                 'llantas.precio',
                 'llantas.descripcion',
-                'repuestos.nombre as nombre_repuesto'
+                //'repuestos.nombre as nombre_repuesto'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->orderBy('detalle_pedidos.id', 'desc')->get();
@@ -144,10 +152,10 @@ class PedidoController extends Controller
             $pedido->persona_id = $request->persona_id;
             $pedido->tipo_pago = $request->tipo_pago;
             $pedido->tipo_cliente = $request->tipo_cliente;
-           // $pedido->direccion = $request->direccion;
+            // $pedido->direccion = $request->direccion;
             //$pedido->telefono = $request->telefono;
             $pedido->fecha_hora = $mytime->toDateString();
-            $pedido->estado = 'Proceso';
+            $pedido->estado = '1';
             $pedido->save();
 
             $detalles = $request->data; //Array de detalles
@@ -157,7 +165,7 @@ class PedidoController extends Controller
                 $detalle = new DetallePedido();
                 $detalle->pedido_id = $pedido->id;
                 $detalle->llanta_id = $det['llanta_id'];
-                $detalle->repuesto_id = $det['repuesto_id'];
+                // $detalle->repuesto_id = $det['repuesto_id'];
                 $detalle->cantidad = $det['cantidad'];
                 $detalle->save();
             }
@@ -191,11 +199,25 @@ class PedidoController extends Controller
         }
     }
 
-    public function desactivar(Request $request)
+    public function desactivarPedido(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
         $pedido = Pedido::findOrFail($request->id);
-        $pedido->estado = 'Anulado';
+        $pedido->estado = '0';
         $pedido->save();
+
+        $this->bitacoraService->store('Pedido entregado', 'Pedido');
+        return "Éxito";
+    }
+
+    public function activarPedido(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->estado = '1';
+        $pedido->save();
+
+        $this->bitacoraService->store('Entrega de pedido anulada', 'Pedido');
+        return "Éxito";
     }
 }

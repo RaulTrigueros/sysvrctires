@@ -77,14 +77,15 @@
                         <i class="fa fa-file-pdf-o"></i>
                       </button>
                       &nbsp;
-                      <template v-if="pedido.estado == 'Proceso'">
-                        <button
-                          type="button"
-                          class="btn btn-danger btn-sm"
-                          @click="desactivarPedido(pedido.id)"
-                        >
-                          <i class="fa fa-trash"></i>
-                        </button>
+                      <template v-if="pedido.estado">
+                          <button type="button" class="btn btn-danger btn-sm" @click="desactivarPedido(pedido.id)">
+                              <i class="fa fa-trash"></i>
+                          </button>
+                      </template>
+                      <template v-else>
+                          <button type="button" class="btn btn-info btn-sm" @click="activarPedido(pedido.id)">
+                              <i class="fa fa-check"></i>
+                          </button>
                       </template>
                     </td>
                     <td v-text="pedido.codigo_persona"></td>
@@ -92,7 +93,14 @@
                     <td v-text="pedido.tipo_cliente"></td>
                     <td v-text="pedido.tipo_pago"></td>
                     <td v-text="pedido.fecha_hora"></td>
-                    <td v-text="pedido.estado"></td>
+                    <td class="align-middle">
+                        <div v-if="pedido.estado">
+                            <span class="badge badge-success">Proceso</span>
+                        </div>
+                        <div v-else>
+                            <span class="badge badge-danger">Entregado</span>
+                        </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -1018,8 +1026,8 @@ export default {
       this.tituloModal = 'Seleccione uno o varios productos';
     },
     desactivarPedido(id) {
-      swal({
-        title: 'Esta seguro de anular este pedido?',
+      swal.fire({
+        title: 'Marcar como pedido entregado?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -1033,16 +1041,15 @@ export default {
       }).then((result) => {
         if (result.value) {
           let me = this;
-
           axios
-            .put(this.ruta + '/pedido/desactivar', {
-              id: id,
+            .put(this.ruta + '/pedido/entregar', {
+              'id': id,
             })
             .then(function (response) {
-              me.listarPedido(1, '', 'fecha_hora');
-              swal(
-                'Anulado!',
-                'El pedido ha sido anulado con éxito.',
+              me.listarPedido(1, '', 'persona_id');
+              swal.fire(
+                'Realizado!',
+                'El pedido ha sido entregado.',
                 'success'
               );
             })
@@ -1056,7 +1063,46 @@ export default {
         }
       });
     },
+    
+    activarPedido(id){
+                Swal.fire({
+                title: 'Está seguro de Revertir el estado del pedido?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: "#d33",
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me = this;
+                    axios.put('/pedido/anular',{    //se llama a la ruta para cambiar el estado del pedido
+                        'id': id
+                    }).then(function(response){
+                        me.listarPedido(1,'','persona_id');
+                         Swal.fire(
+                            'Realizado!',
+                            'Este pedido no ha sido entregado!',
+                            'success'
+                            )
+                    }).catch(function(error){
+                        console.log(error);
+                    });
+                   
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                }
+                })
   },
+  },
+  
+
   mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
    // this.selectCliente('test', () => { console.log("Loading..."); });

@@ -19,7 +19,7 @@ class CreatePedidosTable extends Migration
             $table->enum('tipo_pago', ['contado', 'credito']);
             $table->enum('tipo_cliente', ['tallerista', 'mayoreo', 'distribuidor', 'importador']);
             $table->dateTime('fecha_hora');
-            $table->string('estado', 20);
+            $table->boolean('estado')->default(1);
             $table->timestamps();
 
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
