@@ -47,7 +47,7 @@
         "toastr": "^2.1.4",
         "vue": "^2.6.10",
         "vue-form-wizard": "^0.8.4",
-        "vue-select": "^3.11.2",
+        "vue-select": "^3.20.3",
         "vue-template-compiler": "^2.6.10",
         "vuedraggable": "^2.23.2"
     },
