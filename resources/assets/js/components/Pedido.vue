@@ -95,7 +95,7 @@
                     <td v-text="pedido.fecha_hora"></td>
                     <td class="align-middle">
                         <div v-if="pedido.estado">
-                            <span class="badge badge-success">Proceso</span>
+                            <span class="badge badge-success">Pendiente</span>
                         </div>
                         <div v-else>
                             <span class="badge badge-danger">Entregado</span>
@@ -159,7 +159,7 @@
         <!-- Detalle-->
         <template v-else-if="listado == 0">
           <div class="card-body">
-            <!-- Inicio cabecera-->
+            <!-- Inicio cabecera de registro-->
             <div class="form-group row border">
               <div class="col-md-12">
                 <div class="form-group">
@@ -174,7 +174,7 @@
                   </v-select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <!--  <div class="col-md-4">
                 <label for="">Codigo de Cliente</label>
                 <input type="text" readonly class="form-control" v-model="codigo_persona" />
               </div>
@@ -207,11 +207,8 @@
                     <option value="CREDITO">Credito</option>
                   </select>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <label for="">Fecha</label>
-                <input type="date" class="form-control" v-model="fecha_hora" />
-              </div>
+              </div>-->
+              
               <!--<div class="col-md-12">
                 <div v-show="errorPedido" class="form-group row div-error">
                   <div class="text-center text-error">
@@ -224,7 +221,7 @@
                 </div>
               </div>-->
             </div>
-            <!--FIN cabecera-->
+            <!--FIN cabecera de registro-->
 
             <!--INICIO Obtener Detalle-->
             <div class="form-group row border">
@@ -903,7 +900,7 @@ export default {
           nombre: this.nombre,
           tipo_cliente: this.tipo_cliente,
           tipo_pago: this.tipo_pago,
-          fecha_hora: this.fecha_hora,
+         // fecha_hora: this.fecha_hora,
           direccion: this.direccion,
           telefono: this.telefono,
           data: this.arrayDetalle,
@@ -915,7 +912,7 @@ export default {
           me.codigo_persona = '';
           me.tipo_cliente = 'MAYOREO';
           me.tipo_pago = 'CONTADO';
-          me.fecha_hora = '';
+         // me.fecha_hora = '';
           me.direccion = '';
           me.telefono = '';
           me.llanta_id = 0;
@@ -961,7 +958,7 @@ export default {
       me.codigo_persona = '';
       me.tipo_cliente = 'MAYOREO';
       me.tipo_pago = 'CONTADO';
-      me.fecha_hora = '';
+     // me.fecha_hora = '';
       me.direccion = '';
       me.telefono = '';
       me.llanta_id = 0;

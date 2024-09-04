@@ -32,7 +32,7 @@ class PedidoController extends Controller
                 'pedidos.id',
                 'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
-                'pedidos.fecha_hora',
+                'pedidos.created_at as fecha_hora',
                 'pedidos.estado',
                 'personas.nombre',
                 'personas.codigo as codigo_persona'
@@ -48,7 +48,7 @@ class PedidoController extends Controller
             }
         }
 
-        $pedidos = $query->orderBy('pedidos.id', 'desc')->paginate(3);
+        $pedidos = $query->orderBy('pedidos.id', 'desc')->paginate(10);
 
         return [
             'pagination' => [
@@ -72,7 +72,7 @@ class PedidoController extends Controller
                 'pedidos.id',
                 'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
-                'pedidos.fecha_hora',
+                'pedidos.created_at as fecha_hora',
                 'personas.nombre',
                 'personas.codigo as codigo_persona',
                 'personas.direccion',
@@ -146,7 +146,7 @@ class PedidoController extends Controller
         try {
             DB::beginTransaction();
 
-            $mytime = Carbon::now();
+           // $mytime = Carbon::now();
 
             $pedido = new Pedido();
             $pedido->persona_id = $request->persona_id;
@@ -154,8 +154,13 @@ class PedidoController extends Controller
             $pedido->tipo_cliente = $request->tipo_cliente;
             // $pedido->direccion = $request->direccion;
             //$pedido->telefono = $request->telefono;
-            $pedido->fecha_hora = $mytime->toDateString();
+            //$pedido->fecha_hora = $mytime->toDateString();
             $pedido->estado = '1';
+            $pedido->save();
+
+             // Obtener la fecha del campo created_at
+            $fecha_creacion = $pedido->created_at->toDateString();
+            $pedido->fecha_hora = $fecha_creacion;
             $pedido->save();
 
             $detalles = $request->data; //Array de detalles
