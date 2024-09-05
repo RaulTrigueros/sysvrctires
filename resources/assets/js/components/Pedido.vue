@@ -174,52 +174,6 @@
                   </v-select>
                 </div>
               </div>
-              <!--  <div class="col-md-4">
-                <label for="">Codigo de Cliente</label>
-                <input type="text" readonly class="form-control" v-model="codigo_persona" />
-              </div>
-              <div class="col-md-4">
-                <label for="">Direccion</label>
-                <input type="text" readonly class="form-control" v-model="direccion" />
-              </div>
-              <div class="col-md-4">
-                <label for="">Telefono</label>
-                <input type="text" readonly class="form-control" v-model="telefono" />
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Tipo Cliente</label>
-                  <select class="form-control" v-model="tipo_cliente">
-                    <option value="0">Seleccione</option>
-                    <option value="TALLERISTA">Tallerista</option>
-                    <option value="MAYOREO">Mayoreo</option>
-                    <option value="DISTRIBUIDOR">Distribuidor</option>
-                    <option value="IMPORTADOR">Importador</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Tipo Pago</label>
-                  <select class="form-control" v-model="tipo_pago">
-                    <option value="0">Seleccione</option>
-                    <option value="CONTADO">Contado</option>
-                    <option value="CREDITO">Credito</option>
-                  </select>
-                </div>
-              </div>-->
-              
-              <!--<div class="col-md-12">
-                <div v-show="errorPedido" class="form-group row div-error">
-                  <div class="text-center text-error">
-                    <div
-                      v-for="error in errorMostrarMsjPedido"
-                      :key="error"
-                      v-text="error"
-                    ></div>
-                  </div>
-                </div>
-              </div>-->
             </div>
             <!--FIN cabecera de registro-->
 
@@ -344,7 +298,7 @@
                   <thead>
                     <tr>
                       <th style="text-align: center;">Opciones</th>
-                      <th style="text-align: center;">Codigo</th>
+                      <th style="text-align: center;">Codigo Producto</th>
                       <th style="text-align: center;">Tipo Producto</th>
                       <th style="text-align: center;">Medida</th>
                       <th style="text-align: center;">Descripción</th>
@@ -939,10 +893,6 @@ export default {
 
       if (me.persona_id == 0)
         me.errorMostrarMsjPedido.push('Seleccione un Cliente');
-      if (me.tipo_cliente == 0)
-        me.errorMostrarMsjPedido.push('Seleccione el tipo de cliente');
-     /* if (me.cantidad == 0)
-        me.errorMostrarMsjPedido.push('Ingrese cantidad de productos');*/
       if (me.arrayDetalle.length <= 0)
         me.errorMostrarMsjPedido.push('Ingrese detalles');
 
@@ -1102,7 +1052,6 @@ export default {
 
   mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
-   // this.selectCliente('test', () => { console.log("Loading..."); });
   },
 };
 </script>

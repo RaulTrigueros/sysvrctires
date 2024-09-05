@@ -92,6 +92,7 @@ class PedidoController extends Controller
             //->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
             ->select(
                 'detalle_pedidos.cantidad',
+                'llantas.codigo',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.medida',
                 'llantas.precio',
@@ -146,21 +147,13 @@ class PedidoController extends Controller
         try {
             DB::beginTransaction();
 
-           // $mytime = Carbon::now();
+            // $mytime = Carbon::now();
 
             $pedido = new Pedido();
             $pedido->persona_id = $request->persona_id;
             $pedido->tipo_pago = $request->tipo_pago;
             $pedido->tipo_cliente = $request->tipo_cliente;
-            // $pedido->direccion = $request->direccion;
-            //$pedido->telefono = $request->telefono;
-            //$pedido->fecha_hora = $mytime->toDateString();
-            $pedido->estado = '1';
-            $pedido->save();
-
-             // Obtener la fecha del campo created_at
-            $fecha_creacion = $pedido->created_at->toDateString();
-            $pedido->fecha_hora = $fecha_creacion;
+            $pedido->fecha_hora = now(); // Agregar la fecha y hora actual
             $pedido->save();
 
             $detalles = $request->data; //Array de detalles
