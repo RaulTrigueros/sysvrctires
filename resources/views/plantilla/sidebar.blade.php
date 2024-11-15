@@ -21,12 +21,12 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" @click="menu=72" href="#">
-              <i class="nav-icon fa fa-handshake-o"></i>Llantas y Tubos</a>
+              <i class="nav-icon fa fa-handshake-o"></i>Productos</a>
           </li>
-          <li class="nav-item">
+         <!-- <li class="nav-item">
             <a class="nav-link" @click="menu=73" href="#">
               <i class="nav-icon fa fa-handshake-o"></i>Repuestos</a>
-          </li>
+          </li>-->
         </ul>
       </li>
     <!-- <li class="nav-title">ACCESO</li>-->

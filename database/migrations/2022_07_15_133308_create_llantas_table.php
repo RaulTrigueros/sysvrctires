@@ -17,7 +17,7 @@ class CreateLlantasTable extends Migration
             $table->bigIncrements('id');
             $table->string('codigo')->unique();
             $table->string('tipoproducto');
-            $table->string('medida', 12);
+            $table->string('medida', 12)->nullable();
             $table->decimal('precio', 8, 2);
             $table->text('descripcion')->nullable();
             $table->timestamps();

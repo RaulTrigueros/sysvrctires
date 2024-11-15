@@ -2,7 +2,7 @@
   <main class="">
     <!-- Breadcrumb -->
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Ir a Portal</a></li>
+      <li class="breadcrumb-item"><a href="/main">Escritorio</a></li>
     </ol>
     <!--  <div>-->
     <div class="container-fluid">
@@ -11,7 +11,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <i class="fa fa-align-justify"></i> Gestión de Llantas y Tubos
+                <i class="fa fa-align-justify"></i> Gestión de Productos
                 <button
                   type="button"
                   @click="abrirModal('llanta', 'registrar')"
@@ -20,6 +20,7 @@
                   &nbsp;<i class="fa fa-plus-square"></i>&nbsp;Nuevo
                 </button>
                 <div class="card-body">
+                  <!--Inicia opcion buscar-->
                   <div class="form-group row">
                     <div class="col-md-8">
                       <div class="input-group">
@@ -192,7 +193,8 @@
                     />
                   </div>
                 </div>
-                <div class="form-group row">
+
+              <div class="form-group row">
                   <label class="col-md-3 form-control-label" for="text-input"
                     >Tipo de Producto</label
                   >
@@ -200,10 +202,12 @@
                     <select class="form-control" v-model="tipoproducto">
                       <option value="llanta">Llanta</option>
                       <option value="tubo">Tubo</option>
+                      <option value="repuesto">Repuesto</option>
+                      <option value="Otro">Otro</option>
                     </select>
                   </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" v-if="tipoproducto === 'llanta' || tipoproducto === 'tubo'">
                   <label class="col-md-3 form-control-label" for="text-input"
                     >Medida</label
                   >
@@ -468,10 +472,12 @@ export default {
         if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
       }
 
-      if (this.errorLlanta === 0) {
-        if (!this.medida)
+          // Solo valida 'medida' si el tipo de producto es 'llanta' o 'tubo'
+      if (this.tipoproducto === 'llanta' || this.tipoproducto === 'tubo') {
+        if (!this.medida) {
           this.errorMostrarMsjLlanta.push('Debe ingresar un número de medida');
-        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
+          this.errorLlanta = 1;
+        }
       }
 
       if (this.errorLlanta === 0) {
@@ -501,7 +507,7 @@ export default {
             case 'registrar': {
               this.modal = 1;
               this.tipoAccion = 1;
-              this.tituloModal = 'Registrar Llanta o Tubo';
+              this.tituloModal = 'Registrar Producto';
               this.codigo = '';
               this.tipoproducto = '';
               this.medida = '';
@@ -512,7 +518,7 @@ export default {
             case 'actualizar': {
               this.modal = 1;
               this.tipoAccion = 2;
-              this.tituloModal = 'Actualizar Llanta o Tubo';
+              this.tituloModal = 'Actualizar Producto';
               this.llanta_id = data['id'];
               this.codigo = data['codigo'];
               this.tipoproducto = data['tipoproducto'];

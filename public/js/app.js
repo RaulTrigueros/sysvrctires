@@ -2167,9 +2167,13 @@ __webpack_require__.r(__webpack_exports__);
         if (!this.codigo) this.errorMostrarMsjLlanta.push('Debe ingresar un codigo de producto');
         if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
       }
-      if (this.errorLlanta === 0) {
-        if (!this.medida) this.errorMostrarMsjLlanta.push('Debe ingresar un número de medida');
-        if (this.errorMostrarMsjLlanta.length) this.errorLlanta = 1;
+
+      // Solo valida 'medida' si el tipo de producto es 'llanta' o 'tubo'
+      if (this.tipoproducto === 'llanta' || this.tipoproducto === 'tubo') {
+        if (!this.medida) {
+          this.errorMostrarMsjLlanta.push('Debe ingresar un número de medida');
+          this.errorLlanta = 1;
+        }
       }
       if (this.errorLlanta === 0) {
         if (!this.precio) this.errorMostrarMsjLlanta.push('Debe ingresar precio de producto');
@@ -2198,7 +2202,7 @@ __webpack_require__.r(__webpack_exports__);
                 {
                   this.modal = 1;
                   this.tipoAccion = 1;
-                  this.tituloModal = 'Registrar Llanta o Tubo';
+                  this.tituloModal = 'Registrar Producto';
                   this.codigo = '';
                   this.tipoproducto = '';
                   this.medida = '';
@@ -2210,7 +2214,7 @@ __webpack_require__.r(__webpack_exports__);
                 {
                   this.modal = 1;
                   this.tipoAccion = 2;
-                  this.tituloModal = 'Actualizar Llanta o Tubo';
+                  this.tituloModal = 'Actualizar Producto';
                   this.llanta_id = data['id'];
                   this.codigo = data['codigo'];
                   this.tipoproducto = data['tipoproducto'];
@@ -3430,9 +3434,9 @@ var staticRenderFns = [function () {
     staticClass: "breadcrumb-item"
   }, [_c("a", {
     attrs: {
-      href: "/"
+      href: "/main"
     }
-  }, [_vm._v("Ir a Portal")])])]);
+  }, [_vm._v("Escritorio")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -4039,7 +4043,7 @@ var staticRenderFns = [function () {
     staticClass: "breadcrumb-item"
   }, [_c("a", {
     attrs: {
-      href: "/"
+      href: "/main"
     }
   }, [_vm._v("Escritorio")])])]);
 }, function () {
@@ -4080,7 +4084,7 @@ var render = function render() {
     staticClass: "card-header"
   }, [_c("i", {
     staticClass: "fa fa-align-justify"
-  }), _vm._v(" Gestión de Llantas y Tubos\n              "), _c("button", {
+  }), _vm._v(" Gestión de Productos\n              "), _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
       type: "button"
@@ -4389,7 +4393,15 @@ var render = function render() {
     attrs: {
       value: "tubo"
     }
-  }, [_vm._v("Tubo")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Tubo")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "repuesto"
+    }
+  }, [_vm._v("Repuesto")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "Otro"
+    }
+  }, [_vm._v("Otro")])])])]), _vm._v(" "), _vm.tipoproducto === "llanta" || _vm.tipoproducto === "tubo" ? _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
     staticClass: "col-md-3 form-control-label",
@@ -4419,7 +4431,7 @@ var render = function render() {
         _vm.medida = $event.target.value;
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
     staticClass: "col-md-3 form-control-label",
@@ -4539,9 +4551,9 @@ var staticRenderFns = [function () {
     staticClass: "breadcrumb-item"
   }, [_c("a", {
     attrs: {
-      href: "/"
+      href: "/main"
     }
-  }, [_vm._v("Ir a Portal")])])]);
+  }, [_vm._v("Escritorio")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -4820,7 +4832,7 @@ var render = function render() {
     staticClass: "col-md-3"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_c("label", [_vm._v("Producto\n                  "), _c("span", {
+  }, [_c("label", [_vm._v("Codigo Producto\n                  "), _c("span", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -4830,7 +4842,7 @@ var render = function render() {
     staticStyle: {
       color: "red"
     }
-  }, [_vm._v("(*Seleccione)")])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("(*Ingrese)")])]), _vm._v(" "), _c("div", {
     staticClass: "form-inline"
   }, [_c("input", {
     directives: [{
@@ -4920,7 +4932,7 @@ var render = function render() {
         _vm.tipoproducto = $event.target.value;
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _vm.tipoproducto === "llanta" || _vm.tipoproducto === "tubo" ? _c("div", {
     staticClass: "col-md-2"
   }, [_c("div", {
     staticClass: "form-group"
@@ -4945,7 +4957,7 @@ var render = function render() {
         _vm.medida = $event.target.value;
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "col-md-2"
   }, [_c("div", {
     staticClass: "form-group"
@@ -5437,7 +5449,7 @@ var staticRenderFns = [function () {
     staticClass: "breadcrumb-item"
   }, [_c("a", {
     attrs: {
-      href: "/"
+      href: "/main"
     }
   }, [_vm._v("Escritorio")])])]);
 }, function () {
@@ -5984,9 +5996,9 @@ var staticRenderFns = [function () {
     staticClass: "breadcrumb-item"
   }, [_c("a", {
     attrs: {
-      href: "/"
+      href: "/main"
     }
-  }, [_vm._v("Ir a Portal")])])]);
+  }, [_vm._v("Escritorio")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -6164,7 +6176,7 @@ var staticRenderFns = [function () {
     staticClass: "breadcrumb-item"
   }, [_c("a", {
     attrs: {
-      href: "/"
+      href: "/main"
     }
   }, [_vm._v("Escritorio")])])]);
 }, function () {
@@ -6768,7 +6780,7 @@ var staticRenderFns = [function () {
     staticClass: "breadcrumb-item"
   }, [_c("a", {
     attrs: {
-      href: "/"
+      href: "/main"
     }
   }, [_vm._v("Escritorio")])])]);
 }, function () {

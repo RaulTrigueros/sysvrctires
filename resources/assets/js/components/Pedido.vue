@@ -2,7 +2,7 @@
   <main class="">
     <!-- Breadcrumb -->
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Escritorio</a></li>
+      <li class="breadcrumb-item"><a href="/main">Escritorio</a></li>
     </ol>
     <div class="container-fluid">
       <!-- Ejemplo de tabla Listado -->
@@ -182,9 +182,9 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label
-                    >Producto
+                    >Codigo Producto
                     <span style="color: red" v-show="llanta_id == 0"
-                      >(*Seleccione)</span
+                      >(*Ingrese)</span
                     ></label
                   >
                   <div class="form-inline">
@@ -226,18 +226,18 @@
                   />
                 </div>
               </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label
-                    >Medida</label
-                  >
-                  <input
-                    type="text"
-                    readonly
-                    class="form-control"
-                    v-model="medida"
-                  />
-                </div>
+              <div class="col-md-2" v-if="tipoproducto === 'llanta' || tipoproducto === 'tubo'">
+                  <div class="form-group">
+                    <label
+                      >Medida</label
+                    >
+                    <input
+                      type="text"
+                      readonly
+                      class="form-control"
+                      v-model="medida"
+                    />
+                  </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
@@ -374,7 +374,8 @@
           </div>
         </template>
         <!-- Fin Detalle-->
-        <!-- Ver ingreso -->
+         
+        <!-- Ver pedido ingresado -->
         <template v-else-if="listado == 2">
           <div class="card-body">
             <div class="form-group row border">
