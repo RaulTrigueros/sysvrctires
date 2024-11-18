@@ -2262,6 +2262,7 @@ __webpack_require__.r(__webpack_exports__);
       codigo_persona: '',
       direccion: '',
       telefono: '',
+      nit: "",
       fecha_hora: '',
       arrayPedido: [],
       arrayCliente: [],
@@ -2475,7 +2476,8 @@ __webpack_require__.r(__webpack_exports__);
         persona_id: this.persona_id,
         codigo_persona: this.codigo_persona,
         nombre: this.nombre,
-        tipo_cliente: this.tipo_cliente,
+        // tipo_cliente: this.tipo_cliente,
+        nit: this.nit,
         tipo_pago: this.tipo_pago,
         // fecha_hora: this.fecha_hora,
         direccion: this.direccion,
@@ -2486,7 +2488,8 @@ __webpack_require__.r(__webpack_exports__);
         me.listarPedido(1, '', 'persona_id');
         me.persona_id = 0;
         me.codigo_persona = '';
-        me.tipo_cliente = 'MAYOREO';
+        //  me.tipo_cliente = 'MAYOREO';
+        me.nit = '';
         me.tipo_pago = 'CONTADO';
         // me.fecha_hora = '';
         me.direccion = '';
@@ -2519,7 +2522,8 @@ __webpack_require__.r(__webpack_exports__);
       me.listado = 0;
       me.persona_id = 0;
       me.codigo_persona = '';
-      me.tipo_cliente = 'MAYOREO';
+      // me.tipo_cliente = 'MAYOREO';
+      me.nit = '';
       me.tipo_pago = 'CONTADO';
       // me.fecha_hora = '';
       me.direccion = '';
@@ -2548,7 +2552,8 @@ __webpack_require__.r(__webpack_exports__);
         arrayPedidoT = respuesta.pedido;
         me.nombre = arrayPedidoT[0]['nombre'];
         me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
-        me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+        // me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+        me.nit = arrayPedidoT[0]['nit'];
         me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
         me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
         me.direccion = arrayPedidoT[0]['direccion'];
@@ -5187,7 +5192,7 @@ var render = function render() {
     staticClass: "form-group"
   }, [_vm._m(8), _vm._v(" "), _c("p", {
     domProps: {
-      textContent: _vm._s(_vm.tipo_cliente)
+      textContent: _vm._s(_vm.nit)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
@@ -5519,7 +5524,7 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("label", [_c("strong", [_vm._v("Tipo de Cliente")])]);
+  return _c("label", [_c("strong", [_vm._v("NIT")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

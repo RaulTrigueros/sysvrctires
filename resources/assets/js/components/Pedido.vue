@@ -156,7 +156,8 @@
           </div>
         </template>
         <!--Fin Listado-->
-        <!-- Detalle-->
+
+        <!-- Agregar productos al Detalle de pedido-->
         <template v-else-if="listado == 0">
           <div class="card-body">
             <!-- Inicio cabecera de registro-->
@@ -289,8 +290,7 @@
                 </div>
               </div>
             </div>
-            <!--FIN Obtener Detalle-->
-
+            <!--FIN Agregar productos al Detalle de pedido -->
             <!--Tabla de productos agregados al detalle-->
             <div class="form-group row border">
               <div class="table-responsive col-md-12">
@@ -405,8 +405,8 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label><strong>Tipo de Cliente</strong></label>
-                  <p v-text="tipo_cliente"></p>
+                  <label><strong>NIT</strong></label>
+                  <p v-text="nit"></p>
                 </div>
               </div>
               <div class="col-md-4">
@@ -462,11 +462,12 @@
             </div>
           </div>
         </template>
-        <!-- fin ver ingreso -->
+        <!-- fin ver pedido ingresado -->
       </div>
       <!-- Fin ejemplo de tabla Listado -->
     </div>
-    <!--Inicio del modal agregar/actualizar-->
+
+    <!--Inicio del modal agregar/actualizar (...)-->
     <div
       class="modal fade"
       tabindex="-1"
@@ -606,6 +607,7 @@ export default {
       codigo_persona: '',
       direccion: '',
       telefono: '',
+      nit: "",
       fecha_hora: '',
       arrayPedido: [],
       arrayCliente: [],
@@ -853,7 +855,8 @@ export default {
           persona_id: this.persona_id,
           codigo_persona: this.codigo_persona,
           nombre: this.nombre,
-          tipo_cliente: this.tipo_cliente,
+         // tipo_cliente: this.tipo_cliente,
+          nit: this.nit,
           tipo_pago: this.tipo_pago,
          // fecha_hora: this.fecha_hora,
           direccion: this.direccion,
@@ -865,7 +868,8 @@ export default {
           me.listarPedido(1, '', 'persona_id');
           me.persona_id = 0;
           me.codigo_persona = '';
-          me.tipo_cliente = 'MAYOREO';
+        //  me.tipo_cliente = 'MAYOREO';
+          me.nit = '';
           me.tipo_pago = 'CONTADO';
          // me.fecha_hora = '';
           me.direccion = '';
@@ -907,7 +911,8 @@ export default {
 
       me.persona_id = 0;
       me.codigo_persona = '';
-      me.tipo_cliente = 'MAYOREO';
+     // me.tipo_cliente = 'MAYOREO';
+      me.nit = '';
       me.tipo_pago = 'CONTADO';
      // me.fecha_hora = '';
       me.direccion = '';
@@ -940,7 +945,8 @@ export default {
 
           me.nombre = arrayPedidoT[0]['nombre'];
           me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
-          me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+         // me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+          me.nit = arrayPedidoT[0]['nit'];
           me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
           me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
           me.direccion = arrayPedidoT[0]['direccion'];
