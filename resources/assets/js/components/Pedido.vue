@@ -379,7 +379,7 @@
         <template v-else-if="listado == 2">
           <div class="card-body">
             <div class="form-group row border">
-              <div class="col-md-9">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for=""><strong>Nombre de Cliente</strong></label>
                   <p v-text="nombre"></p>
@@ -393,6 +393,24 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
+                  <label><strong>NIT</strong></label>
+                  <p v-text="nit"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label><strong>NRC</strong></label>
+                  <p v-text="nrc"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label><strong>Giro</strong></label>
+                  <p v-text="giro"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
                   <label><strong>Dirección</strong></label>
                   <p v-text="direccion"></p>
                 </div>
@@ -401,12 +419,6 @@
                 <div class="form-group">
                   <label><strong>Telefono</strong></label>
                   <p v-text="telefono"></p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label><strong>NIT</strong></label>
-                  <p v-text="nit"></p>
                 </div>
               </div>
               <div class="col-md-4">
@@ -608,6 +620,8 @@ export default {
       direccion: '',
       telefono: '',
       nit: "",
+      nrc: "",
+      giro: "",
       fecha_hora: '',
       arrayPedido: [],
       arrayCliente: [],
@@ -856,7 +870,9 @@ export default {
           codigo_persona: this.codigo_persona,
           nombre: this.nombre,
          // tipo_cliente: this.tipo_cliente,
-          nit: this.nit,
+         // nit: this.nit,
+         // nrc: this.nrc,
+         // giro: this.giro,
           tipo_pago: this.tipo_pago,
          // fecha_hora: this.fecha_hora,
           direccion: this.direccion,
@@ -869,7 +885,9 @@ export default {
           me.persona_id = 0;
           me.codigo_persona = '';
         //  me.tipo_cliente = 'MAYOREO';
-          me.nit = '';
+         // me.nit = '';
+         // me.nrc = '';
+         // me.giro = '';
           me.tipo_pago = 'CONTADO';
          // me.fecha_hora = '';
           me.direccion = '';
@@ -912,7 +930,9 @@ export default {
       me.persona_id = 0;
       me.codigo_persona = '';
      // me.tipo_cliente = 'MAYOREO';
-      me.nit = '';
+     /* me.nit = '';
+      me.nrc = '';
+      me.giro = '';*/
       me.tipo_pago = 'CONTADO';
      // me.fecha_hora = '';
       me.direccion = '';
@@ -947,6 +967,8 @@ export default {
           me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
          // me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
           me.nit = arrayPedidoT[0]['nit'];
+          me.nrc = arrayPedidoT[0]['nrc'];
+          me.giro = arrayPedidoT[0]['giro'];
           me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
           me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
           me.direccion = arrayPedidoT[0]['direccion'];

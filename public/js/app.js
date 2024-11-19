@@ -2263,6 +2263,8 @@ __webpack_require__.r(__webpack_exports__);
       direccion: '',
       telefono: '',
       nit: "",
+      nrc: "",
+      giro: "",
       fecha_hora: '',
       arrayPedido: [],
       arrayCliente: [],
@@ -2477,7 +2479,9 @@ __webpack_require__.r(__webpack_exports__);
         codigo_persona: this.codigo_persona,
         nombre: this.nombre,
         // tipo_cliente: this.tipo_cliente,
-        nit: this.nit,
+        // nit: this.nit,
+        // nrc: this.nrc,
+        // giro: this.giro,
         tipo_pago: this.tipo_pago,
         // fecha_hora: this.fecha_hora,
         direccion: this.direccion,
@@ -2489,7 +2493,9 @@ __webpack_require__.r(__webpack_exports__);
         me.persona_id = 0;
         me.codigo_persona = '';
         //  me.tipo_cliente = 'MAYOREO';
-        me.nit = '';
+        // me.nit = '';
+        // me.nrc = '';
+        // me.giro = '';
         me.tipo_pago = 'CONTADO';
         // me.fecha_hora = '';
         me.direccion = '';
@@ -2523,7 +2529,9 @@ __webpack_require__.r(__webpack_exports__);
       me.persona_id = 0;
       me.codigo_persona = '';
       // me.tipo_cliente = 'MAYOREO';
-      me.nit = '';
+      /* me.nit = '';
+       me.nrc = '';
+       me.giro = '';*/
       me.tipo_pago = 'CONTADO';
       // me.fecha_hora = '';
       me.direccion = '';
@@ -2554,6 +2562,8 @@ __webpack_require__.r(__webpack_exports__);
         me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
         // me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
         me.nit = arrayPedidoT[0]['nit'];
+        me.nrc = arrayPedidoT[0]['nrc'];
+        me.giro = arrayPedidoT[0]['giro'];
         me.tipo_pago = arrayPedidoT[0]['tipo_pago'];
         me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
         me.direccion = arrayPedidoT[0]['direccion'];
@@ -5155,7 +5165,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "form-group row border"
   }, [_c("div", {
-    staticClass: "col-md-9"
+    staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
   }, [_vm._m(4), _vm._v(" "), _c("p", {
@@ -5176,7 +5186,7 @@ var render = function render() {
     staticClass: "form-group"
   }, [_vm._m(6), _vm._v(" "), _c("p", {
     domProps: {
-      textContent: _vm._s(_vm.direccion)
+      textContent: _vm._s(_vm.nit)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
@@ -5184,7 +5194,7 @@ var render = function render() {
     staticClass: "form-group"
   }, [_vm._m(7), _vm._v(" "), _c("p", {
     domProps: {
-      textContent: _vm._s(_vm.telefono)
+      textContent: _vm._s(_vm.nrc)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
@@ -5192,7 +5202,7 @@ var render = function render() {
     staticClass: "form-group"
   }, [_vm._m(8), _vm._v(" "), _c("p", {
     domProps: {
-      textContent: _vm._s(_vm.nit)
+      textContent: _vm._s(_vm.giro)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
@@ -5200,11 +5210,27 @@ var render = function render() {
     staticClass: "form-group"
   }, [_vm._m(9), _vm._v(" "), _c("p", {
     domProps: {
+      textContent: _vm._s(_vm.direccion)
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(10), _vm._v(" "), _c("p", {
+    domProps: {
+      textContent: _vm._s(_vm.telefono)
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(11), _vm._v(" "), _c("p", {
+    domProps: {
       textContent: _vm._s(_vm.tipo_pago)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_vm._m(10), _vm._v(" "), _c("p", {
+  }, [_vm._m(12), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.fecha_hora)
     }
@@ -5214,7 +5240,7 @@ var render = function render() {
     staticClass: "table-responsive col-md-12"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(11), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle) {
+  }, [_vm._m(13), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle) {
     return _c("tr", {
       key: detalle.id
     }, [_c("td", {
@@ -5238,7 +5264,7 @@ var render = function render() {
         textContent: _vm._s(detalle.cantidad)
       }
     })]);
-  }), 0) : _c("tbody", [_vm._m(12)])])])]), _vm._v(" "), _c("div", {
+  }), 0) : _c("tbody", [_vm._m(14)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5379,7 +5405,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(13), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
+  }, [_vm._m(15), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
     return _c("tr", {
       key: tipoproducto.id
     }, [_c("td", [_c("button", {
@@ -5516,15 +5542,23 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("NIT")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("NRC")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("Giro")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
   return _c("label", [_c("strong", [_vm._v("Dirección")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", [_c("strong", [_vm._v("Telefono")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", [_c("strong", [_vm._v("NIT")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

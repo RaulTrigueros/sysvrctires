@@ -76,7 +76,10 @@ class PedidoController extends Controller
                 'personas.nombre',
                 'personas.codigo as codigo_persona',
                 'personas.direccion',
-                'personas.telefono'
+                'personas.telefono',
+                'personas.nit',
+                'personas.nrc',
+                'personas.giro',
             )
             ->where('pedidos.id', '=', $id)
             ->orderBy('pedidos.id', 'desc')->take(1)->get();
@@ -115,6 +118,7 @@ class PedidoController extends Controller
                 'personas.nombre',
                 'personas.direccion',
                 'personas.telefono',
+                'personas.nit',
                 'personas.codigo as codigo_persona'
 
             )
@@ -152,7 +156,7 @@ class PedidoController extends Controller
             $pedido = new Pedido();
             $pedido->persona_id = $request->persona_id;
             $pedido->tipo_pago = $request->tipo_pago;
-            $pedido->tipo_cliente = $request->tipo_cliente;
+            //$pedido->tipo_cliente = $request->tipo_cliente;
             $pedido->fecha_hora = now(); // Agregar la fecha y hora actual
             $pedido->save();
 
