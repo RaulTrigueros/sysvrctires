@@ -2341,7 +2341,10 @@ __webpack_require__.r(__webpack_exports__);
     selectCliente: function selectCliente(search, loading) {
       var me = this;
       loading(true);
-      var url = this.ruta + '/cliente/selectCliente?filtro=' + search;
+
+      // Si no hay texto en el campo de búsqueda, carga todos los clientes
+      var filtro = search || ''; // Si `search` es vacío, usa una cadena vacía
+      var url = this.ruta + '/cliente/selectCliente?filtro=' + filtro;
       axios.get(url).then(function (response) {
         console.log(response.data); // Verifica la estructura de la respuesta aquí
         var respuesta = response.data;
@@ -2403,46 +2406,62 @@ __webpack_require__.r(__webpack_exports__);
     },
     agregarDetalle: function agregarDetalle() {
       var me = this;
-      if (me.llanta_id == 0 || me.cantidad == 0 || me.codigo == 0) {} else {
-        if (me.encuentra(me.llanta_id)) {
-          swal({
-            type: 'error',
-            title: 'Error...',
-            text: 'Ese producto ya se encuentra agregado!'
-          });
-        } else {
-          if (me.cantidad == 0) {
-            swal({
-              type: 'error',
-              title: 'Error...',
-              text: 'Ingrese la cantidad de productos!'
-            });
-          } else {
-            me.arrayDetalle.push({
-              llanta_id: me.llanta_id,
-              tipoproducto: me.tipoproducto,
-              cantidad: me.cantidad,
-              codigo: me.codigo,
-              medida: me.medida,
-              descripcion: me.descripcion,
-              precio: me.precio
-            });
-            me.codigo = '';
-            me.llanta_id = 0;
-            me.tipoproducto = '';
-            me.medida = '';
-            me.cantidad = 0;
-            me.descripcion = '';
-            me.precio = '';
-          }
-        }
+
+      // Validar si algún campo requerido está vacío
+      if (!me.llanta_id || !me.codigo || !me.tipoproducto) {
+        swal.fire({
+          type: 'warning',
+          title: 'Advertencia',
+          text: 'Debe completar todos los campos obligatorios.'
+        });
+        return;
       }
+
+      // Validar si la cantidad es cero o está vacía
+      if (!me.cantidad || me.cantidad <= 0) {
+        swal.fire({
+          type: 'error',
+          title: 'Upss!...',
+          text: 'Ingrese la cantidad de productos!'
+        });
+        return;
+      }
+
+      // Validar si el producto ya está agregado
+      if (me.encuentra(me.llanta_id)) {
+        swal.fire({
+          type: 'error',
+          title: 'Upss!...',
+          text: 'Ese producto ya se encuentra agregado!'
+        });
+        return;
+      }
+
+      // Si todas las validaciones pasan, agregar el detalle
+      me.arrayDetalle.push({
+        llanta_id: me.llanta_id,
+        tipoproducto: me.tipoproducto,
+        cantidad: me.cantidad,
+        codigo: me.codigo,
+        medida: me.medida,
+        descripcion: me.descripcion,
+        precio: me.precio
+      });
+
+      // Reiniciar los campos después de agregar
+      me.codigo = '';
+      me.llanta_id = 0;
+      me.tipoproducto = '';
+      me.medida = '';
+      me.cantidad = 0;
+      me.descripcion = '';
+      me.precio = '';
     },
     agregarDetalleModal: function agregarDetalleModal() {
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var me = this;
       if (me.encuentra(data['id'])) {
-        swal({
+        swal.fire({
           type: 'error',
           title: 'Error...',
           text: 'Ese producto ya se encuentra agregado!'
@@ -2457,6 +2476,14 @@ __webpack_require__.r(__webpack_exports__);
           medida: data['medida'],
           precio: data['precio']
         });
+        // Notificación de éxito al agregar el producto
+        swal.fire({
+          type: 'success',
+          title: 'Producto agregado',
+          timer: 1000,
+          // Duración de la notificación (en milisegundos)
+          showConfirmButton: false // Elimina el botón "OK"
+        });
       }
     },
     listarTipoproducto: function listarTipoproducto(buscar, criterio) {
@@ -2470,10 +2497,30 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     registrarPedido: function registrarPedido() {
-      if (this.validarPedido()) {
+      /* if (this.validarPedido()) {
+         return;
+       }*/
+
+      var me = this;
+
+      // Validar si el campo cliente está vacío
+      if (!me.persona_id) {
+        swal.fire({
+          type: 'warning',
+          title: 'Advertencia',
+          text: 'No ha agregado un cliente.'
+        });
         return;
       }
-      var me = this;
+      // Validar si algún campo requerido está vacío
+      if (me.arrayDetalle.length <= 0) {
+        swal.fire({
+          type: 'warning',
+          title: 'Advertencia',
+          text: 'No existe detalle de pedido.'
+        });
+        return;
+      }
       axios.post(this.ruta + '/pedido/registrar', {
         persona_id: this.persona_id,
         codigo_persona: this.codigo_persona,
@@ -2513,16 +2560,20 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    validarPedido: function validarPedido() {
-      var me = this;
-      me.errorPedido = 0;
-      me.errorMostrarMsjPedido = [];
-      var art;
-      if (me.persona_id == 0) me.errorMostrarMsjPedido.push('Seleccione un Cliente');
-      if (me.arrayDetalle.length <= 0) me.errorMostrarMsjPedido.push('Ingrese detalles');
-      if (me.errorMostrarMsjPedido.length) me.errorPedido = 1;
-      return me.errorPedido;
-    },
+    /* validarPedido() {
+       let me = this;
+       me.errorPedido = 0;
+       me.errorMostrarMsjPedido = [];
+       var art;
+         if (me.persona_id == 0)
+         me.errorMostrarMsjPedido.push('Seleccione un Cliente');
+       if (me.arrayDetalle.length <= 0)
+         me.errorMostrarMsjPedido.push('Ingrese detalles');
+       if (me.codigo == 0)
+         me.errorMostrarMsjPedido.push('Ingrese codigo de producto');
+         if (me.errorMostrarMsjPedido.length) me.errorPedido = 1;
+         return me.errorPedido;
+     },*/
     mostrarDetalle: function mostrarDetalle() {
       var me = this;
       me.listado = 0;
@@ -2655,6 +2706,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
+    this.selectCliente('', function () {}); // Carga todos los clientes al iniciar
   }
 });
 

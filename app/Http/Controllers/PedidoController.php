@@ -10,6 +10,7 @@ use App\DetallePedido;
 use App\User;
 use App\Services\BitacoraService;
 use App\Notifications\NotifyAdmin;
+use PDF;
 
 class PedidoController extends Controller
 {
@@ -113,12 +114,13 @@ class PedidoController extends Controller
             ->select(
                 'pedidos.id',
                 'pedidos.tipo_pago',
-                'pedidos.tipo_cliente',
-                'pedidos.estado',
+                'pedidos.fecha_hora',
                 'personas.nombre',
                 'personas.direccion',
                 'personas.telefono',
                 'personas.nit',
+                'personas.nrc',
+                'personas.giro',
                 'personas.codigo as codigo_persona'
 
             )
@@ -126,13 +128,12 @@ class PedidoController extends Controller
             ->orderBy('pedidos.id', 'desc')->take(1)->get();
 
         $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
-            ->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
             ->select(
                 'detalle_pedidos.cantidad',
+                'llantas.codigo',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.descripcion',
-                'repuestos.nombre as nombre_repuesto',
-                'repuestos.descripcion'
+                'llantas.medida',
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->orderBy('detalle_pedidos.id', 'desc')->get();
