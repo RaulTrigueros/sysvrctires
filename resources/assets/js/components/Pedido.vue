@@ -423,6 +423,12 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
+                  <label><strong>Correo</strong></label>
+                  <p v-text="email"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
                   <label><strong>Tipo de Pago</strong></label>
                   <p v-text="tipo_pago"></p>
                 </div>
@@ -619,6 +625,7 @@ export default {
       codigo_persona: '',
       direccion: '',
       telefono: '',
+      email:'',
       nit: "",
       nrc: "",
       giro: "",
@@ -1019,6 +1026,7 @@ export default {
           me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
           me.direccion = arrayPedidoT[0]['direccion'];
           me.telefono = arrayPedidoT[0]['telefono'];
+          me.email = arrayPedidoT[0]['email'];
         })
         .catch(function (error) {
           console.log(error);

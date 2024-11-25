@@ -78,6 +78,7 @@ class PedidoController extends Controller
                 'personas.codigo as codigo_persona',
                 'personas.direccion',
                 'personas.telefono',
+                'personas.email',
                 'personas.nit',
                 'personas.nrc',
                 'personas.giro',
@@ -118,6 +119,7 @@ class PedidoController extends Controller
                 'personas.nombre',
                 'personas.direccion',
                 'personas.telefono',
+                'personas.email',
                 'personas.nit',
                 'personas.nrc',
                 'personas.giro',
@@ -125,7 +127,8 @@ class PedidoController extends Controller
 
             )
             ->where('pedidos.id', '=', $id)
-            ->orderBy('pedidos.id', 'desc')->take(1)->get();
+            ->first();
+        //->orderBy('pedidos.id', 'desc')->take(1)->get();
 
         $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
             ->select(
@@ -136,13 +139,22 @@ class PedidoController extends Controller
                 'llantas.medida',
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
-            ->orderBy('detalle_pedidos.id', 'desc')->get();
+            ->get();
+        //->orderBy('detalle_pedidos.id', 'desc')->get();
 
-        $numpedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
+        // Validación en caso de que el pedido no exista
+        if (!$pedido) {
+            return response()->json(['message' => 'Pedido no encontrado.'], 404);
+        }
+        // Generar el PDF
+        $pdf = \PDF::loadView('pdf.pedido', compact('pedido', 'detalles'));
+        return $pdf->download('pedido-' . $pedido->codigo_persona . '.pdf');
+
+        /*  $numpedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select('personas.codigo as codigo_persona')->where('id', $id)->get();
 
-        $pdf = \PDF::loadView('pdf.pedido', ['pedido' => $pedido, 'detalles' => $detalles]);
-        return $pdf->download('pedido-' . $numpedido[0]->codigo . '.pdf');
+        $pdf = \PDF::loadView('pdf.venta', ['pedido' => $pedido, 'detalles' => $detalles]);
+        return $pdf->download('pedido-' . $numpedido[0]->codigo . '.pdf');*/
     }
 
     public function store(Request $request)

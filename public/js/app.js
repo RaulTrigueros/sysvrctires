@@ -2262,6 +2262,7 @@ __webpack_require__.r(__webpack_exports__);
       codigo_persona: '',
       direccion: '',
       telefono: '',
+      email: '',
       nit: "",
       nrc: "",
       giro: "",
@@ -2619,6 +2620,7 @@ __webpack_require__.r(__webpack_exports__);
         me.fecha_hora = arrayPedidoT[0]['fecha_hora'];
         me.direccion = arrayPedidoT[0]['direccion'];
         me.telefono = arrayPedidoT[0]['telefono'];
+        me.email = arrayPedidoT[0]['email'];
       })["catch"](function (error) {
         console.log(error);
       });
@@ -5278,11 +5280,19 @@ var render = function render() {
     staticClass: "form-group"
   }, [_vm._m(11), _vm._v(" "), _c("p", {
     domProps: {
+      textContent: _vm._s(_vm.email)
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(12), _vm._v(" "), _c("p", {
+    domProps: {
       textContent: _vm._s(_vm.tipo_pago)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_vm._m(12), _vm._v(" "), _c("p", {
+  }, [_vm._m(13), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.fecha_hora)
     }
@@ -5292,7 +5302,7 @@ var render = function render() {
     staticClass: "table-responsive col-md-12"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(13), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle) {
+  }, [_vm._m(14), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle) {
     return _c("tr", {
       key: detalle.id
     }, [_c("td", {
@@ -5316,7 +5326,7 @@ var render = function render() {
         textContent: _vm._s(detalle.cantidad)
       }
     })]);
-  }), 0) : _c("tbody", [_vm._m(14)])])])]), _vm._v(" "), _c("div", {
+  }), 0) : _c("tbody", [_vm._m(15)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5457,7 +5467,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(15), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
+  }, [_vm._m(16), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
     return _c("tr", {
       key: tipoproducto.id
     }, [_c("td", [_c("button", {
@@ -5611,6 +5621,10 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", [_c("strong", [_vm._v("Telefono")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_c("strong", [_vm._v("Correo")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
