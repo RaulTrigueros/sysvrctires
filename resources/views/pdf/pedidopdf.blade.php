@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido #{{$pedido->id}}</title>
+    <title>Pedido #{{$pedido->codigo_persona}}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,7 +38,7 @@
 </head>
 <body>
     <header>
-        <h1>Reporte de Pedido</h1>
+        <h1>Detalle de Pedido</h1>
         <p><strong>Fecha:</strong> {{$pedido->fecha_hora}}</p>
     </header>
     <section>
@@ -81,21 +81,21 @@
         <table id="detalles-pedido">
             <thead>
                 <tr>
-                    <th>Cantidad</th>
                     <th>Código</th>
                     <th>Tipo Producto</th>
-                    <th>Descripción</th>
                     <th>Medida</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($detalles as $detalle)
                 <tr>
-                    <td>{{$detalle->cantidad}}</td>
                     <td>{{$detalle->codigo}}</td>
-                    <td>{{$detalle->tipo_producto}}</td>
-                    <td>{{$detalle->descripcion}}</td>
+                    <td>{{$detalle->tipoproducto}}</td>
                     <td>{{$detalle->medida}}</td>
+                    <td>{{$detalle->descripcion}}</td>
+                    <td>{{$detalle->cantidad}}</td>
                 </tr>
                 @endforeach
             </tbody>

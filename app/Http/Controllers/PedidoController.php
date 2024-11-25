@@ -147,14 +147,10 @@ class PedidoController extends Controller
             return response()->json(['message' => 'Pedido no encontrado.'], 404);
         }
         // Generar el PDF
-        $pdf = \PDF::loadView('pdf.pedido', compact('pedido', 'detalles'));
-        return $pdf->download('pedido-' . $pedido->codigo_persona . '.pdf');
+        $pdf = \PDF::loadView('pdf.pedidopdf', ['pedido' => $pedido, 'detalles' => $detalles]);
 
-        /*  $numpedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
-            ->select('personas.codigo as codigo_persona')->where('id', $id)->get();
-
-        $pdf = \PDF::loadView('pdf.venta', ['pedido' => $pedido, 'detalles' => $detalles]);
-        return $pdf->download('pedido-' . $numpedido[0]->codigo . '.pdf');*/
+        // Cambiar a `stream()` para mostrar el PDF en el navegador
+        return $pdf->stream('pedido-' . $pedido->codigo_persona . '.pdf');
     }
 
     public function store(Request $request)
