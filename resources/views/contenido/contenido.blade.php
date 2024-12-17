@@ -5,7 +5,7 @@
   <template v-if="menu==0">
 
     <div align="center">
-      <img class="navbar-brand-full" src="img/logo-sinfondo.png" width="50%" height="auto" alt="Logo Tires">
+      <img class="navbar-brand-full" src="img/logomoto-sinfondo.png" width="50%" height="auto" alt="Logo Tires">
     </div>
 
   </template>

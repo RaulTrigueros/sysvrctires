@@ -2530,7 +2530,7 @@ __webpack_require__.r(__webpack_exports__);
         // nit: this.nit,
         // nrc: this.nrc,
         // giro: this.giro,
-        tipo_pago: this.tipo_pago,
+        // tipo_pago: this.tipo_pago,
         // fecha_hora: this.fecha_hora,
         direccion: this.direccion,
         telefono: this.telefono,
@@ -2544,7 +2544,7 @@ __webpack_require__.r(__webpack_exports__);
         // me.nit = '';
         // me.nrc = '';
         // me.giro = '';
-        me.tipo_pago = 'CONTADO';
+        //  me.tipo_pago = 'CONTADO';
         // me.fecha_hora = '';
         me.direccion = '';
         me.telefono = '';
