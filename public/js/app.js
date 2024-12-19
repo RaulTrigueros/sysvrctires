@@ -2499,9 +2499,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     registrarPedido: function registrarPedido() {
       /* if (this.validarPedido()) {
-         return;
+       return;
        }*/
-
       var me = this;
 
       // Validar si el campo cliente está vacío
@@ -2544,7 +2543,7 @@ __webpack_require__.r(__webpack_exports__);
         // me.nit = '';
         // me.nrc = '';
         // me.giro = '';
-        //  me.tipo_pago = 'CONTADO';
+        //me.tipo_pago = 'CONTADO';
         // me.fecha_hora = '';
         me.direccion = '';
         me.telefono = '';
@@ -2561,20 +2560,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    /* validarPedido() {
-       let me = this;
-       me.errorPedido = 0;
-       me.errorMostrarMsjPedido = [];
-       var art;
-         if (me.persona_id == 0)
-         me.errorMostrarMsjPedido.push('Seleccione un Cliente');
-       if (me.arrayDetalle.length <= 0)
-         me.errorMostrarMsjPedido.push('Ingrese detalles');
-       if (me.codigo == 0)
-         me.errorMostrarMsjPedido.push('Ingrese codigo de producto');
-         if (me.errorMostrarMsjPedido.length) me.errorPedido = 1;
-         return me.errorPedido;
-     },*/
     mostrarDetalle: function mostrarDetalle() {
       var me = this;
       me.listado = 0;

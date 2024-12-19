@@ -81,7 +81,7 @@ class PedidoController extends Controller
                 'personas.email',
                 'personas.nit',
                 'personas.nrc',
-                'personas.giro',
+                'personas.giro'
             )
             ->where('pedidos.id', '=', $id)
             ->orderBy('pedidos.id', 'desc')->take(1)->get();
@@ -101,7 +101,7 @@ class PedidoController extends Controller
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.medida',
                 'llantas.precio',
-                'llantas.descripcion',
+                'llantas.descripcion'
                 //'repuestos.nombre as nombre_repuesto'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
@@ -136,7 +136,7 @@ class PedidoController extends Controller
                 'llantas.codigo',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.descripcion',
-                'llantas.medida',
+                'llantas.medida'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->get();
@@ -164,7 +164,7 @@ class PedidoController extends Controller
 
             $pedido = new Pedido();
             $pedido->persona_id = $request->persona_id;
-            $pedido->tipo_pago = $request->tipo_pago;
+            // $pedido->tipo_pago = $request->tipo_pago;
             //$pedido->tipo_cliente = $request->tipo_cliente;
             $pedido->fecha_hora = now(); // Agregar la fecha y hora actual
             $pedido->save();
@@ -208,6 +208,9 @@ class PedidoController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
         }
+
+        $this->bitacoraService->store('Pedido registrado', 'Pedido');
+        return response()->json(['message' => 'Pedido registrado correctamente', 'id' => $pedido->id]);
     }
 
     public function desactivarPedido(Request $request)

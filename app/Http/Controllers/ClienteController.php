@@ -79,6 +79,8 @@ class ClienteController extends Controller
         // Generar el código correlativo usando el ID
         $persona->codigo = 'CLI' . str_pad($persona->id, 4, '0', STR_PAD_LEFT);
         $persona->save();
+
+        $this->bitacoraService->store('Cliente registrado', 'Cliente');
     }
 
     public function update(Request $request)
@@ -95,6 +97,8 @@ class ClienteController extends Controller
         $persona->telefono = $request->telefono;
         $persona->email = $request->email;
         $persona->save();
+
+        $this->bitacoraService->store('Cliente modificado', 'Cliente');
     }
 
     public function destroy(Request $request)

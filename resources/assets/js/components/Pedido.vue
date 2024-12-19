@@ -892,9 +892,8 @@ export default {
     },
     registrarPedido() {
      /* if (this.validarPedido()) {
-        return;
+      return;
       }*/
-     
       let me = this;
 
       // Validar si el campo cliente está vacío
@@ -924,7 +923,7 @@ export default {
          // nit: this.nit,
          // nrc: this.nrc,
          // giro: this.giro,
-          tipo_pago: this.tipo_pago,
+         // tipo_pago: this.tipo_pago,
          // fecha_hora: this.fecha_hora,
           direccion: this.direccion,
           telefono: this.telefono,
@@ -939,7 +938,7 @@ export default {
          // me.nit = '';
          // me.nrc = '';
          // me.giro = '';
-          me.tipo_pago = 'CONTADO';
+          //me.tipo_pago = 'CONTADO';
          // me.fecha_hora = '';
           me.direccion = '';
           me.telefono = '';
@@ -959,23 +958,7 @@ export default {
           console.log(error);
         });
     },
-   /* validarPedido() {
-      let me = this;
-      me.errorPedido = 0;
-      me.errorMostrarMsjPedido = [];
-      var art;
-
-      if (me.persona_id == 0)
-        me.errorMostrarMsjPedido.push('Seleccione un Cliente');
-      if (me.arrayDetalle.length <= 0)
-        me.errorMostrarMsjPedido.push('Ingrese detalles');
-      if (me.codigo == 0)
-        me.errorMostrarMsjPedido.push('Ingrese codigo de producto');
-
-      if (me.errorMostrarMsjPedido.length) me.errorPedido = 1;
-
-      return me.errorPedido;
-    },*/
+    
     mostrarDetalle() {
       let me = this;
       me.listado = 0;

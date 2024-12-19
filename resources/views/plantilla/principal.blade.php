@@ -86,7 +86,7 @@
 
   <footer class="app-footer mt-5">
     <div>
-      <a href="#">VRC Tires.</a> Todos los derechos reservados.
+      <a href="#">VRC Moto Parts Company.</a> Todos los derechos reservados.
       <span>&copy; {{ date('Y') }}</span>
     </div>
     

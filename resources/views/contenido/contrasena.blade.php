@@ -21,11 +21,12 @@
     
     header {
       width: 100%;
+      height: 20%;
       display: flex;
       align-items: center;
-      padding: 10px 20px;
+      padding: 1px 2px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      background-color: #fff; /* Fondo blanco para el encabezado */
+      background-color: #c53232; /* Fondo blanco para el encabezado */
       position: absolute;
       top: 0;
       left: 0;
@@ -94,11 +95,12 @@
     form {
       width: 380px;
       font-family: "Poppins", sans-serif;;
-      background: rgb(243, 240, 240);
+      background: rgb(247, 94, 94);
       padding: 10px 30px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Borde difuminado */
       border-radius: 20px;
       font-size: 90%;
+      margin-top: 8%;
     }
 
     form input {
@@ -106,7 +108,7 @@
     }
 
     form>div {
-      margin: 5px;
+      margin: 2px;
       color: black
     }
 
@@ -122,7 +124,7 @@
 
 <body>
   <header>
-    <a href="/main"><img src="{{ asset('img/logo-sinfondo.png') }}" alt="Logo"> </a>
+    <a href="/main"><img src="{{ asset('img/logomoto-sinfondo.png') }}" alt="Logo"> </a>
   </header>
   @if (Session::has('message'))
   <div class="text-danger">
@@ -133,7 +135,7 @@
   <form method="post" action="{{url('user/updatepassword')}}">
     {{csrf_field()}}
     <div>
-      <img src="{{ asset('../img/logo-sinfondo.png') }}" alt="Logo" class="logo">
+      <img src="{{ asset('../img/logomoto-sinfondo.png') }}" alt="Logo" class="logo">
       <h1>Cambiar mi Contraseña</h1>
     </div>
     <hr />
@@ -166,7 +168,7 @@
   @endif
 
   <footer>
-    &copy; {{ date('Y') }} VRC Tires. Todos los derechos reservados.
+    &copy; {{ date('Y') }} VRC Moto Parts Company. Todos los derechos reservados.
   </footer>
 </body>
 

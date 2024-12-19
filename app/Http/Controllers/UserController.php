@@ -165,7 +165,7 @@ class UserController extends Controller
                 $user->where('usuario', '=', Auth::user()->usuario)
                      ->update(['password' => bcrypt($request->password)]);
                 return redirect('/main')->with('alert-success', 'La contraseña ha sido modificada Exitosamente!'); 
-                           
+                          
             }
             else
             {

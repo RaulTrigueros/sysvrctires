@@ -82,11 +82,11 @@
 <body>
     <header>
         <div id="logo">
-            <img src="img/logo-sinfondo.png" alt="VRC" id="imagen">
+            <img src="img/logomoto-sinfondo.png" alt="VRC" id="imagen">
         </div>
         <div id="datosempresa">
             <p id="encabezado">
-                <b>VRC Tires</b><br>Colonia San Pedro, San Pablo Tacachico<br>Telefono: (+503) 7555-8182<br>Correo electrónico: vrctiressv@gmail.com
+                <b>VRC</b><br><b>Moto Parts Company</b><br>Colonia San Pedro, San Pablo Tacachico<br>Telefono: (+503) 7555-8182<br>Correo electrónico: vrctiressv@gmail.com
             </p>
         </div>
         <h1>Detalle de Pedido</h1>
