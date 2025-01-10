@@ -64,7 +64,7 @@
                       <button
                         type="button"
                         @click="verPedido(pedido.id)"
-                        class="btn btn-success btn-sm"
+                        class="btn btn-info btn-sm"
                       >
                         <i class="fa fa-eye"></i>
                       </button>
@@ -78,8 +78,8 @@
                       </button>
                       &nbsp;
                       <template v-if="pedido.estado">
-                          <button type="button" class="btn btn-danger btn-sm" @click="desactivarPedido(pedido.id)">
-                              <i class="fa fa-trash"></i>
+                          <button type="button" class="btn btn-success btn-sm" @click="desactivarPedido(pedido.id)">
+                            <i class="fa fa-money"></i>
                           </button>
                       </template>
                       <template v-else>
@@ -87,6 +87,13 @@
                               <i class="fa fa-check"></i>
                           </button>
                       </template>
+                      <button
+                            type="button"
+                            class="btn btn-danger btn-sm"
+                            @click="eliminarPedido(pedido.id)"
+                          >
+                            <i class="fa fa-trash"></i>
+                      </button>
                     </td>
                     <td v-text="pedido.codigo_persona"></td>
                     <td v-text="pedido.nombre"></td>
@@ -182,20 +189,13 @@
             <div class="form-group row border">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label
-                    >Codigo Producto
-                    <span style="color: red" v-show="llanta_id == 0"
-                      >(*Ingrese)</span
-                    ></label
-                  >
-                  <div class="form-inline">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="codigo"
-                      @keyup.enter="buscarTipoproducto()"
-                      placeholder="Ingrese Codigo"
-                    />
+                    <label>Seleccionar Código</label>
+                    <select v-model="codigo" @change="buscarTipoproducto" class="form-control">
+                      <option v-for="llanta in llantas" :key="llanta.codigo" :value="llanta.codigo">
+                        {{ llanta.codigo }}
+                      </option>
+                    </select>
+
                     <label
                     >Cantidad
                     <span style="color: red" v-show="cantidad == 0"
@@ -211,7 +211,7 @@
                     <button @click="abrirModal()" class="btn btn-secondary">
                       ...
                     </button>
-                  </div>
+                 <!-- </div>-->
                 </div>
               </div>
               <div class="col-md-2">
@@ -653,6 +653,8 @@ export default {
       criterioA: 'codigo',
       buscarA: '',
       arrayTipoproducto: [],
+      llantas: [], // Lista de productos cargada desde la API
+      codigoSeleccionado: null, // Código seleccionado
       llanta_id: 0,
       codigo: '',
       tipoproducto: '',
@@ -741,6 +743,19 @@ export default {
       me.loading = true;
       me.persona_id = val1.id;
     },
+
+    async cargarProductos() { //este metodo obtiene los productos por medio de su codigo desde la tabla Llanta
+      try {
+        const response = await axios.get('/llanta/selectLlanta'); 
+        this.llantas = response.data.llantas; // Cargar códigos de llantas
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+      }
+    },
+    seleccionarLlanta(codigo) {
+      this.codigoSeleccionado = codigo; // Guardar el código seleccionado
+    },
+
     buscarTipoproducto() {
       let me = this;
       var url =
@@ -1038,6 +1053,48 @@ export default {
       this.modal = 1;
       this.tituloModal = 'Seleccione uno o varios productos';
     },
+
+    eliminarPedido(id) {
+      swal
+        .fire({
+          title: 'Esta seguro de eliminar este pedido?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonClass: 'btn btn-success',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: false,
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.value) {
+            let me = this;
+            axios
+              .put('/pedido/eliminar', {
+                id: id,
+              })
+              .then(function (response) {
+                me.listarPedido(1, '', 'persona_id');
+                swal.fire(
+                  'Eliminado!',
+                  'Registro de Pedido Eliminado con éxito!',
+                  'success'
+                );
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          } else if (
+            // Read more about handling dismissals
+            result.dismiss === swal.DismissReason.cancel
+          ) {
+          }
+        });
+    },
+
     desactivarPedido(id) {
       swal.fire({
         title: 'Marcar como pedido entregado?',
@@ -1119,6 +1176,8 @@ export default {
   mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
     this.selectCliente('', () => {}); // Carga todos los clientes al iniciar
+    this.cargarProductos();
+    
   },
 };
 </script>

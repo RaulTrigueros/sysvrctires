@@ -109,6 +109,7 @@ class PedidoController extends Controller
 
         return ['detalles' => $detalles];
     }
+
     public function pdf(Request $request, $id)
     {
         $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
@@ -232,6 +233,15 @@ class PedidoController extends Controller
         $pedido->save();
 
         $this->bitacoraService->store('Entrega de pedido anulada', 'Pedido');
+        return "Éxito";
+    }
+
+    public function destroy(Request $request)
+    {
+        $pedidos = Pedido::findOrFail($request->id);
+        $pedidos->delete();
+
+        $this->bitacoraService->store('Eliminación de registro', 'Pedido');
         return "Éxito";
     }
 }
