@@ -6,10 +6,9 @@ body {
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    /*background-color: #fff */
-    background-image: url('/img/logo-sinfondo.png');
+    background-image: url('/img/background.jpg');
     /* Para cubrir toda la pantalla */
-    /*background-size: cover;*/
+    background-size: cover;
     background-position: right;
     /* Evita que la imagen se repita */
     background-repeat: no-repeat;

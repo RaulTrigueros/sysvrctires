@@ -82,7 +82,7 @@ class LlantaController extends Controller
         $llantas->descripcion = $request->descripcion;
         $llantas->save();
 
-        $this->bitacoraService->store('Creación de registro', 'Llanta o Tubo');
+        $this->bitacoraService->store('Creación de registro', 'Producto');
         return "Éxito";
     }
 
@@ -96,7 +96,7 @@ class LlantaController extends Controller
         $llantas->descripcion = $request->descripcion;
         $llantas->save();
 
-        $this->bitacoraService->store('Actualización de registro', 'Llanta o Tubo');
+        $this->bitacoraService->store('Actualización de registro', 'Producto');
         return "Éxito";
     }
 
@@ -105,7 +105,7 @@ class LlantaController extends Controller
         $llantas = Llanta::findOrFail($request->id);
         $llantas->delete();
 
-        $this->bitacoraService->store('Eliminación de registro', 'Llanta');
+        $this->bitacoraService->store('Eliminación de registro', 'Producto');
         return "Éxito";
     }
 

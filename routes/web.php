@@ -79,25 +79,8 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::get('/pedido/obtenerCabecera', 'PedidoController@obtenerCabecera');
     Route::get('/pedido/obtenerDetalles', 'PedidoController@obtenerDetalles');
     Route::get('/pedido/pdf/{id}', 'PedidoController@pdf')->name('pedido_pdf');
+    Route::put('/pedido/eliminar', 'PedidoController@destroy');
 
-    /*Route::resource('pedidos', PedidoController::class);
-    Route::get('/pedidos', [PedidoController::class, 'index']);
-    Route::post('/pedidos/registrar', [PedidoController::class, 'store']);
-    Route::get('/personas', [ClienteController::class, 'index']);*/
-
-
-    Route::get('/persona/selectPersona', 'ClienteController@selectCliente');
-    Route::get('/energia', 'EnergiaController@index');
-    Route::post('/energia/registrar', 'EnergiaController@store');
-    Route::put('/energia/actualizar', 'EnergiaController@update');
-    Route::put('/energia/desactivar', 'EnergiaController@desactivarFactura');
-    Route::put('/energia/activar', 'EnergiaController@activarFactura');
-    Route::put('/energia/eliminar', 'EnergiaController@destroy');
-    Route::get('/energia/generarReporteEnergia', 'EnergiaController@generarReporteEnergia')->name('energia_pdf');
-    Route::get('/energia/pdfFactura/{id}', 'EnergiaController@facturaPDF')->name('facturas_pdf');
-    Route::get('/energia/pdf/nopagado', 'EnergiaController@filtropago')->name('energia_pdf');
-    Route::get('/energia/pdf/fecha/{inicio}/{fin}', 'EnergiaController@filtrofechamensual')->name('energia_pdfmensual');
-    Route::get('/energia/pdf/puesto/{puesto}', 'EnergiaController@filtropuesto')->name('energia_pdf');
 
     //GESTION DE LLANTAS Y TUBOS
     Route::get('/llanta/selectLlanta', 'LlantaController@selectLlanta');
