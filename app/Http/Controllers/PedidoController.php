@@ -96,12 +96,13 @@ class PedidoController extends Controller
         $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
             //->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
             ->select(
-                'detalle_pedidos.cantidad',
                 'llantas.codigo',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.medida',
                 'llantas.precio',
-                'llantas.descripcion'
+                'llantas.descripcion',
+                'detalle_pedidos.cantidad',
+                'detalle_pedidos.total'
                 //'repuestos.nombre as nombre_repuesto'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
@@ -133,11 +134,13 @@ class PedidoController extends Controller
 
         $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
             ->select(
-                'detalle_pedidos.cantidad',
                 'llantas.codigo',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.descripcion',
-                'llantas.medida'
+                'llantas.medida',
+                'llantas.precio',
+                'detalle_pedidos.cantidad',
+                'detalle_pedidos.total'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->get();
@@ -179,6 +182,7 @@ class PedidoController extends Controller
                 $detalle->llanta_id = $det['llanta_id'];
                 // $detalle->repuesto_id = $det['repuesto_id'];
                 $detalle->cantidad = $det['cantidad'];
+                $detalle->total = $det['total'];
                 $detalle->save();
             }
 

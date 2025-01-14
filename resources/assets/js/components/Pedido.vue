@@ -53,7 +53,7 @@
                     <th>Codigo Cliente</th>
                     <th>Cliente</th>
                     <th>Tipo Cliente</th>
-                    <th>Tipo Pago</th>
+                    <th>Total</th>
                     <th>Fecha Hora</th>
                     <th>Estado</th>
                   </tr>
@@ -98,7 +98,7 @@
                     <td v-text="pedido.codigo_persona"></td>
                     <td v-text="pedido.nombre"></td>
                     <td v-text="pedido.tipo_cliente"></td>
-                    <td v-text="pedido.tipo_pago"></td>
+                    <td v-text="pedido.total"></td>
                     <td v-text="pedido.fecha_hora"></td>
                     <td class="align-middle">
                         <div v-if="pedido.estado">
@@ -302,7 +302,9 @@
                       <th style="text-align: center;">Tipo Producto</th>
                       <th style="text-align: center;">Medida</th>
                       <th style="text-align: center;">Descripción</th>
+                      <th style="text-align: center;">Precio</th>
                       <th style="text-align: center;">Cantidad</th>
+                      <th style="text-align: center;">Subtotal</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -337,11 +339,33 @@
                       ></td>
                       <td style="text-align: center">
                         <input style="text-align: center;"
+                          v-model="detalle.precio"
+                          type="number"
+                          class="form-control"
+                        />
+                      </td>
+                      <td style="text-align: center">
+                        <input style="text-align: center;"
                           v-model="detalle.cantidad"
                           type="number"
                           class="form-control"
                         />
                       </td>
+                      <td style="text-align: center">
+                        ${{detalle.precio*detalle.cantidad}}
+                      </td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                        <td colspan="4" align="right"><strong>Total Parcial:</strong></td>
+                        <td>$ 5</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                        <td colspan="4" align="right"><strong>Total Impuesto:</strong></td>
+                        <td>$ 1</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                        <td colspan="4" align="right"><strong>Total Neto:</strong></td>
+                        <td>$ 6</td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -743,7 +767,6 @@ export default {
       me.loading = true;
       me.persona_id = val1.id;
     },
-
     async cargarProductos() { //este metodo obtiene los productos por medio de su codigo desde la tabla Llanta
       try {
         const response = await axios.get('/llanta/selectLlanta'); 
@@ -755,7 +778,6 @@ export default {
     seleccionarLlanta(codigo) {
       this.codigoSeleccionado = codigo; // Guardar el código seleccionado
     },
-
     buscarTipoproducto() {
       let me = this;
       var url =
@@ -973,7 +995,6 @@ export default {
           console.log(error);
         });
     },
-    
     mostrarDetalle() {
       let me = this;
       me.listado = 0;
@@ -1057,7 +1078,7 @@ export default {
     eliminarPedido(id) {
       swal
         .fire({
-          title: 'Esta seguro de eliminar este pedido?',
+          title: 'Esta seguro de anular este pedido?',
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -1080,7 +1101,7 @@ export default {
                 me.listarPedido(1, '', 'persona_id');
                 swal.fire(
                   'Eliminado!',
-                  'Registro de Pedido Eliminado con éxito!',
+                  'Registro de Pedido anulado con éxito!',
                   'success'
                 );
               })
@@ -1172,7 +1193,6 @@ export default {
   },
   },
   
-
   mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
     this.selectCliente('', () => {}); // Carga todos los clientes al iniciar
