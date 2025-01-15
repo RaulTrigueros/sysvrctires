@@ -337,13 +337,10 @@
                         style="text-align: center"
                         v-text="detalle.descripcion"
                       ></td>
-                      <td style="text-align: center">
-                        <input style="text-align: center;"
-                          v-model="detalle.precio"
-                          type="number"
-                          class="form-control"
-                        />
-                      </td>
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.precio"
+                      ></td>
                       <td style="text-align: center">
                         <input style="text-align: center;"
                           v-model="detalle.cantidad"
@@ -356,16 +353,16 @@
                       </td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                        <td colspan="4" align="right"><strong>Total Parcial:</strong></td>
-                        <td>$ 5</td>
+                        <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
+                        <td style="text-align: center">$ {{totalParcial=calcularTotal}}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                        <td colspan="4" align="right"><strong>Total Impuesto:</strong></td>
-                        <td>$ 1</td>
+                        <td colspan="7" align="right"><strong>Descuento:</strong></td>
+                        <td style="text-align: center">$ 1</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                        <td colspan="4" align="right"><strong>Total Neto:</strong></td>
-                        <td>$ 6</td>
+                        <td colspan="7" align="right"><strong>Total a pagar:</strong></td>
+                        <td>$ {{totalPagar=(totalParcial-descuento).toFixed(2)}}</td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -654,6 +651,10 @@ export default {
       nrc: "",
       giro: "",
       fecha_hora: '',
+      impuesto: 0.18,
+      totalPagar:0.0,
+      descuento: 0.0,
+      totalParcial: 0.0,
       arrayPedido: [],
       arrayCliente: [],
       arrayDetalle: [],
@@ -718,6 +719,13 @@ export default {
       }
       return pagesArray;
     },
+    calcularTotal: function(){  //Esta funcion se ejecuta para calcular el total a pagar de todo el detalle sin incluir descuento
+        var resultado=0.0;
+        for(var i=0;i<this.arrayDetalle.length;i++){
+            resultado=resultado+(this.arrayDetalle[i].precio*this.arrayDetalle[i].cantidad)
+        }
+        return resultado;
+    }
   },
   methods: {
     listarPedido(page, buscar, criterio) {

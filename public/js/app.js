@@ -2271,6 +2271,10 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       nrc: "",
       giro: "",
       fecha_hora: '',
+      impuesto: 0.18,
+      totalPagar: 0.0,
+      descuento: 0.0,
+      totalParcial: 0.0,
       arrayPedido: [],
       arrayCliente: [],
       arrayDetalle: [],
@@ -2333,6 +2337,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         from++;
       }
       return pagesArray;
+    },
+    calcularTotal: function calcularTotal() {
+      //Esta funcion se ejecuta para calcular el total a pagar de todo el detalle sin incluir descuento
+      var resultado = 0.0;
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        resultado = resultado + this.arrayDetalle[i].precio * this.arrayDetalle[i].cantidad;
+      }
+      return resultado;
     }
   },
   methods: {
@@ -5219,31 +5231,11 @@ var render = function render() {
     }), _vm._v(" "), _c("td", {
       staticStyle: {
         "text-align": "center"
-      }
-    }, [_c("input", {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: detalle.precio,
-        expression: "detalle.precio"
-      }],
-      staticClass: "form-control",
-      staticStyle: {
-        "text-align": "center"
-      },
-      attrs: {
-        type: "number"
       },
       domProps: {
-        value: detalle.precio
-      },
-      on: {
-        input: function input($event) {
-          if ($event.target.composing) return;
-          _vm.$set(detalle, "precio", $event.target.value);
-        }
+        textContent: _vm._s(detalle.precio)
       }
-    })]), _vm._v(" "), _c("td", {
+    }), _vm._v(" "), _c("td", {
       staticStyle: {
         "text-align": "center"
       }
@@ -5275,7 +5267,19 @@ var render = function render() {
         "text-align": "center"
       }
     }, [_vm._v("\n                      $" + _vm._s(detalle.precio * detalle.cantidad) + "\n                    ")])]);
-  }), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4), _vm._v(" "), _vm._m(5)], 2) : _c("tbody", [_vm._m(6)])])])]), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), _c("tr", {
+    staticStyle: {
+      "background-color": "#CEECF5"
+    }
+  }, [_vm._m(3), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("$ " + _vm._s(_vm.totalParcial = _vm.calcularTotal))])]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("tr", {
+    staticStyle: {
+      "background-color": "#CEECF5"
+    }
+  }, [_vm._m(5), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.totalPagar = (_vm.totalParcial - _vm.descuento).toFixed(2)))])])], 2) : _c("tbody", [_vm._m(6)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5673,16 +5677,12 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("tr", {
-    staticStyle: {
-      "background-color": "#CEECF5"
-    }
-  }, [_c("td", {
+  return _c("td", {
     attrs: {
-      colspan: "4",
+      colspan: "7",
       align: "right"
     }
-  }, [_c("strong", [_vm._v("Total Parcial:")])]), _vm._v(" "), _c("td", [_vm._v("$ 5")])]);
+  }, [_c("strong", [_vm._v("Total Parcial:")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -5692,23 +5692,23 @@ var staticRenderFns = [function () {
     }
   }, [_c("td", {
     attrs: {
-      colspan: "4",
+      colspan: "7",
       align: "right"
     }
-  }, [_c("strong", [_vm._v("Total Impuesto:")])]), _vm._v(" "), _c("td", [_vm._v("$ 1")])]);
+  }, [_c("strong", [_vm._v("Total Impuesto:")])]), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("$ 1")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("tr", {
-    staticStyle: {
-      "background-color": "#CEECF5"
-    }
-  }, [_c("td", {
+  return _c("td", {
     attrs: {
-      colspan: "4",
+      colspan: "7",
       align: "right"
     }
-  }, [_c("strong", [_vm._v("Total Neto:")])]), _vm._v(" "), _c("td", [_vm._v("$ 6")])]);
+  }, [_c("strong", [_vm._v("Total a pagar:")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
