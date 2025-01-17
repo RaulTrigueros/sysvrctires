@@ -5265,6 +5265,9 @@ var render = function render() {
     })]), _vm._v(" "), _c("td", {
       staticStyle: {
         "text-align": "center"
+      },
+      attrs: {
+        colspan: "2"
       }
     }, [_vm._v("\n                      $" + _vm._s(detalle.precio * detalle.cantidad) + "\n                    ")])]);
   }), _vm._v(" "), _c("tr", {
@@ -5275,7 +5278,7 @@ var render = function render() {
     staticStyle: {
       "text-align": "center"
     }
-  }, [_vm._v("$ " + _vm._s(_vm.totalParcial = _vm.calcularTotal))])]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("tr", {
+  }, [_vm._v("$ " + _vm._s(_vm.totalParcial = _vm.calcularTotal.toFixed(2)))])]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("tr", {
     staticStyle: {
       "background-color": "#CEECF5"
     }
@@ -5695,7 +5698,7 @@ var staticRenderFns = [function () {
       colspan: "7",
       align: "right"
     }
-  }, [_c("strong", [_vm._v("Total Impuesto:")])]), _vm._v(" "), _c("td", {
+  }, [_c("strong", [_vm._v("Descuento:")])]), _vm._v(" "), _c("td", {
     staticStyle: {
       "text-align": "center"
     }

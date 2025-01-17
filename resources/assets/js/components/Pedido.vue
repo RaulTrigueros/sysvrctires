@@ -348,13 +348,13 @@
                           class="form-control"
                         />
                       </td>
-                      <td style="text-align: center">
+                      <td colspan="2" style="text-align: center">
                         ${{detalle.precio*detalle.cantidad}}
                       </td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
                         <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
-                        <td style="text-align: center">$ {{totalParcial=calcularTotal}}</td>
+                        <td style="text-align: center">$ {{totalParcial=calcularTotal.toFixed(2)}}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
                         <td colspan="7" align="right"><strong>Descuento:</strong></td>
@@ -878,6 +878,8 @@ export default {
         medida: me.medida,
         descripcion: me.descripcion,
         precio: me.precio,
+        totalPagar: me.totalPagar,
+        totalParcial: me.totalParcial,
       });
 
       // Reiniciar los campos después de agregar

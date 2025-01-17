@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->integer('id')->unsigned();
             $table->foreign('id')->references('id')->on('personas')->onDelete('cascade');
-            
+
             $table->string('usuario')->unique();
             $table->string('password');
             $table->boolean('condicion')->default(1);
@@ -31,10 +31,9 @@ class CreateUsersTable extends Migration
             //$table->timestamps();
         });
 
-        $usuario = decrypt(env('ENCRYPTED_USUARIO'));
-        $password = env('ENCRYPTED_PASSWORD');
 
-        DB::table('users')->insert(array('id'=>1,'usuario'=>$usuario, 'password' => $password, 'condicion'=> 1, 'idrol'=>1));
+
+        DB::table('users')->insert(array('id' => 1, 'usuario' => 'admin', 'password' => bcrypt('devspt2021'), 'condicion' => 1, 'idrol' => 1));
     }
 
     /**
