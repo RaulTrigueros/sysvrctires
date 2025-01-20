@@ -53,7 +53,7 @@
                     <th>Codigo Cliente</th>
                     <th>Cliente</th>
                     <th>Tipo Cliente</th>
-                    <th>Total</th>
+                    <th>Total a pagar</th>
                     <th>Fecha Hora</th>
                     <th>Estado</th>
                   </tr>
@@ -98,7 +98,7 @@
                     <td v-text="pedido.codigo_persona"></td>
                     <td v-text="pedido.nombre"></td>
                     <td v-text="pedido.tipo_cliente"></td>
-                    <td v-text="pedido.total"></td>
+                    <td v-text="pedido.totalPagar"></td>
                     <td v-text="pedido.fecha_hora"></td>
                     <td class="align-middle">
                         <div v-if="pedido.estado">
@@ -651,8 +651,7 @@ export default {
       nrc: "",
       giro: "",
       fecha_hora: '',
-      impuesto: 0.18,
-      totalPagar:0.0,
+      totalPagar: 0.0,
       descuento: 0.0,
       totalParcial: 0.0,
       arrayPedido: [],
@@ -878,8 +877,6 @@ export default {
         medida: me.medida,
         descripcion: me.descripcion,
         precio: me.precio,
-        totalPagar: me.totalPagar,
-        totalParcial: me.totalParcial,
       });
 
       // Reiniciar los campos después de agregar
@@ -974,6 +971,7 @@ export default {
          // fecha_hora: this.fecha_hora,
           direccion: this.direccion,
           telefono: this.telefono,
+          totalPagar: this.totalPagar,
           data: this.arrayDetalle,
         })
         .then(function (response) {
@@ -995,6 +993,7 @@ export default {
           me.medida = '';
           me.precio = 0;
           me.cantidad = 0;
+          me.totalPagar = 0.0;
           me.descripcion = '';
           me.arrayDetalle = [];
           window.open(
@@ -1023,6 +1022,7 @@ export default {
       me.codigo = '';
       me.tipoproducto = '';
       me.cantidad = 0;
+      me.totalPagar = 0.0;
       me.descripcion = '';
       me.medida = '';
       me.precio = 0;
@@ -1056,6 +1056,7 @@ export default {
           me.direccion = arrayPedidoT[0]['direccion'];
           me.telefono = arrayPedidoT[0]['telefono'];
           me.email = arrayPedidoT[0]['email'];
+          me.totalPagar = arrayPedidoT[0]['totalPagar'];
         })
         .catch(function (error) {
           console.log(error);

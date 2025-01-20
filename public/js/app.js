@@ -2271,7 +2271,6 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       nrc: "",
       giro: "",
       fecha_hora: '',
-      impuesto: 0.18,
       totalPagar: 0.0,
       descuento: 0.0,
       totalParcial: 0.0,
@@ -2582,6 +2581,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         // fecha_hora: this.fecha_hora,
         direccion: this.direccion,
         telefono: this.telefono,
+        totalPagar: this.totalPagar,
         data: this.arrayDetalle
       }).then(function (response) {
         me.listado = 1;
@@ -2602,6 +2602,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         me.medida = '';
         me.precio = 0;
         me.cantidad = 0;
+        me.totalPagar = 0.0;
         me.descripcion = '';
         me.arrayDetalle = [];
         window.open(this.ruta + '/pedido/pdf/' + response.data.id + ',' + '_blank');
@@ -2626,6 +2627,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       me.codigo = '';
       me.tipoproducto = '';
       me.cantidad = 0;
+      me.totalPagar = 0.0;
       me.descripcion = '';
       me.medida = '';
       me.precio = 0;
@@ -2655,6 +2657,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         me.direccion = arrayPedidoT[0]['direccion'];
         me.telefono = arrayPedidoT[0]['telefono'];
         me.email = arrayPedidoT[0]['email'];
+        me.totalPagar = arrayPedidoT[0]['totalPagar'];
       })["catch"](function (error) {
         console.log(error);
       });
@@ -4889,7 +4892,7 @@ var render = function render() {
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
-        textContent: _vm._s(pedido.total)
+        textContent: _vm._s(pedido.totalPagar)
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
@@ -5640,7 +5643,7 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Codigo Cliente")]), _vm._v(" "), _c("th", [_vm._v("Cliente")]), _vm._v(" "), _c("th", [_vm._v("Tipo Cliente")]), _vm._v(" "), _c("th", [_vm._v("Total")]), _vm._v(" "), _c("th", [_vm._v("Fecha Hora")]), _vm._v(" "), _c("th", [_vm._v("Estado")])])]);
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Opciones")]), _vm._v(" "), _c("th", [_vm._v("Codigo Cliente")]), _vm._v(" "), _c("th", [_vm._v("Cliente")]), _vm._v(" "), _c("th", [_vm._v("Tipo Cliente")]), _vm._v(" "), _c("th", [_vm._v("Total a pagar")]), _vm._v(" "), _c("th", [_vm._v("Fecha Hora")]), _vm._v(" "), _c("th", [_vm._v("Estado")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

@@ -36,7 +36,8 @@ class PedidoController extends Controller
                 'pedidos.created_at as fecha_hora',
                 'pedidos.estado',
                 'personas.nombre',
-                'personas.codigo as codigo_persona'
+                'personas.codigo as codigo_persona',
+                'pedidos.totalPagar'
             );
 
         if ($buscar != '') {
@@ -81,7 +82,8 @@ class PedidoController extends Controller
                 'personas.email',
                 'personas.nit',
                 'personas.nrc',
-                'personas.giro'
+                'personas.giro',
+                'pedidos.totalPagar'
             )
             ->where('pedidos.id', '=', $id)
             ->orderBy('pedidos.id', 'desc')->take(1)->get();
@@ -101,8 +103,7 @@ class PedidoController extends Controller
                 'llantas.medida',
                 'llantas.precio',
                 'llantas.descripcion',
-                'detalle_pedidos.cantidad',
-                'detalle_pedidos.total'
+                'detalle_pedidos.cantidad'
                 //'repuestos.nombre as nombre_repuesto'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
@@ -125,7 +126,8 @@ class PedidoController extends Controller
                 'personas.nit',
                 'personas.nrc',
                 'personas.giro',
-                'personas.codigo as codigo_persona'
+                'personas.codigo as codigo_persona',
+                'pedidos.totalPagar'
 
             )
             ->where('pedidos.id', '=', $id)
@@ -139,8 +141,7 @@ class PedidoController extends Controller
                 'llantas.descripcion',
                 'llantas.medida',
                 'llantas.precio',
-                'detalle_pedidos.cantidad',
-                'detalle_pedidos.total'
+                'detalle_pedidos.cantidad'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->get();
@@ -171,45 +172,19 @@ class PedidoController extends Controller
             // $pedido->tipo_pago = $request->tipo_pago;
             //$pedido->tipo_cliente = $request->tipo_cliente;
             $pedido->fecha_hora = now(); // Agregar la fecha y hora actual
+            $pedido->totalPagar = $request->totalPagar;
             $pedido->save();
 
             $detalles = $request->data; //Array de detalles
             //Recorro todos los elementos
-
+,
             foreach ($detalles as $ep => $det) {
                 $detalle = new DetallePedido();
                 $detalle->pedido_id = $pedido->id;
                 $detalle->llanta_id = $det['llanta_id'];
-                // $detalle->repuesto_id = $det['repuesto_id'];
                 $detalle->cantidad = $det['cantidad'];
-                $detalle->total = $det['total'];
                 $detalle->save();
             }
-
-            /* $fechaActual = date('Y-m-d');
-            $numPedidos = DB::table('pedidos')->whereDate('created_at', $fechaActual)->count();
-            $numIngresos = DB::table('ingresos')->whereDate('created_at', $fechaActual)->count();
-
-            $arregloDatos = [
-                'pedidos' => [
-                    'numero' => $numPedidos,
-                    'msj' => 'Pedidos'
-                ],
-                'ingresos' => [
-                    'numero' => $numIngresos,
-                    'msj' => 'Ingresos'
-                ]
-            ];
-            $allUsers = User::all();
-
-            foreach ($allUsers as $notificar) {
-                User::findOrFail($notificar->id)->notify(new NotifyAdmin($arregloDatos));
-            }
-
-            DB::commit();
-            return [
-                'id' => $pedido->id
-            ]*/
         } catch (Exception $e) {
             DB::rollBack();
         }

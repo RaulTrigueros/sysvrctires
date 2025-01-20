@@ -22,7 +22,6 @@ class CreateDetallePedidosTable extends Migration
             $table->integer('repuesto_id')->unsigned()->nullable();
             $table->foreign('repuesto_id')->references('id')->on('repuestos');
             $table->integer('cantidad');
-            $table->decimal('total', 11, 2);
         });
     }
 

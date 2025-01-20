@@ -20,6 +20,7 @@ class CreatePedidosTable extends Migration
             $table->enum('tipo_cliente', ['tallerista', 'mayoreo', 'distribuidor', 'importador']);
             $table->boolean('estado')->default(1);
             $table->timestamp('fecha_hora')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->decimal('totalPagar', 11, 2);
             $table->timestamps();
 
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
