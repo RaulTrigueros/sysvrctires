@@ -182,7 +182,19 @@
                   </v-select>
                 </div>
               </div>
+              <div class="form-group row border">
+                <label for="">Tipo de Cliente</label>
+                <div class="col-md-12">
+                  <select v-model="tipoCliente" id="tipoCliente" class="form-control">
+                    <option value="tallerista">Tallerista</option>
+                    <option value="mayoreo">Mayoreo</option>
+                    <option value="distribuidor">Distribuidor</option>
+                    <option value="importador">Importador</option>
+                  </select>
+                </div>
+              </div>
             </div>
+            
             <!--FIN cabecera de registro-->
 
             <!--INICIO Obtener Detalle-->
@@ -353,16 +365,16 @@
                       </td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                        <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
-                        <td style="text-align: center">$ {{totalParcial=calcularTotal.toFixed(2)}}</td>
+                      <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
+                      <td style="text-align: center">$ {{ totalParcial.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                        <td colspan="7" align="right"><strong>Descuento:</strong></td>
-                        <td style="text-align: center">$ 1</td>
+                      <td colspan="7" align="right"><strong>Descuento:</strong></td>
+                      <td style="text-align: center">$ {{ descuento.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                        <td colspan="7" align="right"><strong>Total a pagar:</strong></td>
-                        <td>$ {{totalPagar=(totalParcial-descuento).toFixed(2)}}</td>
+                      <td colspan="7" align="right"><strong>Total a Pagar:</strong></td>
+                      <td style="text-align: center">$ {{ totalPagar.toFixed(2) }}</td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -641,7 +653,13 @@ export default {
       pedido_id: 0,
       persona_id: 0,
       nombre: '',
-      tipo_cliente: 'MAYOREO',
+      tipo_cliente: 'tallerista',
+      descuentos: {
+        tallerista: 15,
+        mayoreo: 25,
+        distribuidor: 20,
+        importador: 30,
+      },
       tipo_pago: 'CONTADO',
       codigo_persona: '',
       direccion: '',
@@ -651,9 +669,6 @@ export default {
       nrc: "",
       giro: "",
       fecha_hora: '',
-      totalPagar: 0.0,
-      descuento: 0.0,
-      totalParcial: 0.0,
       arrayPedido: [],
       arrayCliente: [],
       arrayDetalle: [],
@@ -718,14 +733,24 @@ export default {
       }
       return pagesArray;
     },
-    calcularTotal: function(){  //Esta funcion se ejecuta para calcular el total a pagar de todo el detalle sin incluir descuento
+     // Total parcial calculado con los precios y cantidades
+    totalParcial: function(){  
         var resultado=0.0;
         for(var i=0;i<this.arrayDetalle.length;i++){
             resultado=resultado+(this.arrayDetalle[i].precio*this.arrayDetalle[i].cantidad)
         }
         return resultado;
-    }
+    },
+    // Descuento basado en el tipo de cliente
+    descuento() {
+      return this.descuentos[this.tipoCliente] || 0;
+    },
+    // Total a pagar después de aplicar el descuento
+    totalPagar() {
+      return this.totalParcial - this.descuento;
+    },
   },
+
   methods: {
     listarPedido(page, buscar, criterio) {
       let me = this;

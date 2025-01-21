@@ -177,7 +177,7 @@ class PedidoController extends Controller
 
             $detalles = $request->data; //Array de detalles
             //Recorro todos los elementos
-,
+
             foreach ($detalles as $ep => $det) {
                 $detalle = new DetallePedido();
                 $detalle->pedido_id = $pedido->id;

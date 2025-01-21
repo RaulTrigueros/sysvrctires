@@ -2261,7 +2261,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       pedido_id: 0,
       persona_id: 0,
       nombre: '',
-      tipo_cliente: 'MAYOREO',
+      tipo_cliente: 'tallerista',
+      descuentos: {
+        tallerista: 15,
+        mayoreo: 25,
+        distribuidor: 20,
+        importador: 30
+      },
       tipo_pago: 'CONTADO',
       codigo_persona: '',
       direccion: '',
@@ -2271,9 +2277,6 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       nrc: "",
       giro: "",
       fecha_hora: '',
-      totalPagar: 0.0,
-      descuento: 0.0,
-      totalParcial: 0.0,
       arrayPedido: [],
       arrayCliente: [],
       arrayDetalle: [],
@@ -2337,13 +2340,21 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }
       return pagesArray;
     },
-    calcularTotal: function calcularTotal() {
-      //Esta funcion se ejecuta para calcular el total a pagar de todo el detalle sin incluir descuento
+    // Total parcial calculado con los precios y cantidades
+    totalParcial: function totalParcial() {
       var resultado = 0.0;
       for (var i = 0; i < this.arrayDetalle.length; i++) {
         resultado = resultado + this.arrayDetalle[i].precio * this.arrayDetalle[i].cantidad;
       }
       return resultado;
+    },
+    // Descuento basado en el tipo de cliente
+    descuento: function descuento() {
+      return this.descuentos[this.tipoCliente] || 0;
+    },
+    // Total a pagar después de aplicar el descuento
+    totalPagar: function totalPagar() {
+      return this.totalParcial - this.descuento;
     }
   },
   methods: {
@@ -4975,7 +4986,53 @@ var render = function render() {
       search: _vm.selectCliente,
       input: _vm.getDatosCliente
     }
-  })], 1)])]), _vm._v(" "), _c("div", {
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row border"
+  }, [_c("label", {
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("Tipo de Cliente")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tipoCliente,
+      expression: "tipoCliente"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "tipoCliente"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.tipoCliente = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "tallerista"
+    }
+  }, [_vm._v("Tallerista")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "mayoreo"
+    }
+  }, [_vm._v("Mayoreo")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "distribuidor"
+    }
+  }, [_vm._v("Distribuidor")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "importador"
+    }
+  }, [_vm._v("Importador")])])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row border"
   }, [_c("div", {
     staticClass: "col-md-3"
@@ -5281,11 +5338,23 @@ var render = function render() {
     staticStyle: {
       "text-align": "center"
     }
-  }, [_vm._v("$ " + _vm._s(_vm.totalParcial = _vm.calcularTotal.toFixed(2)))])]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("tr", {
+  }, [_vm._v("$ " + _vm._s(_vm.totalParcial.toFixed(2)))])]), _vm._v(" "), _c("tr", {
     staticStyle: {
       "background-color": "#CEECF5"
     }
-  }, [_vm._m(5), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.totalPagar = (_vm.totalParcial - _vm.descuento).toFixed(2)))])])], 2) : _c("tbody", [_vm._m(6)])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._m(4), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("$ " + _vm._s(_vm.descuento.toFixed(2)))])]), _vm._v(" "), _c("tr", {
+    staticStyle: {
+      "background-color": "#CEECF5"
+    }
+  }, [_vm._m(5), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])], 2) : _c("tbody", [_vm._m(6)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5692,20 +5761,12 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("tr", {
-    staticStyle: {
-      "background-color": "#CEECF5"
-    }
-  }, [_c("td", {
+  return _c("td", {
     attrs: {
       colspan: "7",
       align: "right"
     }
-  }, [_c("strong", [_vm._v("Descuento:")])]), _vm._v(" "), _c("td", {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_vm._v("$ 1")])]);
+  }, [_c("strong", [_vm._v("Descuento:")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -5714,7 +5775,7 @@ var staticRenderFns = [function () {
       colspan: "7",
       align: "right"
     }
-  }, [_c("strong", [_vm._v("Total a pagar:")])]);
+  }, [_c("strong", [_vm._v("Total a Pagar:")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
