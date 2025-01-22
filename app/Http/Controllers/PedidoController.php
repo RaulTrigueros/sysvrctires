@@ -31,7 +31,7 @@ class PedidoController extends Controller
         $query = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'pedidos.tipo_pago',
+                //'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
                 'pedidos.created_at as fecha_hora',
                 'pedidos.estado',
@@ -72,7 +72,7 @@ class PedidoController extends Controller
         $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'pedidos.tipo_pago',
+                //'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
                 'pedidos.created_at as fecha_hora',
                 'personas.nombre',
@@ -117,7 +117,8 @@ class PedidoController extends Controller
         $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'pedidos.tipo_pago',
+                // 'pedidos.tipo_pago',
+                'pedidos.tipo_cliente',
                 'pedidos.fecha_hora',
                 'personas.nombre',
                 'personas.direccion',
@@ -170,7 +171,7 @@ class PedidoController extends Controller
             $pedido = new Pedido();
             $pedido->persona_id = $request->persona_id;
             // $pedido->tipo_pago = $request->tipo_pago;
-            //$pedido->tipo_cliente = $request->tipo_cliente;
+            $pedido->tipo_cliente = $request->tipo_cliente;
             $pedido->fecha_hora = now(); // Agregar la fecha y hora actual
             $pedido->totalPagar = $request->totalPagar;
             $pedido->save();

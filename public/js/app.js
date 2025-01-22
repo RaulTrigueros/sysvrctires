@@ -2264,9 +2264,12 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       tipo_cliente: 'tallerista',
       descuentos: {
         tallerista: 15,
+        // %
         mayoreo: 25,
+        // %
         distribuidor: 20,
-        importador: 30
+        // %
+        importador: 30 // %
       },
       tipo_pago: 'CONTADO',
       codigo_persona: '',
@@ -2348,13 +2351,18 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }
       return resultado;
     },
-    // Descuento basado en el tipo de cliente
-    descuento: function descuento() {
-      return this.descuentos[this.tipoCliente] || 0;
+    // Calcula el descuento total como un porcentaje del total parcial
+    calculoDescuento: function calculoDescuento() {
+      var porcentaje = this.descuentos[this.tipo_cliente] || 0; // Obtiene el porcentaje del tipo de cliente
+      return this.totalParcial * porcentaje / 100;
     },
+    // Descuento basado en el tipo de cliente
+    /* descuento() {
+       return this.descuentos[this.tipo_cliente] || 0;
+     },*/
     // Total a pagar después de aplicar el descuento
     totalPagar: function totalPagar() {
-      return this.totalParcial - this.descuento;
+      return this.totalParcial - this.calculoDescuento;
     }
   },
   methods: {
@@ -2584,7 +2592,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         persona_id: this.persona_id,
         codigo_persona: this.codigo_persona,
         nombre: this.nombre,
-        // tipo_cliente: this.tipo_cliente,
+        tipo_cliente: this.tipo_cliente,
         // nit: this.nit,
         // nrc: this.nrc,
         // giro: this.giro,
@@ -2599,7 +2607,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         me.listarPedido(1, '', 'persona_id');
         me.persona_id = 0;
         me.codigo_persona = '';
-        //  me.tipo_cliente = 'MAYOREO';
+        me.tipo_cliente = 'tallerista';
         // me.nit = '';
         // me.nrc = '';
         // me.giro = '';
@@ -2626,11 +2634,11 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       me.listado = 0;
       me.persona_id = 0;
       me.codigo_persona = '';
-      // me.tipo_cliente = 'MAYOREO';
+      me.tipo_cliente = 'tallerista';
       /* me.nit = '';
        me.nrc = '';
        me.giro = '';*/
-      me.tipo_pago = 'CONTADO';
+      //me.tipo_pago = 'CONTADO';
       // me.fecha_hora = '';
       me.direccion = '';
       me.telefono = '';
@@ -2659,7 +2667,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         arrayPedidoT = respuesta.pedido;
         me.nombre = arrayPedidoT[0]['nombre'];
         me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
-        // me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+        me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
         me.nit = arrayPedidoT[0]['nit'];
         me.nrc = arrayPedidoT[0]['nrc'];
         me.giro = arrayPedidoT[0]['giro'];
@@ -4986,25 +4994,20 @@ var render = function render() {
       search: _vm.selectCliente,
       input: _vm.getDatosCliente
     }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row border"
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
   }, [_c("label", {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("Tipo de Cliente")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-12"
-  }, [_c("select", {
+  }, [_vm._v("Tipo de Cliente")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.tipoCliente,
-      expression: "tipoCliente"
+      value: _vm.tipo_cliente,
+      expression: "tipo_cliente"
     }],
     staticClass: "form-control",
-    attrs: {
-      id: "tipoCliente"
-    },
     on: {
       change: function change($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
@@ -5013,7 +5016,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.tipoCliente = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+        _vm.tipo_cliente = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
       }
     }
   }, [_c("option", {
@@ -5346,15 +5349,15 @@ var render = function render() {
     staticStyle: {
       "text-align": "center"
     }
-  }, [_vm._v("$ " + _vm._s(_vm.descuento.toFixed(2)))])]), _vm._v(" "), _c("tr", {
+  }, [_vm._v("$ " + _vm._s(_vm.calculoDescuento.toFixed(2)))])]), _vm._v(" "), _c("tr", {
     staticStyle: {
       "background-color": "#CEECF5"
     }
   }, [_vm._m(5), _vm._v(" "), _c("td", {
     staticStyle: {
-      "text-align": "center"
+      "background-color": "#f7ed17"
     }
-  }, [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])], 2) : _c("tbody", [_vm._m(6)])])])]), _vm._v(" "), _c("div", {
+  }, [_c("strong", [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])])], 2) : _c("tbody", [_vm._m(6)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5452,7 +5455,7 @@ var render = function render() {
     staticClass: "form-group"
   }, [_vm._m(15), _vm._v(" "), _c("p", {
     domProps: {
-      textContent: _vm._s(_vm.tipo_pago)
+      textContent: _vm._s(_vm.tipo_cliente)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
@@ -5466,7 +5469,7 @@ var render = function render() {
     staticClass: "table-responsive col-md-12"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(17), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", _vm._l(_vm.arrayDetalle, function (detalle) {
+  }, [_vm._m(17), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", [_vm._l(_vm.arrayDetalle, function (detalle) {
     return _c("tr", {
       key: detalle.id
     }, [_c("td", {
@@ -5487,10 +5490,37 @@ var render = function render() {
       }
     }), _vm._v(" "), _c("td", {
       domProps: {
+        textContent: _vm._s(detalle.precio)
+      }
+    }), _vm._v(" "), _c("td", {
+      domProps: {
         textContent: _vm._s(detalle.cantidad)
       }
-    })]);
-  }), 0) : _c("tbody", [_vm._m(18)])])])]), _vm._v(" "), _c("div", {
+    }), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "left"
+      },
+      attrs: {
+        colspan: "3"
+      }
+    }, [_vm._v("\n                      $" + _vm._s(detalle.precio * detalle.cantidad) + "\n                    ")])]);
+  }), _vm._v(" "), _c("tr", {
+    staticStyle: {
+      "background-color": "#CEECF5"
+    }
+  }, [_vm._m(18), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.totalParcial.toFixed(2)))])]), _vm._v(" "), _c("tr", {
+    staticStyle: {
+      "background-color": "#CEECF5"
+    }
+  }, [_vm._m(19), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.calculoDescuento.toFixed(2)))])]), _vm._v(" "), _c("tr", {
+    staticStyle: {
+      "background-color": "#CEECF5"
+    }
+  }, [_vm._m(20), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "background-color": "#f7ed17"
+    }
+  }, [_c("strong", [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])])], 2) : _c("tbody", [_vm._m(21)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5631,7 +5661,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(19), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
+  }, [_vm._m(22), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
     return _c("tr", {
       key: tipoproducto.id
     }, [_c("td", [_c("button", {
@@ -5827,7 +5857,7 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("label", [_c("strong", [_vm._v("Tipo de Pago")])]);
+  return _c("label", [_c("strong", [_vm._v("Tipo de Cliente")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -5839,7 +5869,38 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("thead", [_c("tr", [_c("th", [_vm._v("Codigo Producto")]), _vm._v(" "), _c("th", [_vm._v("Tipo Producto")]), _vm._v(" "), _c("th", [_vm._v("Medida")]), _vm._v(" "), _c("th", [_vm._v("Descripcion")]), _vm._v(" "), _c("th", [_vm._v("Cantidad")])])]);
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Codigo Producto")]), _vm._v(" "), _c("th", [_vm._v("Tipo Producto")]), _vm._v(" "), _c("th", [_vm._v("Medida")]), _vm._v(" "), _c("th", [_vm._v("Descripcion")]), _vm._v(" "), _c("th", [_vm._v("Precio")]), _vm._v(" "), _c("th", [_vm._v("Cantidad")]), _vm._v(" "), _c("th", {
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v("Subtotal")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("td", {
+    attrs: {
+      colspan: "7",
+      align: "right"
+    }
+  }, [_c("strong", [_vm._v("Total Parcial:")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("td", {
+    attrs: {
+      colspan: "7",
+      align: "right"
+    }
+  }, [_c("strong", [_vm._v("Descuento:")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("td", {
+    attrs: {
+      colspan: "7",
+      align: "right"
+    }
+  }, [_c("strong", [_vm._v("Total a Pagar:")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

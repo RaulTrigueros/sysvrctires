@@ -181,20 +181,17 @@
                   >
                   </v-select>
                 </div>
-              </div>
-              <div class="form-group row border">
-                <label for="">Tipo de Cliente</label>
-                <div class="col-md-12">
-                  <select v-model="tipoCliente" id="tipoCliente" class="form-control">
-                    <option value="tallerista">Tallerista</option>
-                    <option value="mayoreo">Mayoreo</option>
-                    <option value="distribuidor">Distribuidor</option>
-                    <option value="importador">Importador</option>
-                  </select>
+                <div class="form-group">
+                  <label for="">Tipo de Cliente</label>
+                    <select v-model="tipo_cliente" class="form-control">
+                      <option value="tallerista">Tallerista</option>
+                      <option value="mayoreo">Mayoreo</option>
+                      <option value="distribuidor">Distribuidor</option>
+                      <option value="importador">Importador</option>
+                    </select>
                 </div>
               </div>
             </div>
-            
             <!--FIN cabecera de registro-->
 
             <!--INICIO Obtener Detalle-->
@@ -370,11 +367,11 @@
                     </tr>
                     <tr style="background-color: #CEECF5;">
                       <td colspan="7" align="right"><strong>Descuento:</strong></td>
-                      <td style="text-align: center">$ {{ descuento.toFixed(2) }}</td>
+                      <td style="text-align: center">$ {{ calculoDescuento.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
                       <td colspan="7" align="right"><strong>Total a Pagar:</strong></td>
-                      <td style="text-align: center">$ {{ totalPagar.toFixed(2) }}</td>
+                      <td style="background-color: #f7ed17;" ><strong>$ {{ totalPagar.toFixed(2) }}</strong></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -462,8 +459,8 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label><strong>Tipo de Pago</strong></label>
-                  <p v-text="tipo_pago"></p>
+                  <label><strong>Tipo de Cliente</strong></label>
+                  <p v-text="tipo_cliente"></p>
                 </div>
               </div>
               <div class="col-md-4">
@@ -480,7 +477,9 @@
                       <th>Tipo Producto</th>
                       <th>Medida</th>
                       <th>Descripcion</th>
+                      <th>Precio</th>
                       <th>Cantidad</th>
+                      <th colspan="3">Subtotal</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -489,7 +488,23 @@
                       <td v-text="detalle.tipoproducto"></td>
                       <td v-text="detalle.medida"></td>
                       <td v-text="detalle.descripcion"></td>
+                      <td v-text="detalle.precio"></td>
                       <td v-text="detalle.cantidad"></td>
+                      <td colspan="3" style="text-align: left">
+                        ${{detalle.precio*detalle.cantidad}}
+                      </td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
+                      <td>$ {{ totalParcial.toFixed(2) }}</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Descuento:</strong></td>
+                      <td>$ {{ calculoDescuento.toFixed(2) }}</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Total a Pagar:</strong></td>
+                      <td style="background-color: #f7ed17;" ><strong>$ {{ totalPagar.toFixed(2) }}</strong></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -655,10 +670,10 @@ export default {
       nombre: '',
       tipo_cliente: 'tallerista',
       descuentos: {
-        tallerista: 15,
-        mayoreo: 25,
-        distribuidor: 20,
-        importador: 30,
+        tallerista: 15, // %
+        mayoreo: 25,    // %
+        distribuidor: 20, // %
+        importador: 30, // %
       },
       tipo_pago: 'CONTADO',
       codigo_persona: '',
@@ -741,13 +756,18 @@ export default {
         }
         return resultado;
     },
-    // Descuento basado en el tipo de cliente
-    descuento() {
-      return this.descuentos[this.tipoCliente] || 0;
+     // Calcula el descuento total como un porcentaje del total parcial
+     calculoDescuento() {
+      const porcentaje = this.descuentos[this.tipo_cliente] || 0; // Obtiene el porcentaje del tipo de cliente
+      return (this.totalParcial * porcentaje) / 100;
     },
+    // Descuento basado en el tipo de cliente
+   /* descuento() {
+      return this.descuentos[this.tipo_cliente] || 0;
+    },*/
     // Total a pagar después de aplicar el descuento
     totalPagar() {
-      return this.totalParcial - this.descuento;
+      return this.totalParcial - this.calculoDescuento;
     },
   },
 
@@ -988,7 +1008,7 @@ export default {
           persona_id: this.persona_id,
           codigo_persona: this.codigo_persona,
           nombre: this.nombre,
-         // tipo_cliente: this.tipo_cliente,
+          tipo_cliente: this.tipo_cliente,
          // nit: this.nit,
          // nrc: this.nrc,
          // giro: this.giro,
@@ -1004,7 +1024,7 @@ export default {
           me.listarPedido(1, '', 'persona_id');
           me.persona_id = 0;
           me.codigo_persona = '';
-        //  me.tipo_cliente = 'MAYOREO';
+          me.tipo_cliente = 'tallerista';
          // me.nit = '';
          // me.nrc = '';
          // me.giro = '';
@@ -1035,11 +1055,11 @@ export default {
 
       me.persona_id = 0;
       me.codigo_persona = '';
-     // me.tipo_cliente = 'MAYOREO';
+      me.tipo_cliente = 'tallerista';
      /* me.nit = '';
       me.nrc = '';
       me.giro = '';*/
-      me.tipo_pago = 'CONTADO';
+      //me.tipo_pago = 'CONTADO';
      // me.fecha_hora = '';
       me.direccion = '';
       me.telefono = '';
@@ -1072,7 +1092,7 @@ export default {
 
           me.nombre = arrayPedidoT[0]['nombre'];
           me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
-         // me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+          me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
           me.nit = arrayPedidoT[0]['nit'];
           me.nrc = arrayPedidoT[0]['nrc'];
           me.giro = arrayPedidoT[0]['giro'];
