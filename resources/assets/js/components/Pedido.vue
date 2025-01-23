@@ -53,7 +53,7 @@
                     <th>Codigo Cliente</th>
                     <th>Cliente</th>
                     <th>Tipo Cliente</th>
-                    <th>Total a pagar</th>
+                    <th>Total a pagar ($)</th>
                     <th>Fecha Hora</th>
                     <th>Estado</th>
                   </tr>
@@ -477,7 +477,7 @@
                       <th>Tipo Producto</th>
                       <th>Medida</th>
                       <th>Descripcion</th>
-                      <th>Precio</th>
+                      <th>Precio ($)</th>
                       <th>Cantidad</th>
                       <th colspan="3">Subtotal</th>
                     </tr>
@@ -591,7 +591,7 @@
                     <th>Código de Producto</th>
                     <th>Tipo de Producto</th>
                     <th>Descripcion</th>
-                    <th>Estado</th>
+                    <th>Precio ($)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -611,14 +611,7 @@
                     <td v-text="tipoproducto.codigo"></td>
                     <td v-text="tipoproducto.tipoproducto"></td>
                     <td v-text="tipoproducto.descripcion"></td>
-                    <td>
-                      <div v-if="tipoproducto.condicion">
-                        <span class="badge badge-success">Activo</span>
-                      </div>
-                      <div v-else>
-                        <span class="badge badge-danger">Desactivado</span>
-                      </div>
-                    </td>
+                    <td v-text="tipoproducto.precio"></td>
                   </tr>
                 </tbody>
               </table>

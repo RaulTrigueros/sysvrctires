@@ -53,7 +53,7 @@
           
           @elseif(Auth::user()->idrol==3)
           <template v-if="menu==70">
-            <pedido></pedido>
+            <pedido :ruta="'http://vrctireswamp.com'"></pedido>
             </template>
             <template v-if="menu==71">
             <cliente></cliente>

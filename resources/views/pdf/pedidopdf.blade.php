@@ -89,7 +89,7 @@
                 <b>VRC</b><br><b>Moto Parts Company</b><br>Lotificacion San Pedro, San Pablo Tacachico<br>Telefono: (+503) 6439-0329<br>Correo electrónico: vrctiressv@gmail.com
             </p>
         </div>
-        <h1>Detalle de Pedido</h1>
+        <h1>Cotización</h1>
         <p><strong>Fecha / hora:</strong> {{$pedido->fecha_hora}}</p>
     </header>
     <section>
@@ -190,7 +190,7 @@
     </section>
     <footer>
         <div id="gracias">
-            <p>¡Gracias por su compra!</p>
+            <h5>"Arriesga más que los demás. Sueña más que los demás"</h5>
         </div>
     </footer>
 </body>
