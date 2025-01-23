@@ -2263,13 +2263,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       nombre: '',
       tipo_cliente: 'tallerista',
       descuentos: {
-        tallerista: 15,
+        tallerista: 0,
         // %
-        mayoreo: 25,
+        mayoreo: 7,
         // %
-        distribuidor: 20,
+        distribuidor: 14,
         // %
-        importador: 30 // %
+        importador: 20 // %
       },
       tipo_pago: 'CONTADO',
       codigo_persona: '',

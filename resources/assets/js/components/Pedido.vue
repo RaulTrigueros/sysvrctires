@@ -670,10 +670,10 @@ export default {
       nombre: '',
       tipo_cliente: 'tallerista',
       descuentos: {
-        tallerista: 15, // %
-        mayoreo: 25,    // %
-        distribuidor: 20, // %
-        importador: 30, // %
+        tallerista: 0, // %
+        mayoreo: 7,    // %
+        distribuidor: 14, // %
+        importador: 20, // %
       },
       tipo_pago: 'CONTADO',
       codigo_persona: '',
