@@ -53,7 +53,7 @@
                     <th>Codigo Cliente</th>
                     <th>Cliente</th>
                     <th>Tipo Cliente</th>
-                    <th>Tipo Pago</th>
+                    <th>Total a pagar</th>
                     <th>Fecha Hora</th>
                     <th>Estado</th>
                   </tr>
@@ -98,7 +98,7 @@
                     <td v-text="pedido.codigo_persona"></td>
                     <td v-text="pedido.nombre"></td>
                     <td v-text="pedido.tipo_cliente"></td>
-                    <td v-text="pedido.tipo_pago"></td>
+                    <td v-text="pedido.totalPagar"></td>
                     <td v-text="pedido.fecha_hora"></td>
                     <td class="align-middle">
                         <div v-if="pedido.estado">
@@ -180,6 +180,15 @@
                     @input="getDatosCliente"
                   >
                   </v-select>
+                </div>
+                <div class="form-group">
+                  <label for="">Tipo de Cliente</label>
+                    <select v-model="tipo_cliente" class="form-control">
+                      <option value="tallerista">Tallerista</option>
+                      <option value="mayoreo">Mayoreo</option>
+                      <option value="distribuidor">Distribuidor</option>
+                      <option value="importador">Importador</option>
+                    </select>
                 </div>
               </div>
             </div>
@@ -302,7 +311,9 @@
                       <th style="text-align: center;">Tipo Producto</th>
                       <th style="text-align: center;">Medida</th>
                       <th style="text-align: center;">Descripción</th>
+                      <th style="text-align: center;">Precio</th>
                       <th style="text-align: center;">Cantidad</th>
+                      <th style="text-align: center;">Subtotal</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -335,6 +346,10 @@
                         style="text-align: center"
                         v-text="detalle.descripcion"
                       ></td>
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.precio"
+                      ></td>
                       <td style="text-align: center">
                         <input style="text-align: center;"
                           v-model="detalle.cantidad"
@@ -342,6 +357,21 @@
                           class="form-control"
                         />
                       </td>
+                      <td colspan="2" style="text-align: center">
+                        ${{detalle.precio*detalle.cantidad}}
+                      </td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
+                      <td style="text-align: center">$ {{ totalParcial.toFixed(2) }}</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Descuento:</strong></td>
+                      <td style="text-align: center">$ {{ calculoDescuento.toFixed(2) }}</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Total a Pagar:</strong></td>
+                      <td style="background-color: #f7ed17;" ><strong>$ {{ totalPagar.toFixed(2) }}</strong></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -429,8 +459,8 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label><strong>Tipo de Pago</strong></label>
-                  <p v-text="tipo_pago"></p>
+                  <label><strong>Tipo de Cliente</strong></label>
+                  <p v-text="tipo_cliente"></p>
                 </div>
               </div>
               <div class="col-md-4">
@@ -447,7 +477,9 @@
                       <th>Tipo Producto</th>
                       <th>Medida</th>
                       <th>Descripcion</th>
+                      <th>Precio</th>
                       <th>Cantidad</th>
+                      <th colspan="3">Subtotal</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -456,7 +488,23 @@
                       <td v-text="detalle.tipoproducto"></td>
                       <td v-text="detalle.medida"></td>
                       <td v-text="detalle.descripcion"></td>
+                      <td v-text="detalle.precio"></td>
                       <td v-text="detalle.cantidad"></td>
+                      <td colspan="3" style="text-align: left">
+                        ${{detalle.precio*detalle.cantidad}}
+                      </td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
+                      <td>$ {{ totalParcial.toFixed(2) }}</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Descuento:</strong></td>
+                      <td>$ {{ calculoDescuento.toFixed(2) }}</td>
+                    </tr>
+                    <tr style="background-color: #CEECF5;">
+                      <td colspan="7" align="right"><strong>Total a Pagar:</strong></td>
+                      <td style="background-color: #f7ed17;" ><strong>$ {{ totalPagar.toFixed(2) }}</strong></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -620,7 +668,13 @@ export default {
       pedido_id: 0,
       persona_id: 0,
       nombre: '',
-      tipo_cliente: 'MAYOREO',
+      tipo_cliente: 'tallerista',
+      descuentos: {
+        tallerista: 15, // %
+        mayoreo: 25,    // %
+        distribuidor: 20, // %
+        importador: 30, // %
+      },
       tipo_pago: 'CONTADO',
       codigo_persona: '',
       direccion: '',
@@ -694,7 +748,29 @@ export default {
       }
       return pagesArray;
     },
+     // Total parcial calculado con los precios y cantidades
+    totalParcial: function(){  
+        var resultado=0.0;
+        for(var i=0;i<this.arrayDetalle.length;i++){
+            resultado=resultado+(this.arrayDetalle[i].precio*this.arrayDetalle[i].cantidad)
+        }
+        return resultado;
+    },
+     // Calcula el descuento total como un porcentaje del total parcial
+     calculoDescuento() {
+      const porcentaje = this.descuentos[this.tipo_cliente] || 0; // Obtiene el porcentaje del tipo de cliente
+      return (this.totalParcial * porcentaje) / 100;
+    },
+    // Descuento basado en el tipo de cliente
+   /* descuento() {
+      return this.descuentos[this.tipo_cliente] || 0;
+    },*/
+    // Total a pagar después de aplicar el descuento
+    totalPagar() {
+      return this.totalParcial - this.calculoDescuento;
+    },
   },
+
   methods: {
     listarPedido(page, buscar, criterio) {
       let me = this;
@@ -743,7 +819,6 @@ export default {
       me.loading = true;
       me.persona_id = val1.id;
     },
-
     async cargarProductos() { //este metodo obtiene los productos por medio de su codigo desde la tabla Llanta
       try {
         const response = await axios.get('/llanta/selectLlanta'); 
@@ -755,7 +830,6 @@ export default {
     seleccionarLlanta(codigo) {
       this.codigoSeleccionado = codigo; // Guardar el código seleccionado
     },
-
     buscarTipoproducto() {
       let me = this;
       var url =
@@ -934,7 +1008,7 @@ export default {
           persona_id: this.persona_id,
           codigo_persona: this.codigo_persona,
           nombre: this.nombre,
-         // tipo_cliente: this.tipo_cliente,
+          tipo_cliente: this.tipo_cliente,
          // nit: this.nit,
          // nrc: this.nrc,
          // giro: this.giro,
@@ -942,6 +1016,7 @@ export default {
          // fecha_hora: this.fecha_hora,
           direccion: this.direccion,
           telefono: this.telefono,
+          totalPagar: this.totalPagar,
           data: this.arrayDetalle,
         })
         .then(function (response) {
@@ -949,7 +1024,7 @@ export default {
           me.listarPedido(1, '', 'persona_id');
           me.persona_id = 0;
           me.codigo_persona = '';
-        //  me.tipo_cliente = 'MAYOREO';
+          me.tipo_cliente = 'tallerista';
          // me.nit = '';
          // me.nrc = '';
          // me.giro = '';
@@ -963,6 +1038,7 @@ export default {
           me.medida = '';
           me.precio = 0;
           me.cantidad = 0;
+          me.totalPagar = 0.0;
           me.descripcion = '';
           me.arrayDetalle = [];
           window.open(
@@ -973,18 +1049,17 @@ export default {
           console.log(error);
         });
     },
-    
     mostrarDetalle() {
       let me = this;
       me.listado = 0;
 
       me.persona_id = 0;
       me.codigo_persona = '';
-     // me.tipo_cliente = 'MAYOREO';
+      me.tipo_cliente = 'tallerista';
      /* me.nit = '';
       me.nrc = '';
       me.giro = '';*/
-      me.tipo_pago = 'CONTADO';
+      //me.tipo_pago = 'CONTADO';
      // me.fecha_hora = '';
       me.direccion = '';
       me.telefono = '';
@@ -992,6 +1067,7 @@ export default {
       me.codigo = '';
       me.tipoproducto = '';
       me.cantidad = 0;
+      me.totalPagar = 0.0;
       me.descripcion = '';
       me.medida = '';
       me.precio = 0;
@@ -1016,7 +1092,7 @@ export default {
 
           me.nombre = arrayPedidoT[0]['nombre'];
           me.codigo_persona = arrayPedidoT[0]['codigo_persona'];
-         // me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
+          me.tipo_cliente = arrayPedidoT[0]['tipo_cliente'];
           me.nit = arrayPedidoT[0]['nit'];
           me.nrc = arrayPedidoT[0]['nrc'];
           me.giro = arrayPedidoT[0]['giro'];
@@ -1025,6 +1101,7 @@ export default {
           me.direccion = arrayPedidoT[0]['direccion'];
           me.telefono = arrayPedidoT[0]['telefono'];
           me.email = arrayPedidoT[0]['email'];
+          me.totalPagar = arrayPedidoT[0]['totalPagar'];
         })
         .catch(function (error) {
           console.log(error);
@@ -1057,7 +1134,7 @@ export default {
     eliminarPedido(id) {
       swal
         .fire({
-          title: 'Esta seguro de eliminar este pedido?',
+          title: 'Esta seguro de anular este pedido?',
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -1080,7 +1157,7 @@ export default {
                 me.listarPedido(1, '', 'persona_id');
                 swal.fire(
                   'Eliminado!',
-                  'Registro de Pedido Eliminado con éxito!',
+                  'Registro de Pedido anulado con éxito!',
                   'success'
                 );
               })
@@ -1172,7 +1249,6 @@ export default {
   },
   },
   
-
   mounted() {
     this.listarPedido(1, this.buscar, this.criterio);
     this.selectCliente('', () => {}); // Carga todos los clientes al iniciar

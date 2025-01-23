@@ -31,12 +31,13 @@ class PedidoController extends Controller
         $query = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'pedidos.tipo_pago',
+                //'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
                 'pedidos.created_at as fecha_hora',
                 'pedidos.estado',
                 'personas.nombre',
-                'personas.codigo as codigo_persona'
+                'personas.codigo as codigo_persona',
+                'pedidos.totalPagar'
             );
 
         if ($buscar != '') {
@@ -71,7 +72,7 @@ class PedidoController extends Controller
         $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'pedidos.tipo_pago',
+                //'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
                 'pedidos.created_at as fecha_hora',
                 'personas.nombre',
@@ -81,7 +82,8 @@ class PedidoController extends Controller
                 'personas.email',
                 'personas.nit',
                 'personas.nrc',
-                'personas.giro'
+                'personas.giro',
+                'pedidos.totalPagar'
             )
             ->where('pedidos.id', '=', $id)
             ->orderBy('pedidos.id', 'desc')->take(1)->get();
@@ -96,12 +98,12 @@ class PedidoController extends Controller
         $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
             //->join('repuestos', 'pedidos.repuestos_id', '=', 'repuestos.id')
             ->select(
-                'detalle_pedidos.cantidad',
                 'llantas.codigo',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.medida',
                 'llantas.precio',
-                'llantas.descripcion'
+                'llantas.descripcion',
+                'detalle_pedidos.cantidad'
                 //'repuestos.nombre as nombre_repuesto'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
@@ -115,7 +117,8 @@ class PedidoController extends Controller
         $pedido = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                'pedidos.tipo_pago',
+                // 'pedidos.tipo_pago',
+                'pedidos.tipo_cliente',
                 'pedidos.fecha_hora',
                 'personas.nombre',
                 'personas.direccion',
@@ -124,7 +127,8 @@ class PedidoController extends Controller
                 'personas.nit',
                 'personas.nrc',
                 'personas.giro',
-                'personas.codigo as codigo_persona'
+                'personas.codigo as codigo_persona',
+                'pedidos.totalPagar'
 
             )
             ->where('pedidos.id', '=', $id)
@@ -133,11 +137,12 @@ class PedidoController extends Controller
 
         $detalles = DetallePedido::join('llantas', 'detalle_pedidos.llanta_id', '=', 'llantas.id')
             ->select(
-                'detalle_pedidos.cantidad',
                 'llantas.codigo',
                 'llantas.tipoproducto as tipoproducto',
                 'llantas.descripcion',
-                'llantas.medida'
+                'llantas.medida',
+                'llantas.precio',
+                'detalle_pedidos.cantidad'
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->get();
@@ -166,8 +171,9 @@ class PedidoController extends Controller
             $pedido = new Pedido();
             $pedido->persona_id = $request->persona_id;
             // $pedido->tipo_pago = $request->tipo_pago;
-            //$pedido->tipo_cliente = $request->tipo_cliente;
+            $pedido->tipo_cliente = $request->tipo_cliente;
             $pedido->fecha_hora = now(); // Agregar la fecha y hora actual
+            $pedido->totalPagar = $request->totalPagar;
             $pedido->save();
 
             $detalles = $request->data; //Array de detalles
@@ -177,35 +183,9 @@ class PedidoController extends Controller
                 $detalle = new DetallePedido();
                 $detalle->pedido_id = $pedido->id;
                 $detalle->llanta_id = $det['llanta_id'];
-                // $detalle->repuesto_id = $det['repuesto_id'];
                 $detalle->cantidad = $det['cantidad'];
                 $detalle->save();
             }
-
-            /* $fechaActual = date('Y-m-d');
-            $numPedidos = DB::table('pedidos')->whereDate('created_at', $fechaActual)->count();
-            $numIngresos = DB::table('ingresos')->whereDate('created_at', $fechaActual)->count();
-
-            $arregloDatos = [
-                'pedidos' => [
-                    'numero' => $numPedidos,
-                    'msj' => 'Pedidos'
-                ],
-                'ingresos' => [
-                    'numero' => $numIngresos,
-                    'msj' => 'Ingresos'
-                ]
-            ];
-            $allUsers = User::all();
-
-            foreach ($allUsers as $notificar) {
-                User::findOrFail($notificar->id)->notify(new NotifyAdmin($arregloDatos));
-            }
-
-            DB::commit();
-            return [
-                'id' => $pedido->id
-            ]*/
         } catch (Exception $e) {
             DB::rollBack();
         }

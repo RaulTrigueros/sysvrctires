@@ -11,7 +11,7 @@ class DetallePedido extends Model
         'pedido_id',
         'llanta_id',
         'repuesto_id',
-        'cantidad',
+        'cantidad'
     ];
     public $timestamps = false;
 }

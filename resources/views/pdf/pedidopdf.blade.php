@@ -100,14 +100,14 @@
                     <tr id="fv">
                         <th>Código</th>
                         <th>Nombre</th>
-                        <th>Tipo Pago</th>
+                        <th>Tipo de Cliente</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td style="text-align: center">{{$pedido->codigo_persona}}</td>
                         <td style="text-align: center">{{$pedido->nombre}}</td>
-                        <td style="text-align: center">{{$pedido->tipo_pago}}</td>
+                        <td style="text-align: center">{{$pedido->tipo_cliente}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -156,7 +156,9 @@
                     <th>Tipo Producto</th>
                     <th>Medida</th>
                     <th>Descripción</th>
+                    <th>Precio</th>
                     <th>Cantidad</th>
+                    <th colspan="3">Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -166,9 +168,23 @@
                     <td>{{$detalle->tipoproducto}}</td>
                     <td>{{$detalle->medida}}</td>
                     <td>{{$detalle->descripcion}}</td>
+                    <td>{{$detalle->precio}}</td>
                     <td>{{$detalle->cantidad}}</td>
+                    <td colspan="3">${{$detalle->precio*$detalle->cantidad}}</td>
                 </tr>
                 @endforeach
+                <tr style="background-color: #f5f5f0;">
+                    <td colspan="6" align="right"><strong>Total Parcial:</strong></td>
+                    <td>2</td>
+                  </tr>
+                  <tr style="background-color: #f5f5f0;">
+                    <td colspan="8" align="right"><strong>Descuento:</strong></td>
+                    <td>2</td>
+                  </tr>
+                  <tr style="background-color: #f5f5f0;">
+                    <td colspan="8" align="right"><strong>Total a Pagar:</strong></td>
+                    <td style="background-color: #f7ed17;" ><strong>2</strong></td>
+                  </tr>
             </tbody>
         </table>
     </section>
