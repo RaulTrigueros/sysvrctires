@@ -64,6 +64,7 @@ class PedidoController extends Controller
             'pedidos' => $pedidos
         ];
     }
+
     public function obtenerCabecera(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
@@ -146,14 +147,36 @@ class PedidoController extends Controller
             )
             ->where('detalle_pedidos.pedido_id', '=', $id)
             ->get();
-        //->orderBy('detalle_pedidos.id', 'desc')->get();
+
+        // Calcular el total parcial
+        $totalParcial = $detalles->sum(function ($detalle) {
+            return $detalle->precio * $detalle->cantidad;
+        });
+        // Obtener el porcentaje de descuento según el tipo de cliente
+        $descuentos = [
+            'tallerista' => 0,
+            'mayoreo' => 7,
+            'distribuidor' => 14,
+            'importador' => 20,
+        ];
+        $porcentajeDescuento = $descuentos[$pedido->tipo_cliente] ?? 0;
+        // Calcular el descuento y el total a pagar
+        $descuento = ($totalParcial * $porcentajeDescuento) / 100;
+        $totalPagar = $totalParcial - $descuento;
 
         // Validación en caso de que el pedido no exista
         if (!$pedido) {
             return response()->json(['message' => 'Pedido no encontrado.'], 404);
         }
         // Generar el PDF
-        $pdf = \PDF::loadView('pdf.pedidopdf', ['pedido' => $pedido, 'detalles' => $detalles]);
+        $pdf = \PDF::loadView('pdf.pedidopdf', [
+            'pedido' => $pedido,
+            'detalles' => $detalles,
+            'totalParcial' => $totalParcial,
+            'descuento' => $descuento,
+            'totalPagar' => $totalPagar,
+            'porcentajeDescuento' => $porcentajeDescuento
+        ]);
 
         // Cambiar a `stream()` para mostrar el PDF en el navegador
         return $pdf->stream('pedido-' . $pedido->codigo_persona . '.pdf');

@@ -366,7 +366,7 @@
                       <td style="text-align: center">$ {{ totalParcial.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                      <td colspan="7" align="right"><strong>Descuento:</strong></td>
+                      <td colspan="7" align="right"><strong>Descuento ({{ porcentajeDescuento }}%):</strong></td>
                       <td style="text-align: center">$ {{ calculoDescuento.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
@@ -499,7 +499,7 @@
                       <td>$ {{ totalParcial.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                      <td colspan="7" align="right"><strong>Descuento:</strong></td>
+                      <td colspan="7" align="right"><strong>Descuento ({{ porcentajeDescuento }}%):</strong></td>
                       <td>$ {{ calculoDescuento.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
@@ -749,16 +749,14 @@ export default {
         }
         return resultado;
     },
+    // Solo devuelve el porcentaje
+    porcentajeDescuento() {
+      return this.descuentos[this.tipo_cliente] || 0; 
+    },
      // Calcula el descuento total como un porcentaje del total parcial
      calculoDescuento() {
-      const porcentaje = this.descuentos[this.tipo_cliente] || 0; // Obtiene el porcentaje del tipo de cliente
-      return (this.totalParcial * porcentaje) / 100;
+      return (this.totalParcial * this.porcentajeDescuento) / 100;
     },
-    // Descuento basado en el tipo de cliente
-   /* descuento() {
-      return this.descuentos[this.tipo_cliente] || 0;
-    },*/
-    // Total a pagar después de aplicar el descuento
     totalPagar() {
       return this.totalParcial - this.calculoDescuento;
     },

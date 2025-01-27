@@ -13,29 +13,30 @@
         }
         header, footer {
             text-align: center;
-            margin: 2px;
+            margin: 1px;
         }
         #logo{
         float: left;
-        margin-top: 1%;
-        margin-left: 2%;
+        margin-top: 0.1%;
+        margin-left: 0.20%;
         margin-right: 2%;
         }
 
-        #imagen{
-        width: 100px;
+       #imagen{
+        width: 150px;
+        height: 120px;
         }
         #datosempresa{
         float: left;
         margin-top: 0%;
-        margin-left: 2%;
+        margin-left: 0.1%;
         margin-right: 2%;
         /*text-align: justify;*/
         }
         #encabezado{
         text-align: center;
-        margin-left: 10%;
-        margin-right: 35%;
+        margin-left: 0.10%;
+        margin-right: 40%;
         font-size: 15px;
         }
         section{
@@ -72,7 +73,7 @@
             background-color: #f14e4e;
             color: white;
         }
-        #gracias {
+        #frase {
             text-align: center;
             font-size: 18px;
             margin-top: 20px;
@@ -82,7 +83,7 @@
 <body>
     <header>
         <div id="logo">
-            <img src="img/logomoto-sinfondo.png" alt="VRC" id="imagen">
+            <img src="img/logomotopdf.jpg" alt="VRC" id="imagen">
         </div>
         <div id="datosempresa">
             <p id="encabezado">
@@ -173,23 +174,23 @@
                     <td colspan="3">${{$detalle->precio*$detalle->cantidad}}</td>
                 </tr>
                 @endforeach
-                <tr style="background-color: #f5f5f0;">
-                    <td colspan="6" align="right"><strong>Total Parcial:</strong></td>
-                    <td>2</td>
+                    <tr style="background-color: #f5f5f0;">
+                    <td colspan="8" style="text-align: right;"><strong>Total Parcial:</strong></td>
+                    <td>${{ number_format($totalParcial, 2) }}</td>
                   </tr>
                   <tr style="background-color: #f5f5f0;">
-                    <td colspan="8" align="right"><strong>Descuento:</strong></td>
-                    <td>2</td>
+                    <td colspan="8" style="text-align: right;"><strong>Descuento:</strong></td>
+                    <td>${{ number_format($descuento, 2) }}</td>
                   </tr>
                   <tr style="background-color: #f5f5f0;">
-                    <td colspan="8" align="right"><strong>Total a Pagar:</strong></td>
-                    <td style="background-color: #f7ed17;" ><strong>2</strong></td>
+                    <td colspan="8" style="text-align: right;"><strong>Total a Pagar:</strong></td>
+                    <td style="background-color: #f7ed17;" ><strong>${{ number_format($totalPagar, 2) }}</strong></td>
                   </tr>
             </tbody>
         </table>
     </section>
     <footer>
-        <div id="gracias">
+        <div id="frase">
             <h5>"Arriesga más que los demás. Sueña más que los demás"</h5>
         </div>
     </footer>

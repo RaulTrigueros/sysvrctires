@@ -2351,16 +2351,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }
       return resultado;
     },
+    // Solo devuelve el porcentaje
+    porcentajeDescuento: function porcentajeDescuento() {
+      return this.descuentos[this.tipo_cliente] || 0;
+    },
     // Calcula el descuento total como un porcentaje del total parcial
     calculoDescuento: function calculoDescuento() {
-      var porcentaje = this.descuentos[this.tipo_cliente] || 0; // Obtiene el porcentaje del tipo de cliente
-      return this.totalParcial * porcentaje / 100;
+      return this.totalParcial * this.porcentajeDescuento / 100;
     },
-    // Descuento basado en el tipo de cliente
-    /* descuento() {
-       return this.descuentos[this.tipo_cliente] || 0;
-     },*/
-    // Total a pagar después de aplicar el descuento
     totalPagar: function totalPagar() {
       return this.totalParcial - this.calculoDescuento;
     }
@@ -5345,7 +5343,12 @@ var render = function render() {
     staticStyle: {
       "background-color": "#CEECF5"
     }
-  }, [_vm._m(4), _vm._v(" "), _c("td", {
+  }, [_c("td", {
+    attrs: {
+      colspan: "7",
+      align: "right"
+    }
+  }, [_c("strong", [_vm._v("Descuento (" + _vm._s(_vm.porcentajeDescuento) + "%):")])]), _vm._v(" "), _c("td", {
     staticStyle: {
       "text-align": "center"
     }
@@ -5353,11 +5356,11 @@ var render = function render() {
     staticStyle: {
       "background-color": "#CEECF5"
     }
-  }, [_vm._m(5), _vm._v(" "), _c("td", {
+  }, [_vm._m(4), _vm._v(" "), _c("td", {
     staticStyle: {
       "background-color": "#f7ed17"
     }
-  }, [_c("strong", [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])])], 2) : _c("tbody", [_vm._m(6)])])])]), _vm._v(" "), _c("div", {
+  }, [_c("strong", [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])])], 2) : _c("tbody", [_vm._m(5)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5389,7 +5392,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(7), _vm._v(" "), _c("p", {
+  }, [_vm._m(6), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.nombre)
     }
@@ -5397,7 +5400,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(8), _vm._v(" "), _c("p", {
+  }, [_vm._m(7), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.codigo_persona)
     }
@@ -5405,7 +5408,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(9), _vm._v(" "), _c("p", {
+  }, [_vm._m(8), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.nit)
     }
@@ -5413,7 +5416,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(10), _vm._v(" "), _c("p", {
+  }, [_vm._m(9), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.nrc)
     }
@@ -5421,7 +5424,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(11), _vm._v(" "), _c("p", {
+  }, [_vm._m(10), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.giro)
     }
@@ -5429,7 +5432,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(12), _vm._v(" "), _c("p", {
+  }, [_vm._m(11), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.direccion)
     }
@@ -5437,7 +5440,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(13), _vm._v(" "), _c("p", {
+  }, [_vm._m(12), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.telefono)
     }
@@ -5445,7 +5448,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(14), _vm._v(" "), _c("p", {
+  }, [_vm._m(13), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.email)
     }
@@ -5453,13 +5456,13 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(15), _vm._v(" "), _c("p", {
+  }, [_vm._m(14), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.tipo_cliente)
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_vm._m(16), _vm._v(" "), _c("p", {
+  }, [_vm._m(15), _vm._v(" "), _c("p", {
     domProps: {
       textContent: _vm._s(_vm.fecha_hora)
     }
@@ -5469,7 +5472,7 @@ var render = function render() {
     staticClass: "table-responsive col-md-12"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(17), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", [_vm._l(_vm.arrayDetalle, function (detalle) {
+  }, [_vm._m(16), _vm._v(" "), _vm.arrayDetalle.length ? _c("tbody", [_vm._l(_vm.arrayDetalle, function (detalle) {
     return _c("tr", {
       key: detalle.id
     }, [_c("td", {
@@ -5508,19 +5511,24 @@ var render = function render() {
     staticStyle: {
       "background-color": "#CEECF5"
     }
-  }, [_vm._m(18), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.totalParcial.toFixed(2)))])]), _vm._v(" "), _c("tr", {
+  }, [_vm._m(17), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.totalParcial.toFixed(2)))])]), _vm._v(" "), _c("tr", {
     staticStyle: {
       "background-color": "#CEECF5"
     }
-  }, [_vm._m(19), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.calculoDescuento.toFixed(2)))])]), _vm._v(" "), _c("tr", {
+  }, [_c("td", {
+    attrs: {
+      colspan: "7",
+      align: "right"
+    }
+  }, [_c("strong", [_vm._v("Descuento (" + _vm._s(_vm.porcentajeDescuento) + "%):")])]), _vm._v(" "), _c("td", [_vm._v("$ " + _vm._s(_vm.calculoDescuento.toFixed(2)))])]), _vm._v(" "), _c("tr", {
     staticStyle: {
       "background-color": "#CEECF5"
     }
-  }, [_vm._m(20), _vm._v(" "), _c("td", {
+  }, [_vm._m(18), _vm._v(" "), _c("td", {
     staticStyle: {
       "background-color": "#f7ed17"
     }
-  }, [_c("strong", [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])])], 2) : _c("tbody", [_vm._m(21)])])])]), _vm._v(" "), _c("div", {
+  }, [_c("strong", [_vm._v("$ " + _vm._s(_vm.totalPagar.toFixed(2)))])])])], 2) : _c("tbody", [_vm._m(19)])])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -5661,7 +5669,7 @@ var render = function render() {
     staticClass: "table-responsive"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped table-sm"
-  }, [_vm._m(22), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
+  }, [_vm._m(20), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayTipoproducto, function (tipoproducto) {
     return _c("tr", {
       key: tipoproducto.id
     }, [_c("td", [_c("button", {
@@ -5796,15 +5804,6 @@ var staticRenderFns = [function () {
       colspan: "7",
       align: "right"
     }
-  }, [_c("strong", [_vm._v("Descuento:")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("td", {
-    attrs: {
-      colspan: "7",
-      align: "right"
-    }
   }, [_c("strong", [_vm._v("Total a Pagar:")])]);
 }, function () {
   var _vm = this,
@@ -5883,15 +5882,6 @@ var staticRenderFns = [function () {
       align: "right"
     }
   }, [_c("strong", [_vm._v("Total Parcial:")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("td", {
-    attrs: {
-      colspan: "7",
-      align: "right"
-    }
-  }, [_c("strong", [_vm._v("Descuento:")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
