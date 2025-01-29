@@ -10,6 +10,9 @@
             font-size: 14px;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         header, footer {
             text-align: center;
@@ -47,37 +50,46 @@
         width: 100%;
         border-collapse: collapse;
         border-spacing: 0;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
+        font-size: 11px;
         } 
         #datos-cliente thead{
         padding: 20px;
-        background: #7e858b;
-        text-align: center;
+        background: #9ea7af;
         border-bottom: 1px solid #FFFFFF;  
+        font-size: 11px;
         }
         #fv {
         color: #FFFFFF;
-        font-size: 15px;
+        font-size: 11px;
         }
         #detalles-pedido {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 100px;
+            font-size: 11px;
+
         }
         #detalles-pedido th, #detalles-pedido td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 4px;
             text-align: left;
         }
         #detalles-pedido th {
             background-color: #f14e4e;
             color: white;
         }
-        #frase {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 20px;
-        }
+        #pie {
+        position: fixed;
+        width: 100%;
+        height: 100px;
+        top: auto;
+        right: 0;
+        bottom: 0px;
+        left: 0;
+        margin-left:2cm;margin-right:3cm;
+        text-align: center;
+      }
     </style>
 </head>
 <body>
@@ -99,100 +111,103 @@
             <table id="datos-cliente">
                 <thead>
                     <tr id="fv">
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Tipo de Cliente</th>
+                        <th style="text-align: left">Código</th>
+                        <th style="text-align: left">Nombre</th>
+                        <th style="text-align: left">Tipo de Cliente</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: center">{{$pedido->codigo_persona}}</td>
-                        <td style="text-align: center">{{$pedido->nombre}}</td>
-                        <td style="text-align: center">{{$pedido->tipo_cliente}}</td>
+                        <td style="text-align: left">{{$pedido->codigo_persona}}</td>
+                        <td style="text-align: left">{{$pedido->nombre}}</td>
+                        <td style="text-align: left">{{$pedido->tipo_cliente}}</td>
                     </tr>
                 </tbody>
             </table>
             <table id="datos-cliente">
                 <thead>
                     <tr id="fv">
-                        <th>Dirección</th>
-                        <th>Teléfono</th>
-                        <th>Correo</th>
+                        <th style="text-align: left">Dirección</th>
+                        <th style="text-align: left">Teléfono</th>
+                        <th style="text-align: left">Correo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: center">{{$pedido->direccion}}</td>
-                        <td style="text-align: center">{{$pedido->telefono}}</td>
-                        <td style="text-align: center">{{$pedido->email}}</td>
+                        <td style="text-align: left">{{$pedido->direccion}}</td>
+                        <td style="text-align: left">{{$pedido->telefono}}</td>
+                        <td style="text-align: left">{{$pedido->email}}</td>
                     </tr>
                 </tbody>
             </table>
             <table id="datos-cliente">
                 <thead>
                     <tr id="fv">
-                        <th>NIT</th>
-                        <th>NRC</th>
-                        <th>Giro</th>
+                        <th style="text-align: left">NIT</th>
+                        <th style="text-align: left">NRC</th>
+                        <th style="text-align: left">Giro</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: center">{{$pedido->nit}}</td>
-                        <td style="text-align: center">{{$pedido->nrc}}</td>
-                        <td style="text-align: center">{{$pedido->giro}}</td>
+                        <td style="text-align: left">{{$pedido->nit}}</td>
+                        <td style="text-align: left">{{$pedido->nrc}}</td>
+                        <td style="text-align: left">{{$pedido->giro}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </section>
-    <br><br>
+    <br>
     <hr>
-    <section>
-        <h3>Detalles del Pedido</h3>
-        <table id="detalles-pedido">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Tipo Producto</th>
-                    <th>Medida</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th colspan="3">Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($detalles as $detalle)
-                <tr>
-                    <td>{{$detalle->codigo}}</td>
-                    <td>{{$detalle->tipoproducto}}</td>
-                    <td>{{$detalle->medida}}</td>
-                    <td>{{$detalle->descripcion}}</td>
-                    <td>{{$detalle->precio}}</td>
-                    <td>{{$detalle->cantidad}}</td>
-                    <td colspan="3">${{$detalle->precio*$detalle->cantidad}}</td>
-                </tr>
-                @endforeach
+    <main>
+        <section>
+            <h3>Detalles del Pedido</h3>
+            <table id="detalles-pedido">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Tipo Producto</th>
+                        <th>Medida</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th colspan="3">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($detalles as $detalle)
+                    <tr>
+                        <td>{{$detalle->codigo}}</td>
+                        <td>{{$detalle->tipoproducto}}</td>
+                        <td>{{$detalle->medida}}</td>
+                        <td>{{$detalle->descripcion}}</td>
+                        <td>{{$detalle->precio}}</td>
+                        <td>{{$detalle->cantidad}}</td>
+                        <td colspan="3">${{$detalle->precio*$detalle->cantidad}}</td>
+                    </tr>
+                    @endforeach
+                        <tr style="background-color: #f5f5f0;">
+                        <td colspan="8" style="text-align: right;"><strong>Total Parcial:</strong></td>
+                        <td>${{ number_format($totalParcial, 2) }}</td>
+                    </tr>
                     <tr style="background-color: #f5f5f0;">
-                    <td colspan="8" style="text-align: right;"><strong>Total Parcial:</strong></td>
-                    <td>${{ number_format($totalParcial, 2) }}</td>
-                  </tr>
-                  <tr style="background-color: #f5f5f0;">
-                    <td colspan="8" style="text-align: right;"><strong>Descuento:</strong></td>
-                    <td>${{ number_format($descuento, 2) }}</td>
-                  </tr>
-                  <tr style="background-color: #f5f5f0;">
-                    <td colspan="8" style="text-align: right;"><strong>Total a Pagar:</strong></td>
-                    <td style="background-color: #f7ed17;" ><strong>${{ number_format($totalPagar, 2) }}</strong></td>
-                  </tr>
-            </tbody>
-        </table>
-    </section>
-    <footer>
-        <div id="frase">
-            <h5>"Arriesga más que los demás. Sueña más que los demás"</h5>
-        </div>
-    </footer>
+                        <td colspan="8" style="text-align: right;"><strong>Descuento:</strong></td>
+                        <td>${{ number_format($descuento, 2) }}</td>
+                    </tr>
+                    <tr style="background-color: #f5f5f0;">
+                        <td colspan="8" style="text-align: right;"><strong>Total a Pagar:</strong></td>
+                        <td style="background-color: #f7ed17;" ><strong>${{ number_format($totalPagar, 2) }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <div id="pie">
+        <hr>
+        <img class="navbar-brand-full" src="img/piePagina.jpg" width="350" height="25" alt="encabezado" text-align:center >
+    </div>
+
 </body>
+
 </html>
