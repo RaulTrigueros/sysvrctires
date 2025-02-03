@@ -9,13 +9,13 @@
   <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
   <meta name="author" content="Ing. Raul Trigueros>
   <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-  <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
   <!--  <title>Modificar Contraseña</title>-->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <link href="/css/app.css" rel="stylesheet">
   <link href="css/portal/portal.css" rel="stylesheet">
   <link href="css/general.css" rel="stylesheet">
+  <title>VRC Moto Parts</title>
 
   <style>
     

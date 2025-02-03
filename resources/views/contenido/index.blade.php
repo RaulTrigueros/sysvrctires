@@ -7,7 +7,7 @@
     <carrusel-portal></carrusel-portal>
 
     <!-- Masthead Heading -->
-    <h1 class="masthead-heading text-uppercase mb-0 mt-5">VRC Tires</h1>
+    <h1 class="masthead-heading text-uppercase mb-0 mt-5">VRC Moto Parts</h1>
 
     <!-- Icon Divider -->
     <div class="divider-custom divider-light">

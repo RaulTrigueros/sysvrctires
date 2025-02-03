@@ -9,7 +9,7 @@
   <meta name="description" content="Sistema Informático de gestión de pedidos">
   <meta name="author" content="Rulodev">
 
-  <title>VRC Tires</title>
+  <title>VRC Moto Parts</title>
 
   <!-- Icons -->
   <link href="css/general.css" rel="stylesheet">
