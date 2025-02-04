@@ -1180,7 +1180,7 @@ export default {
         if (result.value) {
           let me = this;
           axios
-            .put(this.ruta + '/pedido/entregar', {
+            .put('/pedido/entregar', {
               'id': id,
             })
             .then(function (response) {
