@@ -1164,7 +1164,7 @@ export default {
     },
 
     desactivarPedido(id) {
-      Swal.fire({
+      swal.fire({
         title: 'Marcar como pedido entregado?',
         type: 'warning',
         showCancelButton: true,
@@ -1203,7 +1203,7 @@ export default {
     },
     
     activarPedido(id){
-                Swal.fire({
+                swal.fire({
                 title: 'Está seguro de Revertir el estado del pedido?',
                 type: 'warning',
                 showCancelButton: true,
