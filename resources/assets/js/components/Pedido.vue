@@ -1164,7 +1164,7 @@ export default {
     },
 
     desactivarPedido(id) {
-      swal.fire({
+      Swal.fire({
         title: 'Marcar como pedido entregado?',
         type: 'warning',
         showCancelButton: true,
