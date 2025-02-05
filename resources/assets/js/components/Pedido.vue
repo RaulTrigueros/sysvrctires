@@ -1222,7 +1222,7 @@ export default {
                         'id': id
                     }).then(function(response){
                         me.listarPedido(1,'','persona_id');
-                         Swal.fire(
+                         swal.fire(
                             'Realizado!',
                             'Este pedido no ha sido entregado!',
                             'success'

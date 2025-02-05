@@ -2780,7 +2780,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             'id': id
           }).then(function (response) {
             me.listarPedido(1, '', 'persona_id');
-            Swal.fire('Realizado!', 'Este pedido no ha sido entregado!', 'success');
+            swal.fire('Realizado!', 'Este pedido no ha sido entregado!', 'success');
           })["catch"](function (error) {
             console.log(error);
           });
