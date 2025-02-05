@@ -491,7 +491,7 @@
                       <td v-text="detalle.precio"></td>
                       <td v-text="detalle.cantidad"></td>
                       <td colspan="3" style="text-align: left">
-                        ${{detalle.precio*detalle.cantidad}}
+                        ${{(detalle.precio*detalle.cantidad).toFixed(2)}}
                       </td>
                     </tr>
                     <tr style="background-color: #CEECF5;">

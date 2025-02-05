@@ -184,7 +184,7 @@
                         <td>{{$detalle->descripcion}}</td>
                         <td>{{$detalle->precio}}</td>
                         <td>{{$detalle->cantidad}}</td>
-                        <td colspan="3">${{$detalle->precio*$detalle->cantidad}}</td>
+                        <td colspan="3">${{ number_format($detalle->precio * $detalle->cantidad, 2) }}</td>
                     </tr>
                     @endforeach
                         <tr style="background-color: #f5f5f0;">
