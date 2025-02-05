@@ -218,7 +218,7 @@ class PedidoController extends Controller
 
     public function desactivarPedido(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        // if (!$request->ajax()) return redirect('/');
         $pedido = Pedido::findOrFail($request->id);
         $pedido->estado = '0';
         $pedido->save();
@@ -229,7 +229,7 @@ class PedidoController extends Controller
 
     public function activarPedido(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //  if (!$request->ajax()) return redirect('/');
         $pedido = Pedido::findOrFail($request->id);
         $pedido->estado = '1';
         $pedido->save();
