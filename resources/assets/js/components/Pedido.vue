@@ -61,7 +61,6 @@
                 <tbody>
                   <tr v-for="pedido in arrayPedido" :key="pedido.id">
                     <td>
-                      {{ console.log(pedido) }} <!-- Esto te mostrará los datos de cada pedido -->
                       <button
                         type="button"
                         @click="verPedido(pedido.id)"
