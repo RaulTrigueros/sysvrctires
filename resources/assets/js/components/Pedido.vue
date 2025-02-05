@@ -358,7 +358,7 @@
                         />
                       </td>
                       <td colspan="2" style="text-align: center">
-                        ${{detalle.precio*detalle.cantidad}}
+                        ${{(detalle.precio*detalle.cantidad).toFixed(2)}}
                       </td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
