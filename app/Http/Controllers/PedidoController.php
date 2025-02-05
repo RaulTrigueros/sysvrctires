@@ -31,7 +31,6 @@ class PedidoController extends Controller
         $query = Pedido::join('personas', 'pedidos.persona_id', '=', 'personas.id')
             ->select(
                 'pedidos.id',
-                //'pedidos.tipo_pago',
                 'pedidos.tipo_cliente',
                 'pedidos.created_at as fecha_hora',
                 'pedidos.estado',

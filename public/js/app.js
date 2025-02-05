@@ -4835,7 +4835,7 @@ var render = function render() {
   }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.arrayPedido, function (pedido) {
     return _c("tr", {
       key: pedido.id
-    }, [_c("td", [_c("button", {
+    }, [_c("td", [_vm._v("\n                    " + _vm._s(_vm.console.log(pedido)) + " "), _vm._v(" "), _c("button", {
       staticClass: "btn btn-info btn-sm",
       attrs: {
         type: "button"
