@@ -1180,7 +1180,7 @@ export default {
         if (result.value) {
           let me = this;
           axios
-            .put(this.ruta + '/pedido/entregar', {
+            .post(this.ruta + '/pedido/entregar', {
               'id': id,
             })
             .then(function (response) {
@@ -1218,7 +1218,7 @@ export default {
                 }).then((result) => {
                 if (result.value) {
                     let me = this;
-                    axios.put(this.ruta + '/pedido/anular',{    //se llama a la ruta para cambiar el estado del pedido
+                    axios.post(this.ruta + '/pedido/anular',{    //se llama a la ruta para cambiar el estado del pedido
                         'id': id
                     }).then(function(response){
                         me.listarPedido(1,'','persona_id');
@@ -1237,7 +1237,7 @@ export default {
                 ) {
                 }
                 })
-  },
+    },
   },
   
   mounted() {
