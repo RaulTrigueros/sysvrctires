@@ -7,8 +7,8 @@ window.Vue = require('vue');
 
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-import Swal from 'sweetalert2'
-Vue.prototype.$Swal = Swal
+//import Swal from 'sweetalert2'
+//Vue.prototype.$Swal = Swal
 
 
 Vue.use(VueFormWizard)
