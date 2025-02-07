@@ -1162,69 +1162,7 @@ export default {
           }
         });
     },
-    desactivarPedido(id) {
-  swal.fire({
-    title: 'Marcar como pedido entregado?',
-    type: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Aceptar!',
-    cancelButtonText: 'Cancelar',
-    confirmButtonClass: 'btn btn-success',
-    cancelButtonClass: 'btn btn-danger',
-    buttonsStyling: false,
-    reverseButtons: true,
-  }).then((result) => {
-    if (result.value) {
-      let me = this;
-      axios.put(this.ruta + '/pedido/entregar', { id })
-        .then(function (response) {
-          let pedido = me.pedidos.find(p => p.id === id);
-          if (pedido) {
-            pedido.estado = '0';
-          }
-          swal.fire('Realizado!', 'El pedido ha sido entregado.', 'success');
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-  });
-},
 
-activarPedido(id) {
-  swal.fire({
-    title: 'Está seguro de Revertir el estado del pedido?',
-    type: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: "#d33",
-    confirmButtonText: 'Aceptar',
-    cancelButtonText: 'Cancelar',
-    confirmButtonClass: 'btn btn-success',
-    cancelButtonClass: 'btn btn-danger',
-    buttonsStyling: false,
-    reverseButtons: true,
-  }).then((result) => {
-    if (result.value) {
-      let me = this;
-      axios.put(this.ruta + '/pedido/anular', { id })
-        .then(function (response) {
-          let pedido = me.pedidos.find(p => p.id === id);
-          if (pedido) {
-            pedido.estado = '1';
-          }
-          swal.fire('Realizado!', 'Este pedido no ha sido entregado!', 'success');
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-  });
-},
-
-/*
     desactivarPedido(id) {
       swal.fire({
         title: 'Marcar como pedido entregado?',
@@ -1299,7 +1237,7 @@ activarPedido(id) {
                 ) {
                 }
                 })
-    },*/
+    },
   },
   
   mounted() {
