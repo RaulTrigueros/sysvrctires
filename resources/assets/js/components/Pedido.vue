@@ -655,7 +655,7 @@
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css'; // importar los estilos
 import axios from 'axios';
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 export default {
   props: ['ruta'],
   data() {
@@ -946,7 +946,7 @@ export default {
           precio: data['precio'],
         });
          // Notificación de éxito al agregar el producto
-          swal.fire({
+          Swal.fire({
             type: 'success',
             title: 'Producto agregado',
             timer: 1000, // Duración de la notificación (en milisegundos)
@@ -980,7 +980,7 @@ export default {
 
       // Validar si el campo cliente está vacío
       if (!me.persona_id) {
-        swal.fire({
+        Swal.fire({
           type: 'warning',
           title: 'Advertencia',
           text: 'No ha agregado un cliente.',
@@ -989,7 +989,7 @@ export default {
       }
        // Validar si algún campo requerido está vacío
        if (me.arrayDetalle.length <= 0) {
-        swal.fire({
+        Swal.fire({
           type: 'warning',
           title: 'Advertencia',
           text: 'No existe detalle de pedido.',
@@ -1125,7 +1125,7 @@ export default {
     },
 
     eliminarPedido(id) {
-      swal
+      Swal
         .fire({
           title: 'Esta seguro de anular este pedido?',
           type: 'warning',
@@ -1148,7 +1148,7 @@ export default {
               })
               .then(function (response) {
                 me.listarPedido(1, '', 'persona_id');
-                swal.fire(
+                Swal.fire(
                   'Eliminado!',
                   'Registro de Pedido anulado con éxito!',
                   'success'
@@ -1159,7 +1159,7 @@ export default {
               });
           } else if (
             // Read more about handling dismissals
-            result.dismiss === swal.DismissReason.cancel
+            result.dismiss === Swal.DismissReason.cancel
           ) {
           }
         });
@@ -1168,7 +1168,7 @@ export default {
     
  
    desactivarPedido(id) {
-      swal.fire({
+      Swal.fire({
         title: 'Marcar como pedido entregado?',
         type: 'warning',
         showCancelButton: true,
@@ -1189,7 +1189,7 @@ export default {
             })
             .then(function (response) {
               me.listarPedido(1, '', 'persona_id');
-              swal.fire(
+              Swal.fire(
                 'Realizado!',
                 'El pedido ha sido entregado.',
                 'success'
@@ -1200,14 +1200,14 @@ export default {
             });
         } else if (
           // Read more about handling dismissals
-          result.dismiss === swal.DismissReason.cancel
+          result.dismiss === Swal.DismissReason.cancel
         ) {
         }
       });
     },
     
     activarPedido(id){
-                swal.fire({
+                Swal.fire({
                 title: 'Está seguro de Revertir el estado del pedido?',
                 type: 'warning',
                 showCancelButton: true,
@@ -1226,7 +1226,7 @@ export default {
                         'id': id
                     }).then(function(response){
                         me.listarPedido(1,'','persona_id');
-                         swal.fire(
+                         Swal.fire(
                             'Realizado!',
                             'Este pedido no ha sido entregado!',
                             'success'
