@@ -654,6 +654,8 @@
 <script>
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css'; // importar los estilos
+import axios from 'axios';
+import Swal from 'sweetalert2';
 export default {
   props: ['ruta'],
   data() {
