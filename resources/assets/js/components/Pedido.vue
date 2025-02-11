@@ -1163,7 +1163,9 @@ export default {
         });
     },
 
-    desactivarPedido(id) {
+    
+ 
+   desactivarPedido(id) {
       swal.fire({
         title: 'Marcar como pedido entregado?',
         type: 'warning',

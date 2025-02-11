@@ -238,6 +238,7 @@ class PedidoController extends Controller
         return "Éxito";
     }
 
+
     public function destroy(Request $request)
     {
         $pedidos = Pedido::findOrFail($request->id);
