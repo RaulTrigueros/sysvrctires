@@ -1147,6 +1147,7 @@ export default {
                 id: id,
               })
               .then(function (response) {
+
                 me.listarPedido(1, '', 'persona_id');
                 Swal.fire(
                   'Eliminado!',
@@ -1225,6 +1226,7 @@ export default {
                     axios.put(this.ruta + '/pedido/anular',{    //se llama a la ruta para cambiar el estado del pedido
                         'id': id
                     }).then(function(response){
+                        console.log(response.data); // Mostrar respuesta en la consola
                         me.listarPedido(1,'','persona_id');
                          Swal.fire(
                             'Realizado!',
