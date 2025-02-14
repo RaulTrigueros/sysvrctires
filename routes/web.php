@@ -74,12 +74,13 @@ Route::group(['middleware' => ['Administrador']], function () {
     //MÓDULO DE PEDIDO
     Route::get('/pedido', 'PedidoController@index');
     Route::post('/pedido/registrar', 'PedidoController@store');
-    Route::put('/pedido/entregar', 'PedidoController@desactivarPedido')->middleware('web'); //Cambia el estado del pedido de PROCESO a ENTREGADO
-    Route::put('/pedido/anular', 'PedidoController@activarPedido')->middleware('web'); //Cambia el estado del pedido de ENTREGADO a PROCESO
+    //Route::put('/pedido/entregar', 'PedidoController@desactivarPedido')->middleware('web'); //Cambia el estado del pedido de PROCESO a ENTREGADO
+    //Route::put('/pedido/anular', 'PedidoController@activarPedido')->middleware('web'); //Cambia el estado del pedido de ENTREGADO a PROCESO
     Route::get('/pedido/obtenerCabecera', 'PedidoController@obtenerCabecera');
     Route::get('/pedido/obtenerDetalles', 'PedidoController@obtenerDetalles');
     Route::get('/pedido/pdf/{id}', 'PedidoController@pdf')->name('pedido_pdf');
     Route::put('/pedido/eliminar', 'PedidoController@destroy');
+    Route::patch('/pedido/{id}/cambiarEstado', 'PedidoController@cambiarEstado');
 
 
     //GESTION DE LLANTAS Y TUBOS

@@ -77,6 +77,7 @@
                         <i class="fa fa-file-pdf-o"></i>
                       </button>
                       &nbsp;
+                      <!--
                       <template v-if="pedido.estado">
                           <button type="button" class="btn btn-success btn-sm" @click="desactivarPedido(pedido.id)">
                             <i class="fa fa-money"></i>
@@ -86,7 +87,15 @@
                           <button type="button" class="btn btn-info btn-sm" @click="activarPedido(pedido.id)">
                               <i class="fa fa-check"></i>
                           </button>
-                      </template>
+                      </template>-->
+                      <button
+                        class="btn btn-sm"
+                        :class="pedido.estado == 1 ? 'btn-danger' : 'btn-success'"
+                        @click="cambiarEstado(pedido.id)"
+                      >
+                        {{ pedido.estado == 1 ? 'Desactivar' : 'Activar' }}
+                      </button>
+                      &nbsp;
                       <button
                             type="button"
                             class="btn btn-danger btn-sm"
@@ -100,13 +109,17 @@
                     <td v-text="pedido.tipo_cliente"></td>
                     <td v-text="pedido.totalPagar"></td>
                     <td v-text="pedido.fecha_hora"></td>
-                    <td class="align-middle">
+                  <!--  <td class="align-middle">
                         <div v-if="pedido.estado">
                             <span class="badge badge-success">Pendiente</span>
                         </div>
                         <div v-else>
                             <span class="badge badge-danger">Entregado</span>
                         </div>
+                    </td>-->
+                    <td>
+                      <span v-if="pedido.estado == 1" class="text-success">Activado</span>
+                      <span v-else class="text-danger">Desactivado</span>
                     </td>
                   </tr>
                 </tbody>
@@ -679,6 +692,7 @@ export default {
       nrc: "",
       giro: "",
       fecha_hora: '',
+      pedidos: [], // Lista de pedidos
       arrayPedido: [],
       arrayCliente: [],
       arrayDetalle: [],
@@ -1166,8 +1180,21 @@ export default {
         });
     },
 
-    
- 
+    // Cambiar el estado de un pedido
+    cambiarEstado(id) {
+    let me = this;
+    axios
+      .patch(`${this.ruta}/pedido/${id}/cambiarEstado`)
+      .then(function (response) {
+        // Muestra un mensaje y actualiza la lista
+        alert(response.data.message);
+        me.listarPedido(me.pagination.current_page, '', ''); // Actualiza el listado
+      })
+      .catch(function (error) {
+        console.error("Error al cambiar el estado:", error);
+      });
+  },
+ /*
    desactivarPedido(id) {
       Swal.fire({
         title: 'Marcar como pedido entregado?',
@@ -1244,6 +1271,7 @@ export default {
                 }
                 })
     },
+*/
   },
   
   mounted() {
@@ -1278,4 +1306,6 @@ export default {
     margin-top: 2rem;
   }
 }
+
+
 </style>

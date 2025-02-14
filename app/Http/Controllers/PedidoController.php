@@ -215,7 +215,7 @@ class PedidoController extends Controller
         $this->bitacoraService->store('Pedido registrado', 'Pedido');
         return response()->json(['message' => 'Pedido registrado correctamente', 'id' => $pedido->id]);
     }
-
+    /*
     public function desactivarPedido(Request $request)
     {
         // if (!$request->ajax()) return redirect('/');
@@ -236,6 +236,22 @@ class PedidoController extends Controller
 
         $this->bitacoraService->store('Entrega de pedido anulada', 'Pedido');
         return "Éxito";
+    }
+*/
+
+    public function cambiarEstado(Request $request, $id)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $pedido = Pedido::findOrFail($id); // Encuentra el pedido
+        $pedido->estado = !$pedido->estado; // Cambia el estado (1 a 0, o viceversa)
+        $pedido->save(); // Guarda los cambios
+
+        return response()->json([
+            'success' => true,
+            'message' => 'El estado del pedido ha sido actualizado.',
+            'estado' => $pedido->estado
+        ]);
     }
 
 
