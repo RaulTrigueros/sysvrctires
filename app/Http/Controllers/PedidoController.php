@@ -249,9 +249,11 @@ class PedidoController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'El estado del pedido ha sido actualizado.',
+            'message' => 'El estado del pedido ha cambiado.',
             'estado' => $pedido->estado
         ]);
+        $this->bitacoraService->store('Cambio de estado de pedido', 'Pedido');
+        return "Éxito";
     }
 
 

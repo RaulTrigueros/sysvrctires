@@ -93,7 +93,8 @@
                         :class="pedido.estado == 1 ? 'btn-danger' : 'btn-success'"
                         @click="cambiarEstado(pedido.id)"
                       >
-                        {{ pedido.estado == 1 ? 'Desactivar' : 'Activar' }}
+                        <!--{{ pedido.estado == 1 ? 'Desactivar' : 'Activar' }}-->
+                        <i :class="pedido.estado == 1 ? 'fa fa-money' : 'fa fa-check'"></i>
                       </button>
                       &nbsp;
                       <button
@@ -118,8 +119,8 @@
                         </div>
                     </td>-->
                     <td>
-                      <span v-if="pedido.estado == 1" class="text-success">Activado</span>
-                      <span v-else class="text-danger">Desactivado</span>
+                      <span v-if="pedido.estado == 1" class="badge badge-danger">Pendiente</span>
+                      <span v-else class="badge badge-success">Entregado</span>
                     </td>
                   </tr>
                 </tbody>
