@@ -207,36 +207,6 @@
                   </select>
                 </div>
               </div>
-              <!--<div class="form-group row">
-                                <label
-                                    class="col-md-3 form-control-label"
-                                    for="text-input"
-                                    >DUI</label
-                                >
-                                <div class="col-md-9">
-                                    <input
-                                        type="email"
-                                        v-model="num_documento"
-                                        class="form-control"
-                                        placeholder="Número de documento"
-                                    />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label
-                                    class="col-md-3 form-control-label"
-                                    for="email-input"
-                                    >Dirección</label
-                                >
-                                <div class="col-md-9">
-                                    <input
-                                        type="email"
-                                        v-model="direccion"
-                                        class="form-control"
-                                        placeholder="Dirección"
-                                    />
-                                </div>
-                            </div>-->
               <div class="form-group row">
                 <label class="col-md-3 form-control-label" for="tel"
                   >Teléfono</label
@@ -471,6 +441,19 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+          if (error.response && error.response.status === 409) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Usuario existente',
+              text: error.response.data.error,
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Ocurrió un error al registrar el usuario',
+            });
+          }
         });
     },
     actualizarPersona() {

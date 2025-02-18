@@ -59,6 +59,13 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
 
+            // Verificar si el usuario ya existe por su nombre de usuario o email
+            $usuarioExistente = User::where('usuario', $request->usuario)->first();
+
+            if ($usuarioExistente) {
+                return response()->json(['error' => 'El usuario ya existe en la base de datos'], 409);
+            }
+
             $persona = new Persona();
             $persona->nombre = $request->nombre;
             $persona->telefono = $request->telefono;

@@ -77,23 +77,11 @@
                         <i class="fa fa-file-pdf-o"></i>
                       </button>
                       &nbsp;
-                      <!--
-                      <template v-if="pedido.estado">
-                          <button type="button" class="btn btn-success btn-sm" @click="desactivarPedido(pedido.id)">
-                            <i class="fa fa-money"></i>
-                          </button>
-                      </template>
-                      <template v-else>
-                          <button type="button" class="btn btn-info btn-sm" @click="activarPedido(pedido.id)">
-                              <i class="fa fa-check"></i>
-                          </button>
-                      </template>-->
                       <button
                         class="btn btn-sm"
                         :class="pedido.estado == 1 ? 'btn-danger' : 'btn-success'"
                         @click="cambiarEstado(pedido.id)"
                       >
-                        <!--{{ pedido.estado == 1 ? 'Desactivar' : 'Activar' }}-->
                         <i :class="pedido.estado == 1 ? 'fa fa-money' : 'fa fa-check'"></i>
                       </button>
                       &nbsp;
