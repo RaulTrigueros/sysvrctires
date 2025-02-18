@@ -1194,6 +1194,12 @@ export default {
       .catch(function (error) {
         console.error("Error al cambiar el estado:", error);
       });
+      Swal.fire({
+        title: 'Estado cambiado',
+        text: 'El estado del pedido ha sido actualizado.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
   },
  /*
    desactivarPedido(id) {

@@ -247,13 +247,13 @@ class PedidoController extends Controller
         $pedido->estado = !$pedido->estado; // Cambia el estado (1 a 0, o viceversa)
         $pedido->save(); // Guarda los cambios
 
+        $this->bitacoraService->store('Cambio de estado de pedido', 'Pedido');
+
         return response()->json([
             'success' => true,
             'message' => 'El estado del pedido ha cambiado.',
             'estado' => $pedido->estado
         ]);
-        $this->bitacoraService->store('Cambio de estado de pedido', 'Pedido');
-        return "Éxito";
     }
 
 
