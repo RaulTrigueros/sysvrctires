@@ -1188,7 +1188,7 @@ export default {
       .patch(`${this.ruta}/pedido/${id}/cambiarEstado`)
       .then(function (response) {
         // Muestra un mensaje y actualiza la lista
-        alert(response.data.message);
+       // alert(response.data.message);
         me.listarPedido(me.pagination.current_page, '', ''); // Actualiza el listado
       })
       .catch(function (error) {
