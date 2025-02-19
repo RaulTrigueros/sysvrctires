@@ -68,7 +68,7 @@
                     <i class="fa fa-edit"></i>
                   </button>
                   &nbsp;
-                  <template v-if="persona.condicion">
+                 <template v-if="persona.condicion">
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
@@ -86,13 +86,22 @@
                       <i class="fa fa-check"></i>
                     </button>
                   </template>
-                 <!-- <template>
-                    <button 
-                      class="btn btn-sm"
-                      :class="user.condicion == 1 ? 'btn-danger' : 'btn-success'"
-                      @click="cambiarEstado(user.id, user.condicion)"
+                 <!-- <template v-if="persona.condicion">
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="cambiarEstadoUsuario(persona.id, 0)"
                     >
-                      <i :class="user.condicion == 1 ? 'fas fa-times' : 'fas fa-check'"></i>
+                      <i class="fa fa-lock"></i>
+                    </button>
+                  </template>
+                  <template v-else>
+                    <button
+                      type="button"
+                      class="btn btn-info btn-sm"
+                      @click="cambiarEstadoUsuario(persona.id, 1)"
+                    >
+                      <i class="fa fa-check"></i>
                     </button>
                   </template>-->
                 </td>
@@ -562,6 +571,7 @@ export default {
         }
       }
     },
+   
     desactivarUsuario(id) {
       Swal.fire({
         title: 'Esta seguro de desactivar este usuario?',
@@ -639,6 +649,8 @@ export default {
         }
       });
     },
+    
+
   },
   mounted() {
     this.listarPersona(1, this.buscar, this.criterio);

@@ -62,6 +62,8 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::put('/user/actualizar', 'UserController@update');
     Route::put('/user/desactivar', 'UserController@desactivar');
     Route::put('/user/activar', 'UserController@activar');
+    Route::post('/user/cambiar-estado', 'UserController@cambiarEstado');
+
 
     //GESTION DE CLIENTES
     Route::get('/cliente', 'ClienteController@index');

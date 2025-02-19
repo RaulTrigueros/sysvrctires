@@ -142,7 +142,7 @@ class UserController extends Controller
     }
 
 
-    /*   public function cambiarEstado(Request $request)
+    /*public function cambiarEstado(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
 
@@ -150,10 +150,10 @@ class UserController extends Controller
         $user->condicion = $request->estado;
         $user->save();
 
-        $accion = $request->estado == '1' ? 'Activación' : 'Desactivación';
-        $this->bitacoraService->store('Cambio de estado de usuario', 'Usuario');
+        $accion = $request->estado ? 'Activación' : 'Desactivación';
+        $this->bitacoraService->store("{$accion} de usuario", 'Usuario');
 
-        return response()->json(['mensaje' => 'Estado actualizado correctamente'], 200);
+        return response()->json(['mensaje' => 'Estado de usuario actualizado correctamente'], 200);
     }*/
 
     //Modificar contraseña
