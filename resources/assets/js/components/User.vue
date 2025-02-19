@@ -86,6 +86,15 @@
                       <i class="fa fa-check"></i>
                     </button>
                   </template>
+                 <!-- <template>
+                    <button 
+                      class="btn btn-sm"
+                      :class="user.condicion == 1 ? 'btn-danger' : 'btn-success'"
+                      @click="cambiarEstado(user.id, user.condicion)"
+                    >
+                      <i :class="user.condicion == 1 ? 'fas fa-times' : 'fas fa-check'"></i>
+                    </button>
+                  </template>-->
                 </td>
                 <td class="align-middle" v-text="persona.nombre"></td>
                 <td class="align-middle" v-text="persona.telefono"></td>
@@ -556,7 +565,7 @@ export default {
     desactivarUsuario(id) {
       Swal.fire({
         title: 'Esta seguro de desactivar este usuario?',
-        type: 'warning',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -594,7 +603,7 @@ export default {
     activarUsuario(id) {
       Swal.fire({
         title: 'Esta seguro de activar este usuario?',
-        type: 'warning',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
