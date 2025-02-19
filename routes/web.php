@@ -60,9 +60,10 @@ Route::group(['middleware' => ['Administrador']], function () {
     Route::get('/user', 'UserController@index');
     Route::post('/user/registrar', 'UserController@store');
     Route::put('/user/actualizar', 'UserController@update');
-    Route::put('/user/desactivar', 'UserController@desactivar');
+    /* Route::put('/user/desactivar', 'UserController@desactivar');
     Route::put('/user/activar', 'UserController@activar');
-    Route::post('/user/cambiar-estado', 'UserController@cambiarEstado');
+    Route::put('/user/cambiarEstado/{id}', 'UserController@cambiarEstado');*/
+    Route::patch('/user/{id}/cambiarEstado', 'UserController@cambiarEstado');
 
 
     //GESTION DE CLIENTES

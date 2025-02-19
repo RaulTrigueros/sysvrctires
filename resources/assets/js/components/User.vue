@@ -68,7 +68,7 @@
                     <i class="fa fa-edit"></i>
                   </button>
                   &nbsp;
-                 <template v-if="persona.condicion">
+                <!-- <template v-if="persona.condicion">
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
@@ -85,25 +85,14 @@
                     >
                       <i class="fa fa-check"></i>
                     </button>
-                  </template>
-                 <!-- <template v-if="persona.condicion">
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm"
-                      @click="cambiarEstadoUsuario(persona.id, 0)"
-                    >
-                      <i class="fa fa-lock"></i>
-                    </button>
-                  </template>
-                  <template v-else>
-                    <button
-                      type="button"
-                      class="btn btn-info btn-sm"
-                      @click="cambiarEstadoUsuario(persona.id, 1)"
-                    >
-                      <i class="fa fa-check"></i>
-                    </button>
                   </template>-->
+                  <button
+                        class="btn btn-sm"
+                        :class="persona.condicion == 1 ? 'btn-success' : 'btn-danger'"
+                        @click="cambiarEstado(persona.id)"
+                      >
+                        <i :class="persona.condicion == 1 ? 'fa fa-lock' : 'fa fa-check'"></i>
+                  </button>
                 </td>
                 <td class="align-middle" v-text="persona.nombre"></td>
                 <td class="align-middle" v-text="persona.telefono"></td>
@@ -111,13 +100,9 @@
                 <td class="align-middle" v-text="persona.cargo"></td>
                 <td class="align-middle" v-text="persona.usuario"></td>
                 <td class="align-middle" v-text="persona.rol"></td>
-                <td class="align-middle">
-                  <div v-if="persona.condicion">
-                    <span class="badge badge-success">Activo</span>
-                  </div>
-                  <div v-else>
-                    <span class="badge badge-danger">Inactivo</span>
-                  </div>
+                <td>
+                    <span v-if="persona.condicion == 1" class="badge badge-success">Activo</span>
+                    <span v-else class="badge badge-danger">Inactivo</span>
                 </td>
               </tr>
             </tbody>
@@ -340,6 +325,7 @@
 
 <script>
 export default {
+  props: ['ruta'],
   data() {
     return {
       persona_id: 0,
@@ -571,7 +557,26 @@ export default {
         }
       }
     },
-   
+    cambiarEstado(id) {
+    let me = this;
+    axios
+      .patch(`/user/${id}/cambiarEstado`)
+      .then(function (response) {
+        // Muestra un mensaje y actualiza la lista
+       // alert(response.data.message);
+        me.listarPersona(me.pagination.current_page, '', ''); // Actualiza el listado
+      })
+      .catch(function (error) {
+        console.error("Error al cambiar el estado:", error);
+      });
+      Swal.fire({
+        title: 'Estado cambiado',
+        text: 'El estado del usuario ha sido actualizado.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+  },
+/*   
     desactivarUsuario(id) {
       Swal.fire({
         title: 'Esta seguro de desactivar este usuario?',
@@ -649,7 +654,7 @@ export default {
         }
       });
     },
-    
+ */   
 
   },
   mounted() {
