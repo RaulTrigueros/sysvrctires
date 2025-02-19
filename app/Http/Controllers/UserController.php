@@ -118,29 +118,6 @@ class UserController extends Controller
         $this->bitacoraService->store('Actualizacion de registro', 'Usuario');
         return "Éxito";
     }
-    /*
-    public function desactivar(Request $request)
-    {
-        if (!$request->ajax()) return redirect('/');
-        $user = User::findOrFail($request->id);
-        $user->condicion = '0';
-        $user->save();
-
-        $this->bitacoraService->store('Desactivacion de registro', 'Usuario');
-        return "Éxito";
-    }
-
-    public function activar(Request $request)
-    {
-        if (!$request->ajax()) return redirect('/');
-        $user = User::findOrFail($request->id);
-        $user->condicion = '1';
-        $user->save();
-
-        $this->bitacoraService->store('Activacion de registro', 'Usuario');
-        return "Éxito";
-    }
-*/
 
     public function cambiarEstado(Request $request, $id)
     {
@@ -150,7 +127,9 @@ class UserController extends Controller
         $user->condicion = !$user->condicion; // Cambia el estado (1 a 0, o viceversa)
         $user->save(); // Guarda los cambios
 
-        $this->bitacoraService->store('Cambio de estado de usuario', 'Usuario');
+        //$this->bitacoraService->store('Cambio de estado de usuario', 'Usuario');
+        $accion = $user->condicion ? 'Activación' : 'Desactivación';
+        $this->bitacoraService->store("{$accion} de usuario", 'Usuario');
 
         return response()->json([
             'success' => true,

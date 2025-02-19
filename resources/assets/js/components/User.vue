@@ -68,24 +68,6 @@
                     <i class="fa fa-edit"></i>
                   </button>
                   &nbsp;
-                <!-- <template v-if="persona.condicion">
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm"
-                      @click="desactivarUsuario(persona.id)"
-                    >
-                      <i class="fa fa-lock"></i>
-                    </button>
-                  </template>
-                  <template v-else>
-                    <button
-                      type="button"
-                      class="btn btn-info btn-sm"
-                      @click="activarUsuario(persona.id)"
-                    >
-                      <i class="fa fa-check"></i>
-                    </button>
-                  </template>-->
                   <button
                         class="btn btn-sm"
                         :class="persona.condicion == 1 ? 'btn-success' : 'btn-danger'"
