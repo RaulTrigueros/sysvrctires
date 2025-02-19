@@ -74,7 +74,7 @@
                       class="btn btn-danger btn-sm"
                       @click="desactivarUsuario(persona.id)"
                     >
-                      <i class="fa fa-trash"></i>
+                      <i class="fa fa-lock"></i>
                     </button>
                   </template>
                   <template v-else>

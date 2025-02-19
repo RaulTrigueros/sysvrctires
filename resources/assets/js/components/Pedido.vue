@@ -79,10 +79,10 @@
                       &nbsp;
                       <button
                         class="btn btn-sm"
-                        :class="pedido.estado == 1 ? 'btn-danger' : 'btn-success'"
+                        :class="pedido.estado == 1 ? 'btn-warning' : 'btn-success'"
                         @click="cambiarEstado(pedido.id)"
                       >
-                        <i :class="pedido.estado == 1 ? 'fa fa-money' : 'fa fa-check'"></i>
+                        <i :class="pedido.estado == 1 ? 'fa fa-truck' : 'fa fa-check'"></i>
                       </button>
                       &nbsp;
                       <button
@@ -98,16 +98,8 @@
                     <td v-text="pedido.tipo_cliente"></td>
                     <td v-text="pedido.totalPagar"></td>
                     <td v-text="pedido.fecha_hora"></td>
-                  <!--  <td class="align-middle">
-                        <div v-if="pedido.estado">
-                            <span class="badge badge-success">Pendiente</span>
-                        </div>
-                        <div v-else>
-                            <span class="badge badge-danger">Entregado</span>
-                        </div>
-                    </td>-->
                     <td>
-                      <span v-if="pedido.estado == 1" class="badge badge-danger">Pendiente</span>
+                      <span v-if="pedido.estado == 1" class="badge badge-warning">Pendiente</span>
                       <span v-else class="badge badge-success">Entregado</span>
                     </td>
                   </tr>
