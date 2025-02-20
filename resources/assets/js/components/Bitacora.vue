@@ -24,24 +24,26 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered table-striped table-sm table-responsive">
-                        <thead>
-                        <tr>
-                            <th style="text-align: center">Usuario</th>
-                            <th style="text-align: center">Acción</th>
-                            <th style="text-align: center">Tabla</th>
-                            <th style="text-align: center">Fecha</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="bitacora in arrayBitacora" :key="bitacora.id">
-                            <td style="text-align: center" class="align-middle" v-text="bitacora.usuario"></td>
-                            <td style="text-align: center" class="align-middle" v-text="bitacora.accion"></td>
-                            <td style="text-align: center" class="align-middle" v-text="bitacora.tabla"></td>
-                            <td style="text-align: center" class="align-middle" v-text="bitacora.fecha"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-sm">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">Usuario</th>
+                                <th style="text-align: center">Acción</th>
+                                <th style="text-align: center">Tabla</th>
+                                <th style="text-align: center">Fecha</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="bitacora in arrayBitacora" :key="bitacora.id">
+                                <td style="text-align: center" class="align-middle" v-text="bitacora.usuario"></td>
+                                <td style="text-align: center" class="align-middle" v-text="bitacora.accion"></td>
+                                <td style="text-align: center" class="align-middle" v-text="bitacora.tabla"></td>
+                                <td style="text-align: center" class="align-middle" v-text="bitacora.fecha"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <nav>
                         <ul class="pagination">
                             <li class="page-item" v-if="pagination.current_page > 1">

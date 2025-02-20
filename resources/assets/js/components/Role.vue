@@ -23,30 +23,32 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered table-striped table-sm table-responsive">
-                            <thead>
-                                <tr>                                    
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="role in arrayRole" :key="role.id">
-                                    <td v-text="role.nombre"></td>
-                                    <td v-text="role.descripcion"></td>
-                                    <td>
-                                        <div v-if="role.condicion">
-                                            <span class="badge badge-success">Activo</span>
-                                        </div>
-                                        <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                        </div>
-                                        
-                                    </td>
-                                </tr>                                
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>                                    
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="role in arrayRole" :key="role.id">
+                                        <td v-text="role.nombre"></td>
+                                        <td v-text="role.descripcion"></td>
+                                        <td>
+                                            <div v-if="role.condicion">
+                                                <span class="badge badge-success">Activo</span>
+                                            </div>
+                                            <div v-else>
+                                                <span class="badge badge-danger">Desactivado</span>
+                                            </div>
+                                            
+                                        </td>
+                                    </tr>                                
+                                </tbody>
+                            </table>
+                        </div>
                         <nav>
                             <ul class="pagination">
                                 <li class="page-item" v-if="pagination.current_page > 1">
