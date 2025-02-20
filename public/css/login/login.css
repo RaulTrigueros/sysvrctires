@@ -15,6 +15,16 @@ body {
 
 }
 
+/* Ajuste para dispositivos móviles */
+@media (max-width: 768px) {
+    body {
+        background-size: contain;
+        background-position: center;
+        background-color: #000;
+        /* Para que los espacios vacíos sean de un color uniforme */
+    }
+}
+
 .form-container {
     background-color: rgba(255, 255, 255, 0.5);
     /* Fondo blanco con transparencia */
