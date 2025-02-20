@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered table-striped table-sm">
+                        <table class="table table-bordered table-striped table-sm table-responsive">
                             <thead>
                                 <tr>                                    
                                     <th>Nombre</th>
