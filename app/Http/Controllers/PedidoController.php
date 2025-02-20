@@ -40,7 +40,7 @@ class PedidoController extends Controller
             );
 
         if ($buscar != '') {
-            if ($criterio == 'nombre' || $criterio == 'codigo_persona') {
+            if ($criterio == 'nombre' || $criterio == 'codigo') {
                 // Busca en la tabla de personas
                 $query->where('personas.' . $criterio, 'like', '%' . $buscar . '%');
             } else {
@@ -215,29 +215,6 @@ class PedidoController extends Controller
         $this->bitacoraService->store('Pedido registrado', 'Pedido');
         return response()->json(['message' => 'Pedido registrado correctamente', 'id' => $pedido->id]);
     }
-    /*
-    public function desactivarPedido(Request $request)
-    {
-        // if (!$request->ajax()) return redirect('/');
-        $pedido = Pedido::findOrFail($request->id);
-        $pedido->estado = '0';
-        $pedido->save();
-
-        $this->bitacoraService->store('Pedido entregado', 'Pedido');
-        return "Éxito";
-    }
-
-    public function activarPedido(Request $request)
-    {
-        //  if (!$request->ajax()) return redirect('/');
-        $pedido = Pedido::findOrFail($request->id);
-        $pedido->estado = '1';
-        $pedido->save();
-
-        $this->bitacoraService->store('Entrega de pedido anulada', 'Pedido');
-        return "Éxito";
-    }
-*/
 
     public function cambiarEstado(Request $request, $id)
     {

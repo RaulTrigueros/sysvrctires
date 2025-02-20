@@ -31,12 +31,12 @@ class UserController extends Controller
             $personas = User::join('personas', 'users.id', '=', 'personas.id')
                 ->join('roles', 'users.idrol', '=', 'roles.id')
                 ->select('personas.id', 'personas.nombre', 'personas.telefono', 'personas.email', 'users.cargo', 'users.usuario', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol')
-                ->orderBy('personas.id', 'desc')->paginate(3);
+                ->orderBy('personas.id', 'desc')->paginate(10);
         } else {
             $personas = User::join('personas', 'users.id', '=', 'personas.id')
                 ->join('roles', 'users.idrol', '=', 'roles.id')
                 ->select('personas.id', 'personas.nombre', 'personas.telefono', 'personas.email', 'users.cargo', 'users.usuario', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol')
-                ->where('personas.' . $criterio, 'like', '%' . $buscar . '%')->orderBy('id', 'desc')->paginate(3);
+                ->where('personas.' . $criterio, 'like', '%' . $buscar . '%')->orderBy('id', 'desc')->paginate(10);
         }
 
         return [
@@ -127,7 +127,6 @@ class UserController extends Controller
         $user->condicion = !$user->condicion; // Cambia el estado (1 a 0, o viceversa)
         $user->save(); // Guarda los cambios
 
-        //$this->bitacoraService->store('Cambio de estado de usuario', 'Usuario');
         $accion = $user->condicion ? 'Activación' : 'Desactivación';
         $this->bitacoraService->store("{$accion} de usuario", 'Usuario');
 

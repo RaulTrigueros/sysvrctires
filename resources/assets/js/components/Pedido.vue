@@ -24,9 +24,8 @@
               <div class="col-md-6">
                 <div class="input-group">
                   <select class="form-control col-md-3" v-model="criterio">
-                    <option value="codigo_persona">Codigo de Cliente</option>
+                    <option value="codigo">Codigo de Cliente</option>
                     <option value="nombre">Nombre de Cliente</option>
-                    <option value="fecha_hora">Fecha-Hora</option>
                   </select>
                   <input
                     type="text"
