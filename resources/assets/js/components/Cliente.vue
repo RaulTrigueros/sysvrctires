@@ -47,60 +47,62 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered table-striped table-sm table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Opciones</th>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>DUI</th>
-                                <th>NIT</th>
-                                <th>NRC</th>
-                                <th>Giro</th>
-                                <th>Dirección</th>
-                                <th>Teléfono</th>
-                                <th>Correo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="persona in arrayPersona"
-                                :key="persona.id"
-                            >
-                                <td>
-                                    <button
-                                        type="button"
-                                        @click="
-                                            abrirModal(
-                                                'persona',
-                                                'actualizar',
-                                                persona
-                                            )
-                                        "
-                                        class="btn btn-warning btn-sm"
-                                    >
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger btn-sm"
-                                        @click="eliminarPersona(persona.id)"
-                                    >
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
-                                <td v-text="persona.codigo"></td>
-                                <td v-text="persona.nombre"></td>
-                                <td v-text="persona.dui"></td>
-                                <td v-text="persona.nit"></td>
-                                <td v-text="persona.nrc"></td>
-                                <td v-text="persona.giro"></td>
-                                <td v-text="persona.direccion"></td>
-                                <td v-text="persona.telefono"></td>
-                                <td v-text="persona.email"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Opciones</th>
+                                    <th>Codigo</th>
+                                    <th>Nombre</th>
+                                    <th>DUI</th>
+                                    <th>NIT</th>
+                                    <th>NRC</th>
+                                    <th>Giro</th>
+                                    <th>Dirección</th>
+                                    <th>Teléfono</th>
+                                    <th>Correo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    v-for="persona in arrayPersona"
+                                    :key="persona.id"
+                                >
+                                    <td>
+                                        <button
+                                            type="button"
+                                            @click="
+                                                abrirModal(
+                                                    'persona',
+                                                    'actualizar',
+                                                    persona
+                                                )
+                                            "
+                                            class="btn btn-warning btn-sm"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger btn-sm"
+                                            @click="eliminarPersona(persona.id)"
+                                        >
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <td v-text="persona.codigo"></td>
+                                    <td v-text="persona.nombre"></td>
+                                    <td v-text="persona.dui"></td>
+                                    <td v-text="persona.nit"></td>
+                                    <td v-text="persona.nrc"></td>
+                                    <td v-text="persona.giro"></td>
+                                    <td v-text="persona.direccion"></td>
+                                    <td v-text="persona.telefono"></td>
+                                    <td v-text="persona.email"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>    
                     <nav>
                         <ul class="pagination">
                             <li

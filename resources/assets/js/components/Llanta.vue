@@ -19,6 +19,7 @@
                 >
                   &nbsp;<i class="fa fa-plus-square"></i>&nbsp;Nuevo
                 </button>
+              </div>
                 <div class="card-body">
                   <!--Inicia opcion buscar-->
                   <div class="form-group row">
@@ -52,49 +53,51 @@
                   </div>
                   <br />
                   <!-- INICIO DEL LISTADO-->
-                  <table class="table table-bordered table-striped table-sm table-responsive">
-                    <thead>
-                      <tr>
-                        <th>Opciones</th>
-                        <th>Codigo</th>
-                        <th>Tipo de Producto</th>
-                        <th>Medida</th>
-                        <th>Precio ($)</th>
-                        <th>Descripcion</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="llanta in arrayLlanta" :key="llanta.id">
-                        <td>
-                          <button
-                            type="button"
-                            @click="abrirModal('llanta', 'actualizar', llanta)"
-                            class="btn btn-warning btn-sm"
-                          >
-                            <i class="fa fa-edit"></i>
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-danger btn-sm"
-                            @click="eliminarLlanta(llanta.id)"
-                          >
-                            <i class="fa fa-trash"></i>
-                          </button>
-                        </td>
-                        <td class="align-middle" v-text="llanta.codigo"></td>
-                        <td
-                          class="align-middle"
-                          v-text="llanta.tipoproducto"
-                        ></td>
-                        <td class="align-middle" v-text="llanta.medida"></td>
-                        <td class="align-middle" v-text="llanta.precio"></td>
-                        <td
-                          class="align-middle"
-                          v-text="llanta.descripcion"
-                        ></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm">
+                      <thead>
+                        <tr>
+                          <th>Opciones</th>
+                          <th>Codigo</th>
+                          <th>Tipo de Producto</th>
+                          <th>Medida</th>
+                          <th>Precio ($)</th>
+                          <th>Descripcion</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="llanta in arrayLlanta" :key="llanta.id">
+                          <td>
+                            <button
+                              type="button"
+                              @click="abrirModal('llanta', 'actualizar', llanta)"
+                              class="btn btn-warning btn-sm"
+                            >
+                              <i class="fa fa-edit"></i>
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-danger btn-sm"
+                              @click="eliminarLlanta(llanta.id)"
+                            >
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </td>
+                          <td class="align-middle" v-text="llanta.codigo"></td>
+                          <td
+                            class="align-middle"
+                            v-text="llanta.tipoproducto"
+                          ></td>
+                          <td class="align-middle" v-text="llanta.medida"></td>
+                          <td class="align-middle" v-text="llanta.precio"></td>
+                          <td
+                            class="align-middle"
+                            v-text="llanta.descripcion"
+                          ></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <nav>
                     <ul class="pagination">
                       <li class="page-item" v-if="pagination.current_page > 1">
