@@ -305,8 +305,9 @@
                       <th style="text-align: center;">Medida</th>
                       <th style="text-align: center;">Descripción</th>
                       <th style="text-align: center;">Precio</th>
+                      <th style="text-align: center;">Precio con Descuento</th>
                       <th style="text-align: center;">Cantidad</th>
-                      <th style="text-align: center;">Subtotal</th>
+                      <th style="text-align: center;">Subtotal con Descuento</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -342,6 +343,10 @@
                       <td
                         style="text-align: center"
                         v-text="detalle.precio"
+                      ></td>
+                      <td
+                        style="text-align: center"
+                        v-text="detalle.precio - (detalle.precio * porcentajeDescuento / 100)"
                       ></td>
                       <td style="text-align: center">
                         <input style="text-align: center;"
@@ -1121,7 +1126,7 @@ export default {
     eliminarPedido(id) {
       Swal
         .fire({
-          title: 'Esta seguro de anular este pedido?',
+          title: 'Esta seguro de eliminar este pedido?',
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
