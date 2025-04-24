@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Sistema Informático de gestión de pedidos">
-  <meta name="author" content="Rulodev">
+  <meta name="author" content="Ing. Raul Trigueros">
 
   <title>VRC Moto Parts</title>
 

@@ -304,7 +304,7 @@
                       <th style="text-align: center;">Tipo Producto</th>
                       <th style="text-align: center;">Medida</th>
                       <th style="text-align: center;">Descripción</th>
-                      <th style="text-align: center;">Precio</th>
+                      <th style="text-align: center;">Precio Unitario</th>
                       <th style="text-align: center;">Precio con Descuento</th>
                       <th style="text-align: center;">Cantidad</th>
                       <th style="text-align: center;">Subtotal con Descuento</th>
@@ -342,12 +342,10 @@
                       ></td>
                       <td
                         style="text-align: center"
-                        v-text="detalle.precio"
-                      ></td>
+                      >{{ '$' + detalle.precio }}</td>
                       <td
                         style="text-align: center"
-                        v-text="detalle.precio - (detalle.precio * porcentajeDescuento / 100)"
-                      ></td>
+                      > $ {{ calculoPrecioConDescuento(detalle.precio).toFixed(2) }}</td>
                       <td style="text-align: center">
                         <input style="text-align: center;"
                           v-model="detalle.cantidad"
@@ -356,20 +354,16 @@
                         />
                       </td>
                       <td colspan="2" style="text-align: center">
-                        ${{(detalle.precio*detalle.cantidad).toFixed(2)}}
+                        $ {{ subtotalConDescuento(detalle.precio, detalle.cantidad).toFixed(2) }}
                       </td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                      <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
-                      <td style="text-align: center">$ {{ totalParcial.toFixed(2) }}</td>
+                      <td colspan="8" align="right"><strong>Descuento Total({{ porcentajeDescuento }}%):</strong></td>
+                      <td style="text-align: center">$ {{ calculoDescuentoTotal.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                      <td colspan="7" align="right"><strong>Descuento ({{ porcentajeDescuento }}%):</strong></td>
-                      <td style="text-align: center">$ {{ calculoDescuento.toFixed(2) }}</td>
-                    </tr>
-                    <tr style="background-color: #CEECF5;">
-                      <td colspan="7" align="right"><strong>Total a Pagar:</strong></td>
-                      <td style="background-color: #f7ed17;" ><strong>$ {{ totalPagar.toFixed(2) }}</strong></td>
+                      <td colspan="8" align="right"><strong>Total a Pagar:</strong></td>
+                      <td style="background-color: #f7ed17; text-align: center " ><strong>$ {{ totalPagar.toFixed(2) }}</strong></td>
                     </tr>
                   </tbody>
                   <tbody v-else>
@@ -475,9 +469,10 @@
                       <th>Tipo Producto</th>
                       <th>Medida</th>
                       <th>Descripcion</th>
-                      <th>Precio ($)</th>
+                      <th>Precio Unitario</th>
+                      <th>Precio con Descuento</th>
                       <th>Cantidad</th>
-                      <th colspan="3">Subtotal</th>
+                      <th colspan="3">Subtotal con Descuento</th>
                     </tr>
                   </thead>
                   <tbody v-if="arrayDetalle.length">
@@ -486,19 +481,18 @@
                       <td v-text="detalle.tipoproducto"></td>
                       <td v-text="detalle.medida"></td>
                       <td v-text="detalle.descripcion"></td>
-                      <td v-text="detalle.precio"></td>
+                      <td>{{ '$' + detalle.precio }}</td>
+                      <td
+                        style="text-align: left"
+                      > $ {{ calculoPrecioConDescuento(detalle.precio).toFixed(2) }}</td>
                       <td v-text="detalle.cantidad"></td>
                       <td colspan="3" style="text-align: left">
-                        ${{(detalle.precio*detalle.cantidad).toFixed(2)}}
+                        $ {{ subtotalConDescuento(detalle.precio, detalle.cantidad).toFixed(2) }}
                       </td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
-                      <td colspan="7" align="right"><strong>Total Parcial:</strong></td>
-                      <td>$ {{ totalParcial.toFixed(2) }}</td>
-                    </tr>
-                    <tr style="background-color: #CEECF5;">
-                      <td colspan="7" align="right"><strong>Descuento ({{ porcentajeDescuento }}%):</strong></td>
-                      <td>$ {{ calculoDescuento.toFixed(2) }}</td>
+                      <td colspan="7" align="right"><strong>Descuento Total ({{ porcentajeDescuento }}%):</strong></td>
+                      <td>$ {{ calculoDescuentoTotal.toFixed(2) }}</td>
                     </tr>
                     <tr style="background-color: #CEECF5;">
                       <td colspan="7" align="right"><strong>Total a Pagar:</strong></td>
@@ -754,16 +748,30 @@ export default {
     porcentajeDescuento() {
       return this.descuentos[this.tipo_cliente] || 0; 
     },
-     // Calcula el descuento total como un porcentaje del total parcial
-     calculoDescuento() {
+     // Calcula el descuento total como un porcentaje del total con precio regular
+     calculoDescuentoTotal() {
       return (this.totalParcial * this.porcentajeDescuento) / 100;
     },
     totalPagar() {
-      return this.totalParcial - this.calculoDescuento;
+      return this.totalParcial - this.calculoDescuentoTotal;
     },
   },
 
   methods: {
+    // Calcula el descuento para precio unitario y se muestra en la tabla  
+    calculoDescuentoUnitario(precio) {
+      return (precio * this.porcentajeDescuento) / 100;
+    },
+    // Precio unitario con descuento aplicado
+    calculoPrecioConDescuento(precio) {
+      return precio - this.calculoDescuentoUnitario(precio);
+    },
+    //Calcular el subtotal del precio de cada producto por la cantidad agregada 
+    subtotalConDescuento(precio, cantidad) {
+    const precioConDescuento = this.calculoPrecioConDescuento(precio);
+    return precioConDescuento * cantidad;
+    },
+
     listarPedido(page, buscar, criterio) {
       let me = this;
       var url =

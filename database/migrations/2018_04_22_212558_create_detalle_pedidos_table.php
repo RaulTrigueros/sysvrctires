@@ -18,7 +18,7 @@ class CreateDetallePedidosTable extends Migration
             $table->integer('pedido_id')->unsigned();
             $table->foreign('pedido_id')->references('id')->on('pedidos')->onDelete('cascade');
             $table->integer('llanta_id')->unsigned();
-            $table->foreign('llanta_id')->references('id')->on('llantas');
+            $table->foreign('llanta_id')->references('id')->on('llantas'); //Hace referencia a la tabla que contiene los productos
             $table->integer('repuesto_id')->unsigned()->nullable();
             $table->foreign('repuesto_id')->references('id')->on('repuestos');
             $table->integer('cantidad');

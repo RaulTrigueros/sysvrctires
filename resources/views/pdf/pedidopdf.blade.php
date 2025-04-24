@@ -170,29 +170,33 @@
                         <th>Tipo Producto</th>
                         <th>Medida</th>
                         <th>Descripción</th>
-                        <th>Precio</th>
+                        <th>Precio Unitario</th>
+                        <th>Precio con Descuento</th>
                         <th>Cantidad</th>
-                        <th colspan="3">Subtotal</th>
+                        <th colspan="2">Subtotal con Descuento</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($detalles as $detalle)
-                    <tr>
-                        <td>{{$detalle->codigo}}</td>
-                        <td>{{$detalle->tipoproducto}}</td>
-                        <td>{{$detalle->medida}}</td>
-                        <td>{{$detalle->descripcion}}</td>
-                        <td>{{$detalle->precio}}</td>
-                        <td>{{$detalle->cantidad}}</td>
-                        <td colspan="3">${{ number_format($detalle->precio * $detalle->cantidad, 2) }}</td>
-                    </tr>
+                        @php
+                        //$porcentajeDescuento = $detalle->porcentaje_descuento ?? 0;
+                        $precioConDescuento = $detalle->precio - ($detalle->precio * $porcentajeDescuento / 100);
+                        $subtotalConDescuento = $precioConDescuento * $detalle->cantidad;
+                        @endphp
+                        <tr>
+                            <td>{{$detalle->codigo}}</td>
+                            <td>{{$detalle->tipoproducto}}</td>
+                            <td>{{$detalle->medida}}</td>
+                            <td>{{$detalle->descripcion}}</td>
+                            <td>{{$detalle->precio}}</td>
+                            <td>${{ number_format($precioConDescuento, 2) }}</td>
+                            <td>{{$detalle->cantidad}}</td>
+                            <td colspan="2">${{ number_format($subtotalConDescuento, 2) }}</td>
+                        </tr>
                     @endforeach
-                        <tr style="background-color: #f5f5f0;">
-                        <td colspan="8" style="text-align: right;"><strong>Total Parcial:</strong></td>
-                        <td>${{ number_format($totalParcial, 2) }}</td>
-                    </tr>
+                        
                     <tr style="background-color: #f5f5f0;">
-                        <td colspan="8" style="text-align: right;"><strong>Descuento:</strong></td>
+                        <td colspan="8" style="text-align: right;"><strong>Descuento total:</strong></td>
                         <td>${{ number_format($descuento, 2) }}</td>
                     </tr>
                     <tr style="background-color: #f5f5f0;">
