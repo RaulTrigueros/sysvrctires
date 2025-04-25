@@ -158,7 +158,7 @@ class PedidoController extends Controller
             'distribuidor' => 14,
             'importador' => 20,
         ];
-        $porcentajeDescuento = $descuentos[$pedido->tipo_cliente] ?? 0;
+        $porcentajeDescuento = $descuentos[$pedido->tipo_cliente] ?? 0; //se captura el porcentaje de descuento dependiendo del tipo de cliente
         // Calcular el descuento y el total a pagar
         $descuento = ($totalParcial * $porcentajeDescuento) / 100;
         $totalPagar = $totalParcial - $descuento;
